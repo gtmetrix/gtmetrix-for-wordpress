@@ -23,6 +23,7 @@ Requirements
 --------------------------
 
 **Requires:** 3.3.1 or higher
+
 **Compatible up to:** 3.6.1
 
 Version
