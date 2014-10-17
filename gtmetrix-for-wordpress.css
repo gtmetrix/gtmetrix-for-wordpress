@@ -1,0 +1,495 @@
+/*------------------------------------------------------------------------------
+Set up some WordPress furnishings
+------------------------------------------------------------------------------*/
+
+#toplevel_page_gfw_settings .wp-menu-image a img,
+#toplevel_page_gfw_tests  .wp-menu-image a img {
+  display: none;
+}
+
+#toplevel_page_gfw_settings .wp-menu-image,
+#toplevel_page_gfw_tests .wp-menu-image {
+  background: url('images/sprite.png') no-repeat 0 8px !important;
+}
+
+#toplevel_page_gfw_settings:hover .wp-menu-image,
+#toplevel_page_gfw_settings.wp-has-current-submenu .wp-menu-image,
+#toplevel_page_gfw_tests:hover .wp-menu-image,
+#toplevel_page_gfw_tests.wp-has-current-submenu .wp-menu-image {
+  background-position: 0 -24px !important;
+}
+
+#gfw-icon {
+  background: url(images/icon32.png) no-repeat 0 0;
+}
+
+/*------------------------------------------------------------------------------
+Sprites
+------------------------------------------------------------------------------*/
+
+.gfw-delete-icon,
+.gfw-edit-icon,
+.gfw-pause-icon,
+.gfw-paused-icon,
+.gfw-toggle-icon,
+.gfw-help-icon,
+.gfw-schedule-icon-small {
+  background: url(images/sprite.png) no-repeat transparent;
+  display: block;
+  height: 13px;
+  width: 13px;
+  outline: 0 none;
+  overflow: hidden;
+  text-indent: -9999px;
+  float: left;
+  margin-left: 10px;
+}
+
+.gfw-delete-icon {
+  background-position: -60px -19px;
+}
+
+.gfw-delete-icon:hover {
+  background-position: -60px -32px;
+}
+
+.gfw-edit-icon {
+  background-position: -79px -32px;
+}
+
+.gfw-edit-icon:hover {
+  background-position: -79px -19px;
+}
+
+.gfw-pause-icon {
+  background-position: -60px -66px;
+}
+
+.gfw-pause-icon:hover, .gfw-pause-icon.paused {
+    background-position: -60px -49px;
+}
+
+.gfw-toggle-icon {
+  background-position: -40px 2px;
+}
+
+.gfw-toggle-icon:hover {
+  background-position: -60px 2px;
+}
+
+.gfw-toggle-icon.report-expanded {
+  background-position: -40px -17px;
+}
+
+.gfw-schedule-icon-small {
+  background-position: -102px -38px;
+}
+
+.gfw-schedule-icon-small:hover {
+  background-position: -102px -20px;
+}
+
+.gfw-report-icon, .gfw-schedule-icon-large, .gfw-pdf-icon, .gfw-video-icon {
+  line-height: 20px;
+  padding-left: 33px;
+  background: transparent url(images/sprite.png) no-repeat;
+  display: inline-block;
+}
+
+.gfw-report-icon {
+  background-position: -121px 0;
+}
+
+.gfw-schedule-icon-large {
+  background-position: -121px -20px;
+}
+
+.gfw-pdf-icon {
+  background-position: -121px -40px;
+}
+
+.gfw-video-icon {
+  background-position: -121px -118px;
+}
+
+.gfw-help-icon {
+  background-position: -79px 0;
+  height: 14px;
+  width: 14px;
+  display: inline-block;
+  float: none;
+  vertical-align: text-bottom;
+}
+
+.gfw-times-graph,
+.gfw-sizes-graph,
+.gfw-scores-graph {
+  line-height: 14px;
+  background: transparent url(images/sprite.png) no-repeat;
+  display: inline-block;
+}
+
+.gfw-scores-graph {
+  padding-left: 32px;
+  background-position: -121px -63px;
+}
+
+.gfw-times-graph {
+  padding-left: 33px;
+  background-position: -121px -82px;
+}
+
+.gfw-sizes-graph {
+  padding-left: 33px;
+  background-position: -121px -102px;
+}
+
+/*------------------------------------------------------------------------------
+Report scores, grades and meters
+------------------------------------------------------------------------------*/
+
+.gfw-grade-meter {
+  background: url(images/grade-meter.png) no-repeat scroll 0 0 #FFFFFF;
+  border: 1px solid #D1D1D1;
+  font-size: 10px;
+  height: 14px;
+  padding-right: 3px;
+  text-align: right;
+  width: 97px;
+}
+
+.gfw-grade-meter-A {
+  color: #FFFFFF;
+}
+
+.gfw-grade-meter-B,
+.gfw-grade-meter-C,
+.gfw-grade-meter-D,
+.gfw-grade-meter-E {
+  color: #636363;
+}
+
+.gfw-grade-meter-F {
+  color: #E12121;
+}
+
+.gfw-grade-meter-na {
+  background-color: #D1D1D1;
+  color: #666666;
+}
+
+.gfw-report-grade {
+  background-image: url(images/letter-grades.png);
+  background-repeat: no-repeat;
+  background-color: transparent;
+  display: inline;
+  float: right;
+  height: 69px;
+  margin: 0 15px 0 0;
+  text-indent: -9999em;
+  width: 56px;
+  font-size: 16px;
+  letter-spacing: -1px;
+  padding: 0;
+  border: none;
+}
+
+.gfw-report-grade-A .gfw-report-grade {
+  background-position: 0 0;
+}
+
+.gfw-report-grade-B .gfw-report-grade {
+  background-position: -70px 0;
+}
+
+.gfw-report-grade-C .gfw-report-grade {
+  background-position: -140px 0;
+}
+
+.gfw-report-grade-D .gfw-report-grade {
+  background-position: -210px 0;
+}
+
+.gfw-report-grade-E .gfw-report-grade {
+  background-position: -280px 0;
+}
+
+.gfw-report-grade-F .gfw-report-grade {
+  background-position: -350px 0;
+}
+
+.gfw-report-grade-A .gfw-report-score {
+  color: #43C156;
+}
+
+.gfw-report-grade-B .gfw-report-score {
+  color: #A1CA82;
+}
+
+.gfw-report-grade-C .gfw-report-score {
+  color: #D2B338;
+}
+
+.gfw-report-grade-D .gfw-report-score {
+  color: #D6903F;
+}
+
+.gfw-report-grade-E .gfw-report-score {
+  color: #BB4A12;
+}
+
+.gfw-report-grade-F .gfw-report-score {
+  color: #D02D2D;
+}
+
+.gfw-report-score {
+  float: left;
+  font-size: 30px;
+}
+
+/*------------------------------------------------------------------------------
+Tooltip
+------------------------------------------------------------------------------*/
+
+.ui-tooltip-content {
+  font-size: 11px;
+}
+
+/*------------------------------------------------------------------------------
+Expanded views
+See http://www.alistapart.com/articles/holygrail
+------------------------------------------------------------------------------*/
+
+.gfw-expansion {
+  padding: 8px 0 8px 230px;
+  overflow: auto;
+}
+
+.gfw-expansion > div {
+  position: relative;
+  float: left;
+}
+
+.gfw-expansion-right {
+  width: 100%;
+}
+
+.gfw-expansion-left {
+  width: 230px;
+  right: 230px;
+  margin-left: -100%;
+  text-align: center;
+}
+
+.gfw-expansion-left img {
+  margin: auto;
+}
+
+.gfw-expansion table {
+  width: 550px;
+}
+
+.gfw-expansion table td,
+.gfw-expansion table th {
+  padding: 3px 0;
+}
+
+.gfw-expansion-right > div {
+  border-top: 1px solid #f3f3f3;
+  padding: 8px 0;
+  overflow: auto;
+}
+
+.gfw-expansion-right > div.meta {
+  border: none;
+}
+
+.gfw-expansion-right > div > div {
+  width: 25%;
+  float: left;
+}
+
+.gfw-expansion-right > div.gfw-meta > div {
+  width: auto;
+  margin-right: 20px;
+}
+
+/*------------------------------------------------------------------------------
+Dialogs
+------------------------------------------------------------------------------*/
+
+#gfw-flot-placeholder {
+  width: 800px;
+  height: 400px;
+  clear: both;
+}
+
+.gfw-dialog {
+  display: none;
+}
+
+#gfw-screenshot {
+  background: url('images/loading-screenshot.png') no-repeat center center transparent;
+  border: 2px solid #E4E4E4;
+  border-radius: 8px 8px 8px 8px;
+  height: 225px;
+  margin: 8px auto 0;
+  position: relative;
+  width: 300px;
+}
+
+#gfw-screenshot .gfw-message {
+  display: none;
+  padding: 10px;
+  font-weight: bold;
+}
+
+#gfw-scanner {
+  position: absolute;
+  top: -7px;
+  left: -19px
+}
+
+/*------------------------------------------------------------------------------
+Latest Report
+------------------------------------------------------------------------------*/
+
+.gfw-latest-report-wrapper {
+  display: inline-block;
+  vertical-align: top;
+  width: 100%;
+}
+
+#gfw-score-meta-box .gfw-latest-report-wrapper {
+  width: auto;
+}
+
+.gfw- {
+  color: #6397CB;
+  font-weight: bold;
+}
+
+.gfw-latest-report-front-page {
+  line-height: 1.75em;
+  font-weight: bold;
+  color: #858585;
+}
+
+.gfw-latest-report {
+  padding: 10px 15px;
+  color: #858585;
+  font: 12px/1.231 Arial,Tahoma,Verdana,sans-serif;
+  overflow: auto;
+}
+
+.gfw-latest-report .gfw-report-title {
+  font-size: 13px;
+  font-weight: bold;
+  line-height: 1.75em;
+  color: #858585;
+}
+
+.gfw-latest-report-yslow,
+.gfw-latest-report-pagespeed,
+.gfw-latest-report-details {
+  border-right: 1px solid #E4E4E4;
+  float: left;
+  margin-right: 15px;
+  min-width: 170px;
+}
+
+.gfw-latest-report-details {
+  border-right: none;
+  font-size: 13px;
+  line-height: 1.75em;
+  margin-right: 0;
+}
+
+#gfw-wpurl {
+  display: none;
+}
+
+/*------------------------------------------------------------------------------
+Forms
+------------------------------------------------------------------------------*/
+
+.gfw-conditions select.gfw-units {
+  display: none;
+  width: 100px;
+}
+
+.gfw-placeholder-alternative {
+  display: none;
+}
+
+#gfw_url {
+  width: 100%;
+  padding: 8px;
+}
+
+#gfw_label,
+#gfw_location,
+#gfw_recurrence,
+.gfw-conditions select,
+.gfw #api_username,
+.gfw #api_key,
+.gfw #default_location {
+  width: 320px;
+}
+
+/*------------------------------------------------------------------------------
+Tables
+------------------------------------------------------------------------------*/
+
+.gfw-table-wrapper {
+  padding: 15px 10px 10px;
+  border: 1px solid #E4E4E4;
+  border-radius: 8px 8px 8px 8px;
+  background-color: #ffffff;
+}
+
+.gfw-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.gfw-table .hover {
+  background-color: #eaeaea;
+}
+
+.gfw-table th {
+  white-space: nowrap;
+}
+
+.gfw-table th {
+  color: #6397CB;
+  padding-top: 0;
+  text-align: left;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.gfw-table td,
+.gfw-table th {
+  padding: 6px 10px;
+}
+
+.gfw-table .odd {
+  background-color: #F3F3F3;
+}
+
+.gfw-table .even {
+  background-color: #FAFAFA;
+}
+
+.gfw-table td {
+  color: #436688;
+}
+
+.gfw-no-posts {
+  text-align: center;
+}
+
+.gfw-failed {
+  color: #ff0000;
+}
