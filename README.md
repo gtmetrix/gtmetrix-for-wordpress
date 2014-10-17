@@ -3,6 +3,8 @@ GTMetrix WordPress Plugin
 
 GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
 
+![banner.png](https://raw.githubusercontent.com/gtmetrix/gtmetrix-for-wordpress/master/images/banner.png)
+
 Description
 --------------------------
 
