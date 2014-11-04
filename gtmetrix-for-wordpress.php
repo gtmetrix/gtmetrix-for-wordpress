@@ -287,14 +287,14 @@ HERE;
 
     public function add_menu_items() {
         if ( GFW_AUTHORIZED ) {
-            add_menu_page( 'GTmetrix', 'GTmetrix', 'access_gtmetrix', 'gfw_tests', array( $this, 'tests_page' ) );
+            add_menu_page( 'GTmetrix', 'GTmetrix', 'access_gtmetrix', 'gfw_tests', array( $this, 'tests_page' ), 'none' );
             $this->tests_page_hook = add_submenu_page( 'gfw_tests', 'Tests', 'Tests', 'access_gtmetrix', 'gfw_tests', array( $this, 'tests_page' ) );
             $this->schedule_page_hook = add_submenu_page( 'gfw_tests', 'Schedule', 'Schedule', 'access_gtmetrix', 'gfw_schedule', array( $this, 'schedule_page' ) );
             $this->settings_page_hook = add_submenu_page( 'gfw_tests', 'Settings', 'Settings', 'access_gtmetrix', 'gfw_settings', array( $this, 'settings_page' ) );
             add_action( 'load-' . $this->tests_page_hook, array( &$this, 'page_loading' ) );
             add_action( 'load-' . $this->schedule_page_hook, array( &$this, 'page_loading' ) );
         } else {
-            $this->settings_page_hook = add_menu_page( 'GTmetrix', 'GTmetrix', 'access_gtmetrix', 'gfw_settings', array( $this, 'settings_page' ) );
+            $this->settings_page_hook = add_menu_page( 'GTmetrix', 'GTmetrix', 'access_gtmetrix', 'gfw_settings', array( $this, 'settings_page' ), 'none' );
         }
         add_action( 'load-' . $this->settings_page_hook, array( &$this, 'page_loading' ) );
     }
