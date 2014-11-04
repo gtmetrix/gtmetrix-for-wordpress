@@ -9,6 +9,7 @@ class GFW_Widget extends WP_Widget {
 
     function widget( $args, $instance ) {
         $options = get_option( 'gfw_options' );
+
         if ( $options['widget_css'] ) {
             wp_enqueue_style( 'gfw-widget', GFW_URL . 'widget.css', GFW_VERSION );
         }
@@ -16,7 +17,6 @@ class GFW_Widget extends WP_Widget {
         extract( $args, EXTR_SKIP );
         $title = apply_filters( 'widget_title', $instance['title'] );
 
-        
         
         $args = array(
             'post_type' => 'gfw_report',
@@ -33,9 +33,10 @@ class GFW_Widget extends WP_Widget {
                     'value' => 0,
                     'compare' => '!='
                 )
-            ),
-                 );
- $query = new WP_Query( $args );
+            )
+        );
+
+        $query = new WP_Query( $args );
  
         if ( $query->have_posts() ) {
             echo $before_widget;
@@ -69,10 +70,13 @@ class GFW_Widget extends WP_Widget {
         $defaults = array(
             'title' => '',
         );
+
         $instance = wp_parse_args( ( array ) $instance, $defaults );
         $title = strip_tags( $instance['title'] );
         ?>
+
         <p><label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:' ); ?></label> <input class="widefat" id="<?php echo $this->get_field_id( 'title' ); ?>" name="<?php echo $this->get_field_name( 'title' ); ?>" type="text" value="<?php echo esc_attr( $title ); ?>" /></p>
+
         <?php
     }
 
