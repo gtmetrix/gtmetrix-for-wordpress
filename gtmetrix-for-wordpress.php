@@ -61,7 +61,7 @@ class GTmetrix_For_WordPress {
         define( 'GFW_SETTINGS', get_admin_url() . 'admin.php?page=gfw_settings' );
         define( 'GFW_SCHEDULE', get_admin_url() . 'admin.php?page=gfw_schedule' );
         define( 'GFW_TRIES', 3 );
-        define( 'GFW_FRONT', isset( $options['front_url'] ) && 'site' == $options['front_url'] ? get_home_url( null, '', 'http' ) : get_site_url( null, '', 'http' ) );
+        define( 'GFW_FRONT', isset( $options['front_url'] ) && 'site' == $options['front_url'] ? get_home_url( null, '' ) : get_site_url( null, '' ) );
     }
 
     public function add_to_toolbar( $wp_admin_bar ) {
