@@ -1,11 +1,11 @@
 <?php
 /*
   Plugin Name: GTmetrix for WordPress
-  Plugin URI: http://gtmetrix.com/gtmetrix-for-wordpress-plugin.html
+  Plugin URI: https://gtmetrix.com/gtmetrix-for-wordpress-plugin.html
   Description: GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
   Version: 0.4.1
   Author: GTmetrix
-  Author URI: http://gtmetrix.com/
+  Author URI: https://gtmetrix.com/
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License, version 2, as
@@ -53,7 +53,7 @@ class GTmetrix_For_WordPress {
         $options = get_option( 'gfw_options' );
         define( 'GFW_WP_VERSION', '3.3.1' );
         define( 'GFW_VERSION', '0.4' );
-        define( 'GFW_USER_AGENT', 'GTmetrix_WordPress/' . GFW_VERSION . ' (+http://gtmetrix.com/gtmetrix-for-wordpress-plugin.html)' );
+        define( 'GFW_USER_AGENT', 'GTmetrix_WordPress/' . GFW_VERSION . ' (+https://gtmetrix.com/gtmetrix-for-wordpress-plugin.html)' );
         define( 'GFW_TIMEZONE', get_option( 'timezone_string' ) ? get_option( 'timezone_string' ) : date_default_timezone_get() );
         define( 'GFW_AUTHORIZED', isset( $options['authorized'] ) && $options['authorized'] ? true : false );
         define( 'GFW_URL', plugins_url( '/', __FILE__ ) );
@@ -219,7 +219,7 @@ class GTmetrix_For_WordPress {
             <table width="550" cellpadding="0" cellspacing="0">
                 <tr>
                     <td>
-                        <a href="http://gtmetrix.com/"><img src="http://static.gtmetrix.com/images/email-header.png" width="550" height="107" border="0" alt="Analyze your site at GTmetrix" /></a>
+                        <a href="https://gtmetrix.com/"><img src="https://gtmetrix.com/static/images/email-header.png" width="550" height="107" border="0" alt="Analyze your site at GTmetrix" /></a>
                     </td>
                 </tr>
             </table>
@@ -451,7 +451,7 @@ HERE;
         add_meta_box( 'gfw-news-meta-box', 'Latest News', array( &$this, 'news_meta_box' ), $this->settings_page_hook, 'side', 'core' );
 
         if ( method_exists( $screen, 'add_help_tab' ) ) {
-            $settings_help = '<p>You will need an account at <a href="http://gtmetrix.com/" target="_blank">Gtmetrix.com</a> to use GTmetrix for WordPress. Registration is free. Once registered, go to the <a href="http://gtmetrix.com/api/" target="_blank">API page</a> and generate an API key. Enter this key, along with your registered email address, in the authentication fields below, and you\'re ready to go!</p>';
+            $settings_help = '<p>You will need an account at <a href="https://gtmetrix.com/" target="_blank">Gtmetrix.com</a> to use GTmetrix for WordPress. Registration is free. Once registered, go to the <a href="https://gtmetrix.com/api/" target="_blank">API page</a> and generate an API key. Enter this key, along with your registered email address, in the authentication fields below, and you\'re ready to go!</p>';
             $options_help = '<p>You would usually set your <i>default location</i> to the city nearest to your target audience. When you run a test on a URL, the report returned will reflect the experience of a user connecting from this location.</p>';
 
             $test_help = '<p>To analyze the performance of a page or post on your blog, simply enter it\'s URL. You can even just start to type the title into the box, and an autocomplete facility will try and help you out.</p>';
@@ -516,7 +516,7 @@ HERE;
                     break;
             }
 
-            $screen->set_help_sidebar( '<p><strong>For more information:</strong></p><p><a href="http://gtmetrix.com/wordpress-optimization-guide.html" target="_blank">GTmetrix Wordpress Optimization Guide</a></p>' );
+            $screen->set_help_sidebar( '<p><strong>For more information:</strong></p><p><a href="https://gtmetrix.com/wordpress-optimization-guide.html" target="_blank">GTmetrix Wordpress Optimization Guide</a></p>' );
         }
     }
 
@@ -1074,15 +1074,15 @@ HERE;
         ?>
         <p style="font-weight:bold">It might be your hosting.</p>
         <p>There are two sides to page speed: front-end and server-side. An optimized server-side is crucial to a fast loading site.</p>
-        <p><a href="http://gtmetrix.com/wordpress-optimization-guide.html" target="_blank">Learn more about why your page is slow &raquo;</a></p>
-        <a href="http://www.gossamer-threads.com/hosting/wordpress.html" target="_blank" class="button-secondary">Get WordPress Optimized Hosting</a>
+        <p><a href="https://gtmetrix.com/wordpress-optimization-guide.html" target="_blank">Learn more about why your page is slow &raquo;</a></p>
+        <a href="https://gt.net/applications/wordpress.html" target="_blank" class="button-secondary">Get WordPress Optimized Hosting</a>
         <?php
     }
 
     public function news_meta_box() {
         $latest_news = get_transient( 'latest_news' );
         if ( false === $latest_news ) {
-            $feed = wp_remote_get( 'http://gtmetrix.com/news.xml' );
+            $feed = wp_remote_get( 'https://gtmetrix.com/news.xml' );
             if ( 200 == wp_remote_retrieve_response_code( $feed ) ) {
                 $xml = simplexml_load_string( $feed['body'] );
                 $latest_news = '';
@@ -1192,8 +1192,8 @@ HERE;
             $options = get_option( 'gfw_options' );
             ?>
 
-            <p><input type="text" id="gfw_url" name="gfw_url" value="<?php echo $passed_url; ?>" placeholder="You can enter a URL (eg http://yourdomain.com), or start typing the title of your page/post" /><br />
-                <span class="gfw-placeholder-alternative description">You can enter a URL (eg http://yourdomain.com), or start typing the title of your page/post</span></p>
+            <p><input type="text" id="gfw_url" name="gfw_url" value="<?php echo $passed_url; ?>" placeholder="You can enter a URL (eg. http://yourdomain.com), or start typing the title of your page/post" /><br />
+                <span class="gfw-placeholder-alternative description">You can enter a URL (eg. http://yourdomain.com), or start typing the title of your page/post</span></p>
 
             <table class="form-table">
                 <tr valign="top">
@@ -1528,7 +1528,7 @@ HERE;
 
         public function authenticate_meta_box() {
             if ( !GFW_AUTHORIZED ) {
-                echo '<p style="font-weight:bold">You must have an API key to use this plugin.</p><p>To get an API key, register for a FREE account at gtmetrix.com and generate one in the API section.</p><p><a href="http://gtmetrix.com/api/" target="_blank">Register for a GTmetrix account now &raquo;</a></p>';
+                echo '<p style="font-weight:bold">You must have an API key to use this plugin.</p><p>To get an API key, register for a FREE account at gtmetrix.com and generate one in the API section.</p><p><a href="https://gtmetrix.com/api/" target="_blank">Register for a GTmetrix account now &raquo;</a></p>';
             }
             echo '<table class="form-table">';
             do_settings_fields( 'gfw_settings', 'authentication_section' );
