@@ -4,7 +4,7 @@ class GFW_Widget extends WP_Widget {
 
     function __construct() {
         $widget_ops = array( 'classname' => 'gfw_widget', 'description' => 'The GTmetrix grades for your home page' );
-        $this->WP_Widget( 'gfw-widget', 'GTmetrix for WordPress', $widget_ops );
+        parent::__construct( 'gfw-widget', 'GTmetrix for WordPress', $widget_ops );
     }
 
     function widget( $args, $instance ) {
