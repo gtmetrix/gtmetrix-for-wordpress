@@ -62,6 +62,7 @@ class GTmetrix_For_WordPress {
         define( 'GFW_SCHEDULE', get_admin_url() . 'admin.php?page=gfw_schedule' );
         define( 'GFW_TRIES', 3 );
         define( 'GFW_FRONT', isset( $options['front_url'] ) && 'site' == $options['front_url'] ? get_home_url( null, '' ) : get_site_url( null, '' ) );
+        define( 'GFW_GA_CAMPAIGN', '?utm_source=wordpress&utm_medium=GTmetrix-v' . GFW_VERSION . '&utm_campaign=' . urlencode(get_option('blogname')) );
     }
 
     public function add_to_toolbar( $wp_admin_bar ) {
@@ -451,7 +452,7 @@ HERE;
         add_meta_box( 'gfw-news-meta-box', 'Latest News', array( &$this, 'news_meta_box' ), $this->settings_page_hook, 'side', 'core' );
 
         if ( method_exists( $screen, 'add_help_tab' ) ) {
-            $settings_help = '<p>You will need an account at <a href="https://gtmetrix.com/" target="_blank">Gtmetrix.com</a> to use GTmetrix for WordPress. Registration is free. Once registered, go to the <a href="https://gtmetrix.com/api/" target="_blank">API page</a> and generate an API key. Enter this key, along with your registered email address, in the authentication fields below, and you\'re ready to go!</p>';
+            $settings_help = '<p>You will need an account at <a href="https://gtmetrix.com/' . GFW_GA_CAMPAIGN . '" target="_blank">Gtmetrix.com</a> to use GTmetrix for WordPress. Registration is free. Once registered, go to the <a href="https://gtmetrix.com/api/' . GFW_GA_CAMPAIGN . '" target="_blank">API page</a> and generate an API key. Enter this key, along with your registered email address, in the authentication fields below, and you\'re ready to go!</p>';
             $options_help = '<p>You would usually set your <i>default location</i> to the city nearest to your target audience. When you run a test on a URL, the report returned will reflect the experience of a user connecting from this location.</p>';
 
             $test_help = '<p>To analyze the performance of a page or post on your blog, simply enter it\'s URL. You can even just start to type the title into the box, and an autocomplete facility will try and help you out.</p>';
@@ -516,7 +517,7 @@ HERE;
                     break;
             }
 
-            $screen->set_help_sidebar( '<p><strong>For more information:</strong></p><p><a href="https://gtmetrix.com/wordpress-optimization-guide.html" target="_blank">GTmetrix Wordpress Optimization Guide</a></p>' );
+            $screen->set_help_sidebar( '<p><strong>For more information:</strong></p><p><a href="https://gtmetrix.com/wordpress-optimization-guide.html' . GFW_GA_CAMPAIGN . '" target="_blank">GTmetrix Wordpress Optimization Guide</a></p>' );
         }
     }
 
@@ -1066,7 +1067,7 @@ HERE;
         <p style="font-weight:bold">API Credits Remaining: <?php echo $status['api_credits']; ?></p>
         <p style="font-style:italic">Next top-up: <?php echo $this->wp_date( $status['api_refill'], true ); ?></p>
         <p>Every test costs 1 API credit, except tests that use video, which cost 5 credits. You are topped up to 20 credits per day. If you need more, you can purchase them from GTmetrix.com.</p>
-        <a href="https://gtmetrix.com/pro/" target="_blank" class="button-secondary">Get More API Credits</a>
+        <a href="https://gtmetrix.com/pro/<?php echo GFW_GA_CAMPAIGN ?>" target="_blank" class="button-secondary">Get More API Credits</a>
         <?php
     }
 
@@ -1074,7 +1075,7 @@ HERE;
         ?>
         <p style="font-weight:bold">It might be your hosting.</p>
         <p>There are two sides to page speed: front-end and server-side. An optimized server-side is crucial to a fast loading site.</p>
-        <p><a href="https://gtmetrix.com/wordpress-optimization-guide.html" target="_blank">Learn more about why your page is slow &raquo;</a></p>
+        <p><a href="https://gtmetrix.com/wordpress-optimization-guide.html<?php echo GFW_GA_CAMPAIGN ?>" target="_blank">Learn more about why your page is slow &raquo;</a></p>
         <a href="https://gt.net/applications/wordpress.html" target="_blank" class="button-secondary">Get WordPress Optimized Hosting</a>
         <?php
     }
@@ -1521,14 +1522,14 @@ HERE;
 
         protected function translate_message( $message ) {
             if ( 0 === stripos( $message, 'Maximum number of API calls reached.' ) ) {
-                $message .= ' or <a href="https://gtmetrix.com/pro/" target="_blank" title="Go Pro">go Pro</a> to receive bigger daily top-ups and other benefits.';
+                $message .= ' or <a href="https://gtmetrix.com/pro/' . GFW_GA_CAMPAIGN . '" target="_blank" title="Go Pro">go Pro</a> to receive bigger daily top-ups and other benefits.';
             }
             return $message;
         }
 
         public function authenticate_meta_box() {
             if ( !GFW_AUTHORIZED ) {
-                echo '<p style="font-weight:bold">You must have an API key to use this plugin.</p><p>To get an API key, register for a FREE account at gtmetrix.com and generate one in the API section.</p><p><a href="https://gtmetrix.com/api/" target="_blank">Register for a GTmetrix account now &raquo;</a></p>';
+                echo '<p style="font-weight:bold">You must have an API key to use this plugin.</p><p>To get an API key, register for a FREE account at gtmetrix.com and generate one in the API section.</p><p><a href="https://gtmetrix.com/api/' . GFW_GA_CAMPAIGN . '" target="_blank">Register for a GTmetrix account now &raquo;</a></p>';
             }
             echo '<table class="form-table">';
             do_settings_fields( 'gfw_settings', 'authentication_section' );
