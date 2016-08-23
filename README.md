@@ -24,15 +24,21 @@ Requirements
 
 **Requires:** 3.3.1 or higher
 
-**Compatible up to:** 3.6.1
+**Compatible up to:** 4.6
 
 Version
 --------------------------
 
-0.4.1
+0.4.2
 
 Changelog
 --------------------------
+
+##### 0.4.2
+* Fixed deprecated constructor call
+* Fixed letter grade generation bug
+* Added utm parameters to GTmetrix links
+* Made some responsive layout tweaks
 
 ##### 0.4.1
 * Added caching to Latest News
@@ -99,7 +105,7 @@ License
 
 GTMetrix for WordPress
 
-Copyright (C) 2014 Gossamer Threads, Inc.
+Copyright (C) 2016 Gossamer Threads, Inc.
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
