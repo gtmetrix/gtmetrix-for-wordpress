@@ -1383,9 +1383,9 @@ HERE;
                     <thead>
                         <tr style="display: <?php echo $no_posts ? 'none' : 'table-row' ?>">
                             <th class="gfw-reports-url">Label/URL</th>
-                            <th class="gfw-reports-pagespeed">Page Speed</th>
+                            <th class="gfw-reports-load-time">Page Load</th>
+                            <th class="gfw-reports-pagespeed">PageSpeed</th>
                             <th class="gfw-reports-yslow">YSlow</th>
-                            <th class="gfw-reports-load-time">Page Load Time</th>
                             <th class="gfw-reports-last">Date</th>
                             <th class="gfw-reports-delete"></th>
                         </tr>
@@ -1415,12 +1415,12 @@ HERE;
                                 echo '<td>' . $report_date . '</td>';
                             } else {
                                 echo '<td title="Click to expand/collapse" class="gfw-reports-url gfw-toggle tooltip">' . $title . '</td>';
-                                echo '<td class="gfw-toggle gfw-reports-pagespeed"><div class="gfw-grade-meter gfw-grade-meter-' . $pagespeed_grade['grade'] . '" style="background-position: ' . $pagespeed_grade['position'] . '">' . $pagespeed_grade['grade'] . ' (' . $pagespeed_score . ')</div></td>';
-                                echo '<td class="gfw-toggle gfw-reports-yslow"><div class="gfw-grade-meter gfw-grade-meter-' . $yslow_grade['grade'] . '" style="background-position: ' . $yslow_grade['position'] . '">' . $yslow_grade['grade'] . ' (' . $yslow_score . ')</div></td>';
-                                echo '<td class="gfw-toggle">' . number_format( $page_load_time / 1000, 2 ) . ' seconds</td>';
-                                echo '<td class="gfw-toggle">' . $report_date . '</td>';
+                                echo '<td class="gfw-toggle">' . number_format( $page_load_time / 1000, 2 ) . 's</td>';
+                                echo '<td class="gfw-toggle gfw-reports-pagespeed"><div class="gfw-grade-meter gfw-grade-meter-' . $pagespeed_grade['grade'] . '"><span class="gfw-grade-meter-text">' . $pagespeed_grade['grade'] . ' (' . $pagespeed_score . ')</span><span class="gfw-grade-meter-bar" style="width: ' . $pagespeed_score . '%"></span></div></td>';
+                                echo '<td class="gfw-toggle gfw-reports-yslow"><div class="gfw-grade-meter gfw-grade-meter-' . $yslow_grade['grade'] . '"><span class="gfw-grade-meter-text">' . $yslow_grade['grade'] . ' (' . $yslow_score . ')</span><span class="gfw-grade-meter-bar" style="width: ' . $yslow_score . '%"></span></div></td>';
+                                echo '<td class="gfw-toggle" title="' . $report_date . '">' . $report_date . '</td>';
                             }
-                            echo '<td><a href="' . GFW_SCHEDULE . '&report_id=' . $query->post->ID . '" class="gfw-schedule-icon-small tooltip" title="Schedule tests">Schedule test</a> <a href="' . GFW_TESTS . '&delete=' . $query->post->ID . '" rel="#gfw-confirm-delete" class="gfw-delete-icon delete-report tooltip" title="Delete Report">Delete Report</a></td>';
+                            echo '<td class="gfw-action-icons"><a href="' . GFW_SCHEDULE . '&report_id=' . $query->post->ID . '" class="gfw-schedule-icon-small tooltip" title="Schedule tests">Schedule test</a> <a href="' . GFW_TESTS . '&delete=' . $query->post->ID . '" rel="#gfw-confirm-delete" class="gfw-delete-icon delete-report tooltip" title="Delete Report">Delete Report</a></td>';
                             echo '</tr>';
                         }
                         ?>
@@ -1556,8 +1556,13 @@ HERE;
 
         protected function score_to_grade( $score ) {
             $grade = array( );
-            $grade['grade'] = $score >= 50 ? '&#' . (74 - floor( $score / 10 )) . ';' : 'F';
-            $grade['position'] = '-' . (100 - $score) . 'px -' . ($score >= 50 ? (9 - floor( $score / 10 )) * 15 : 75) . 'px';
+            if ($score == 100) {
+                $grade['grade'] = 'A';
+            } else if ($score < 50) {
+                $grade['grade'] = 'F';
+            } else {
+                $grade['grade'] = '&#' . (74 - floor( $score / 10 )) . ';';
+            }
             return $grade;
         }
 

@@ -43,6 +43,9 @@ Sprites
     text-indent: -9999px;
     float: left;
     margin-left: 10px;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
 }
 
 .gfw-delete-icon {
@@ -94,6 +97,7 @@ Sprites
     padding-left: 33px;
     background: transparent url(images/sprite.png) no-repeat;
     display: inline-block;
+    white-space: nowrap;
 }
 
 .gfw-report-icon {
@@ -149,28 +153,57 @@ Report scores, grades and meters
 ------------------------------------------------------------------------------*/
 
 .gfw-grade-meter {
-    background: url(images/grade-meter.png) no-repeat scroll 0 0 #FFFFFF;
-    border: 1px solid #D1D1D1;
+    background-color: #ffffff;
+    border: 1px solid #e9e9e9;
+    color: #ffffff;
     font-size: 10px;
     height: 14px;
-    padding-right: 3px;
-    text-align: right;
-    width: 97px;
+    line-height: 14px;
+    padding-left: 4px;
+    position: relative;
+    text-align: left;
+    max-width: 97px;
 }
 
-.gfw-grade-meter-A {
-    color: #FFFFFF;
+.gfw-grade-meter-text {
+    position: relative;
+    z-index: 1;
 }
 
-.gfw-grade-meter-B,
-.gfw-grade-meter-C,
-.gfw-grade-meter-D,
-.gfw-grade-meter-E {
-    color: #636363;
+.gfw-grade-meter-bar {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    z-index: 0;
+}
+
+.gfw-grade-meter-A > .gfw-grade-meter-bar {
+    background-color: #23AB11;
+}
+
+.gfw-grade-meter-B > .gfw-grade-meter-bar {
+    background-color: #71BB30;
+}
+
+.gfw-grade-meter-C > .gfw-grade-meter-bar {
+    background-color: #CBB708;
+}
+
+.gfw-grade-meter-D > .gfw-grade-meter-bar {
+    background-color: #E29B20;
+}
+
+.gfw-grade-meter-E > .gfw-grade-meter-bar {
+    background-color: #BB4A12;
+}
+
+.gfw-grade-meter-F > .gfw-grade-meter-bar {
+    background-color: #EB393B;
 }
 
 .gfw-grade-meter-F {
-    color: #E12121;
+    color: #443333;
 }
 
 .gfw-grade-meter-na {
@@ -283,6 +316,7 @@ See http://www.alistapart.com/articles/holygrail
 
 .gfw-expansion-left img {
     margin: auto;
+    max-width: 90%;
 }
 
 .gfw-expansion table {
@@ -313,6 +347,20 @@ See http://www.alistapart.com/articles/holygrail
     width: auto;
     margin-right: 20px;
 }
+
+.gfw-expansion-right > .actions > div {
+    padding-right: 1em;
+    width: auto;
+}
+
+.gfw-expansion-right > .actions > div:last-child {
+    padding-right: 0;
+}
+
+.gfw-reports-url {
+    width: 29%;
+}
+
 
 /*------------------------------------------------------------------------------
 Dialogs
@@ -450,6 +498,7 @@ Tables
 
 .gfw-table {
     border-collapse: collapse;
+    table-layout: fixed;
     width: 100%;
 }
 
@@ -458,15 +507,12 @@ Tables
 }
 
 .gfw-table th {
-    white-space: nowrap;
-}
-
-.gfw-table th {
     color: #6397CB;
     padding-top: 0;
     text-align: left;
     text-transform: uppercase;
     font-weight: bold;
+    white-space: nowrap;
 }
 
 .gfw-table td,
