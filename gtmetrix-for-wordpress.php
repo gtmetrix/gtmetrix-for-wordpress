@@ -1410,15 +1410,15 @@ HERE;
                             echo '<tr class="' . ($row_number++ % 2 ? 'even' : 'odd') . '" id="post-' . $query->post->ID . '">';
 
                             if ( isset( $gtmetrix_error ) ) {
-                                echo '<td class="gfw-reports-url">' . $title . '</td>';
-                                echo '<td class="reports-error" colspan="3">' . $this->translate_message( $gtmetrix_error ) . '</td>';
-                                echo '<td>' . $report_date . '</td>';
+                                echo '<td data-th="Error" class="gfw-reports-url">' . $title . '</td>';
+                                echo '<td data-th="Message" class="reports-error" colspan="3">' . $this->translate_message( $gtmetrix_error ) . '</td>';
+                                echo '<td data-th="Date">' . $report_date . '</td>';
                             } else {
-                                echo '<td title="Click to expand/collapse" class="gfw-reports-url gfw-toggle tooltip">' . $title . '</td>';
-                                echo '<td class="gfw-toggle">' . number_format( $page_load_time / 1000, 2 ) . 's</td>';
-                                echo '<td class="gfw-toggle gfw-reports-pagespeed"><div class="gfw-grade-meter gfw-grade-meter-' . $pagespeed_grade['grade'] . '"><span class="gfw-grade-meter-text">' . $pagespeed_grade['grade'] . ' (' . $pagespeed_score . ')</span><span class="gfw-grade-meter-bar" style="width: ' . $pagespeed_score . '%"></span></div></td>';
-                                echo '<td class="gfw-toggle gfw-reports-yslow"><div class="gfw-grade-meter gfw-grade-meter-' . $yslow_grade['grade'] . '"><span class="gfw-grade-meter-text">' . $yslow_grade['grade'] . ' (' . $yslow_score . ')</span><span class="gfw-grade-meter-bar" style="width: ' . $yslow_score . '%"></span></div></td>';
-                                echo '<td class="gfw-toggle" title="' . $report_date . '">' . $report_date . '</td>';
+                                echo '<td data-th="Label/URL" title="Click to expand/collapse" class="gfw-reports-url gfw-toggle tooltip">' . $title . '</td>';
+                                echo '<td data-th="Page Load" class="gfw-toggle">' . number_format( $page_load_time / 1000, 2 ) . 's</td>';
+                                echo '<td data-th="PageSpeed" class="gfw-toggle gfw-reports-pagespeed"><div class="gfw-grade-meter gfw-grade-meter-' . $pagespeed_grade['grade'] . '"><span class="gfw-grade-meter-text">' . $pagespeed_grade['grade'] . ' (' . $pagespeed_score . ')</span><span class="gfw-grade-meter-bar" style="width: ' . $pagespeed_score . '%"></span></div></td>';
+                                echo '<td data-th="YSlow" class="gfw-toggle gfw-reports-yslow"><div class="gfw-grade-meter gfw-grade-meter-' . $yslow_grade['grade'] . '"><span class="gfw-grade-meter-text">' . $yslow_grade['grade'] . ' (' . $yslow_score . ')</span><span class="gfw-grade-meter-bar" style="width: ' . $yslow_score . '%"></span></div></td>';
+                                echo '<td data-th="Date" class="gfw-toggle" title="' . $report_date . '">' . $report_date . '</td>';
                             }
                             echo '<td class="gfw-action-icons"><a href="' . GFW_SCHEDULE . '&report_id=' . $query->post->ID . '" class="gfw-schedule-icon-small tooltip" title="Schedule tests">Schedule test</a> <a href="' . GFW_TESTS . '&delete=' . $query->post->ID . '" rel="#gfw-confirm-delete" class="gfw-delete-icon delete-report tooltip" title="Delete Report">Delete Report</a></td>';
                             echo '</tr>';

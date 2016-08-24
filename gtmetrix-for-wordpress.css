@@ -512,12 +512,14 @@ Tables
     text-align: left;
     text-transform: uppercase;
     font-weight: bold;
-    white-space: nowrap;
 }
 
 .gfw-table td,
 .gfw-table th {
+    overflow: hidden;
     padding: 6px 10px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .gfw-table .odd {
@@ -538,4 +540,57 @@ Tables
 
 .gfw-failed {
     color: #ff0000;
+}
+
+/*------------------------------------------------------------------------------
+Responsive layout tweaks
+------------------------------------------------------------------------------*/
+
+@media screen and (max-width: 850px) {
+    .gfw .inner-sidebar {
+        float: none;
+        width: auto;
+    }
+
+    .gfw .inner-sidebar #side-sortables {
+        min-height: auto;
+        width: auto;
+    }
+
+    .gfw .has-right-sidebar #post-body-content {
+        margin-right: 0;
+    }
+}
+
+@media screen and (max-width: 540px) {
+    .gfw-table > thead > tr > th {
+        display: none;
+    }
+
+    .gfw-table td {
+        display: block;
+        width: auto;
+    }
+
+    .gfw-table td:before {
+        content: attr(data-th);
+        display: inline-block;
+        font-weight: bold;
+        margin-right: 0.5em;
+        text-transform: uppercase;
+    }
+
+    .gfw-table .gfw-grade-meter {
+        display: inline-block;
+        width: 97px;
+    }
+
+    .gfw-expansion {
+        padding: 0 0 16px;
+    }
+
+    /* Hide screenshot */
+    .gfw-expansion-left {
+        display: none;
+    }
 }
