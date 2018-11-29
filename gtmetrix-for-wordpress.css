@@ -218,10 +218,10 @@ Report scores, grades and meters
     background-color: transparent;
     display: inline;
     float: right;
-    height: 69px;
     margin: 0 15px 0 0;
     text-indent: -9999em;
-    width: 56px;
+    width: 68px;
+    height: 69px;
     font-size: 16px;
     letter-spacing: -1px;
     padding: 0;
@@ -233,23 +233,23 @@ Report scores, grades and meters
 }
 
 .gfw-report-grade-B .gfw-report-grade {
-    background-position: -70px 0;
+    background-position: -82px 0;
 }
 
 .gfw-report-grade-C .gfw-report-grade {
-    background-position: -140px 0;
+    background-position: -153px 0;
 }
 
 .gfw-report-grade-D .gfw-report-grade {
-    background-position: -210px 0;
+    background-position: -224px 0;
 }
 
 .gfw-report-grade-E .gfw-report-grade {
-    background-position: -280px 0;
+    background-position: -298px 0;
 }
 
 .gfw-report-grade-F .gfw-report-grade {
-    background-position: -350px 0;
+    background-position: -364px 0;
 }
 
 .gfw-report-grade-A .gfw-report-score {

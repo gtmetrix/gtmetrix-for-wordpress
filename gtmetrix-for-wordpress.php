@@ -932,7 +932,7 @@ HERE;
                         <td><?php echo size_format( $custom_fields['html_bytes'][0], 1 ); ?></td>
                     </tr>
                     <tr>
-                        <th>No. of page elements:</th>
+                        <th>Requests:</th>
                         <td><?php echo $custom_fields['page_elements'][0]; ?></td>
                         <th>HTML load time:</th>
                         <td><?php echo number_format( $custom_fields['html_load_time'][0] / 1000, 2 ); ?> seconds</td>
@@ -1141,7 +1141,13 @@ HERE;
                 $query->next_post();
                 $custom_fields = get_post_custom( $query->post->ID );
 
-                $loaded_time = isset( $custom_fields['fully_loaded_time'][0] ) ? $custom_fields['fully_loaded_time'][0] : $custom_fields['page_load_time'][0];
+                $loaded_time = $custom_fields['page_load_time'][0];
+                $loaded_time_text = "Onload time";
+                if (isset($custom_fields['fully_loaded_time'][0])) {
+                    $loaded_time = $custom_fields['fully_loaded_time'][0];
+                    $loaded_time_text = "Fully loaded time";
+                }
+
                 $pagespeed_grade = $this->score_to_grade( $custom_fields['pagespeed_score'][0] );
                 $yslow_grade = $this->score_to_grade( $custom_fields['yslow_score'][0] );
                 $expired = true;
@@ -1166,7 +1172,7 @@ HERE;
                             <span class="gfw-report-score">(<?php echo $custom_fields['yslow_score'][0]; ?>%)</span>
                         </div>
                         <div class="gfw-latest-report-details">
-                            <b>Page load time:</b> <?php echo number_format( $loaded_time / 1000, 2 ); ?> seconds<br />
+                            <b><?php echo $loaded_time_text; ?>:</b> <?php echo number_format( $loaded_time / 1000, 2 ); ?> seconds<br />
                             <b>Total page size:</b> <?php echo size_format( $custom_fields['page_bytes'][0], 2 ); ?><br />
                             <b>Total number of requests:</b> <?php echo $custom_fields['page_elements'][0]; ?><br />
                         </div>
