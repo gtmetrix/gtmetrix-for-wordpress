@@ -186,7 +186,7 @@ class GTmetrix_For_WordPress {
                                     if ( $report[$key] < $value ) {
                                         $pagespeed_grade_condition = $this->score_to_grade( $value );
                                         $pagespeed_grade = $this->score_to_grade( $report[$key] );
-                                        $email_content[] = '<p>The Page Speed grade has fallen below ' . $pagespeed_grade_condition['grade'] . '.</p><p><span style="font-size:12px; color:#666666; font-style:italic">The URL is currently scoring ' . $pagespeed_grade['grade'] . ' (' . $report[$key] . '%).</p>';
+                                        $email_content[] = '<p>The PageSpeed grade has fallen below ' . $pagespeed_grade_condition['grade'] . '.</p><p><span style="font-size:12px; color:#666666; font-style:italic">The URL is currently scoring ' . $pagespeed_grade['grade'] . ' (' . $report[$key] . '%).</p>';
                                     }
                                     break;
                                 case 'yslow_score':
@@ -793,6 +793,7 @@ HERE;
         if ( !isset( $data['error'] ) ) {
             update_post_meta( $post_id, 'gtmetrix_test_id', $data['test_id'] );
             update_post_meta( $post_id, 'page_load_time', $data['page_load_time'] );
+            update_post_meta( $post_id, 'fully_loaded_time', $data['fully_loaded_time'] );
             update_post_meta( $post_id, 'html_bytes', $data['html_bytes'] );
             update_post_meta( $post_id, 'page_elements', $data['page_elements'] );
             update_post_meta( $post_id, 'report_url', $data['report_url'] );
@@ -899,6 +900,14 @@ HERE;
         if ( $report_id ) {
             $report = get_post( $report_id );
             $custom_fields = get_post_custom( $report->ID );
+
+            $loaded_time = $custom_fields['page_load_time'][0];
+            $loaded_time_text = "Onload time";
+            if (isset($custom_fields['fully_loaded_time'][0])) {
+                $loaded_time = $custom_fields['fully_loaded_time'][0];
+                $loaded_time_text = "Fully loaded time";
+            }
+
             $options = get_option( 'gfw_options' );
             $expired = ($this->gtmetrix_file_exists( $custom_fields['report_url'][0] . '/screenshot.jpg' ) ? false : true);
             ?>
@@ -911,14 +920,14 @@ HERE;
             <div>
                 <table>
                     <tr>
-                        <th>Page Speed score:</th>
+                        <th>PageSpeed score:</th>
                         <td><?php echo $custom_fields['pagespeed_score'][0]; ?></td>
                         <th>YSlow score:</th>
                         <td><?php echo $custom_fields['yslow_score'][0]; ?></td>
                     </tr>
                     <tr>
-                        <th>Page load time:</th>
-                        <td><?php echo number_format( $custom_fields['page_load_time'][0] / 1000, 2 ); ?> seconds</td>
+                        <th><?php echo $loaded_time_text; ?>:</th>
+                       <td><?php echo number_format( $loaded_time / 1000, 2 ); ?> seconds</td>
                         <th>Total HTML size:</th>
                         <td><?php echo size_format( $custom_fields['html_bytes'][0], 1 ); ?></td>
                     </tr>
@@ -939,7 +948,7 @@ HERE;
             <?php
             if ( 'gfw_event' == $post->post_type ) {
                 echo '<div class="graphs">';
-                echo '<div><a href="' . $_POST['id'] . '" class="gfw-open-graph gfw-scores-graph" id="gfw-scores-graph">Page Speed and YSlow scores graph</a></div>';
+                echo '<div><a href="' . $_POST['id'] . '" class="gfw-open-graph gfw-scores-graph" id="gfw-scores-graph">PageSpeed and YSlow scores graph</a></div>';
                 echo '<div><a href="' . $_POST['id'] . '" class="gfw-open-graph gfw-times-graph" id="gfw-times-graph">Page load times graph</a></div>';
                 echo '<div><a href="' . $_POST['id'] . '" class="gfw-open-graph gfw-sizes-graph" id="gfw-sizes-graph">Page sizes graph</a></div>';
                 echo '</div>';
@@ -1131,6 +1140,8 @@ HERE;
             while ( $query->have_posts() ) {
                 $query->next_post();
                 $custom_fields = get_post_custom( $query->post->ID );
+
+                $loaded_time = isset( $custom_fields['fully_loaded_time'][0] ) ? $custom_fields['fully_loaded_time'][0] : $custom_fields['page_load_time'][0];
                 $pagespeed_grade = $this->score_to_grade( $custom_fields['pagespeed_score'][0] );
                 $yslow_grade = $this->score_to_grade( $custom_fields['yslow_score'][0] );
                 $expired = true;
@@ -1146,7 +1157,7 @@ HERE;
                     <div class="gfw-box gfw-latest-report">
                         <div class="gfw-latest-report-pagespeed gfw-report-grade-<?php echo $pagespeed_grade['grade']; ?>">
                             <span class="gfw-report-grade"><?php echo $pagespeed_grade['grade']; ?></span>
-                            <span class="gfw-report-title">Page Speed:</span><br>
+                            <span class="gfw-report-title">PageSpeed:</span><br>
                             <span class="gfw-report-score">(<?php echo $custom_fields['pagespeed_score'][0]; ?>%)</span>
                         </div>
                         <div class="gfw-latest-report-yslow gfw-report-grade-<?php echo $yslow_grade['grade']; ?>">
@@ -1155,7 +1166,7 @@ HERE;
                             <span class="gfw-report-score">(<?php echo $custom_fields['yslow_score'][0]; ?>%)</span>
                         </div>
                         <div class="gfw-latest-report-details">
-                            <b>Page load time:</b> <?php echo number_format( $custom_fields['page_load_time'][0] / 1000, 2 ); ?> seconds<br />
+                            <b>Page load time:</b> <?php echo number_format( $loaded_time / 1000, 2 ); ?> seconds<br />
                             <b>Total page size:</b> <?php echo size_format( $custom_fields['page_bytes'][0], 2 ); ?><br />
                             <b>Total number of requests:</b> <?php echo $custom_fields['page_elements'][0]; ?><br />
                         </div>
@@ -1203,7 +1214,7 @@ HERE;
                         <span class="description">Optionally enter a label for your report</span></td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row">Locations<a class="gfw-help-icon tooltip" href="#" title="Analyze the performance of the page from one of our several test regions.  Your Page Speed and YSlow scores usually stay roughly the same, but Page Load times and Waterfall should be different. Use this to see how latency affects your page load times from different parts of the world."></a></th>
+                    <th scope="row">Locations<a class="gfw-help-icon tooltip" href="#" title="Analyze the performance of the page from one of our several test regions.  Your PageSpeed and YSlow scores usually stay roughly the same, but Page Load times and Waterfall should be different. Use this to see how latency affects your page load times from different parts of the world."></a></th>
                     <td><select name="gfw_location" id="gfw_location">
                             <?php
                             foreach ( $options['locations'] as $location ) {
@@ -1299,7 +1310,7 @@ HERE;
                         <td><select name="gfw_condition[<?php echo $i; ?>]" class="gfw-condition"<?php echo $disabled; ?>>
                                 <?php
                                 $conditions = array(
-                                    'pagespeed_score' => 'Page Speed score is less than ',
+                                    'pagespeed_score' => 'PageSpeed score is less than ',
                                     'yslow_score' => 'YSlow score is less than ',
                                     'page_load_time' => 'Page load time is greater than ',
                                     'page_bytes' => 'Page size is greater than '

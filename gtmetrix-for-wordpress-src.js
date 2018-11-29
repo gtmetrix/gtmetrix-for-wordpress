@@ -167,7 +167,7 @@ jQuery(function ($) {
 
                 switch (graph) {
                     case 'gfw-scores-graph':
-                        graphTitle = 'Page Speed and YSlow Scores';
+                        graphTitle = 'PageSpeed and YSlow Scores';
                         options.yaxis = {
                             ticks: 5,
                             min: 0,
