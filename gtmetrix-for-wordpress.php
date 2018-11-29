@@ -1174,7 +1174,7 @@ HERE;
                         <div class="gfw-latest-report-details">
                             <b><?php echo $loaded_time_text; ?>:</b> <?php echo number_format( $loaded_time / 1000, 2 ); ?> seconds<br />
                             <b>Total page size:</b> <?php echo size_format( $custom_fields['page_bytes'][0], 2 ); ?><br />
-                            <b>Total number of requests:</b> <?php echo $custom_fields['page_elements'][0]; ?><br />
+                            <b>Requests:</b> <?php echo $custom_fields['page_elements'][0]; ?><br />
                         </div>
                     </div>
                     <p>

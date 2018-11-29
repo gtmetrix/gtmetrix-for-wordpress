@@ -249,7 +249,7 @@ Report scores, grades and meters
 }
 
 .gfw-report-grade-F .gfw-report-grade {
-    background-position: -364px 0;
+    background-position: -358px 0;
 }
 
 .gfw-report-grade-A .gfw-report-score {
@@ -438,7 +438,7 @@ Latest Report
 .gfw-latest-report-details {
     border-right: 1px solid #E4E4E4;
     float: left;
-    margin-right: 15px;
+    margin: 0 3px;
     min-width: 170px;
 }
 
