@@ -443,12 +443,12 @@ HERE;
         if ( GFW_AUTHORIZED ) {
             add_meta_box( 'gfw-credits-meta-box', 'API Credits', array( &$this, 'credits_meta_box' ), $this->tests_page_hook, 'side', 'core' );
             add_meta_box( 'gfw-credits-meta-box', 'API Credits', array( &$this, 'credits_meta_box' ), $this->schedule_page_hook, 'side', 'core' );
-            add_meta_box( 'gfw-hosting-meta-box', 'Still Slow?', array( &$this, 'hosting_meta_box' ), $this->tests_page_hook, 'side', 'core' );
-            add_meta_box( 'gfw-hosting-meta-box', 'Still Slow?', array( &$this, 'hosting_meta_box' ), $this->schedule_page_hook, 'side', 'core' );
+            add_meta_box( 'gfw-optimization-meta-box', 'Need optimization help?', array( &$this, 'optimization_meta_box' ), $this->tests_page_hook, 'side', 'core' );
+            add_meta_box( 'gfw-optimization-meta-box', 'Need optimization help?', array( &$this, 'optimization_meta_box' ), $this->schedule_page_hook, 'side', 'core' );
             add_meta_box( 'gfw-news-meta-box', 'Latest News', array( &$this, 'news_meta_box' ), $this->tests_page_hook, 'side', 'core' );
             add_meta_box( 'gfw-news-meta-box', 'Latest News', array( &$this, 'news_meta_box' ), $this->schedule_page_hook, 'side', 'core' );
         }
-        add_meta_box( 'gfw-hosting-meta-box', 'Still Slow?', array( &$this, 'hosting_meta_box' ), $this->settings_page_hook, 'side', 'core' );
+        add_meta_box( 'gfw-optimization-meta-box', 'Need optimization help?', array( &$this, 'optimization_meta_box' ), $this->settings_page_hook, 'side', 'core' );
         add_meta_box( 'gfw-news-meta-box', 'Latest News', array( &$this, 'news_meta_box' ), $this->settings_page_hook, 'side', 'core' );
 
         if ( method_exists( $screen, 'add_help_tab' ) ) {
@@ -1080,12 +1080,10 @@ HERE;
         <?php
     }
 
-    public function hosting_meta_box() {
+    public function optimization_meta_box() {
         ?>
-        <p style="font-weight:bold">It might be your hosting.</p>
-        <p>There are two sides to page speed: front-end and server-side. An optimized server-side is crucial to a fast loading site.</p>
-        <p><a href="https://gtmetrix.com/wordpress-optimization-guide.html<?php echo GFW_GA_CAMPAIGN ?>" target="_blank">Learn more about why your page is slow &raquo;</a></p>
-        <a href="https://gt.net/applications/wordpress.html" target="_blank" class="button-secondary">Get WordPress Optimized Hosting</a>
+        <p>Have a look at our WordPress Optimization Guide <a target="_blank" href="https://gtmetrix.com/wordpress-optimization-guide.html">WordPress Optimization Guide</a>.</p>
+        <p>You can also <a target="_blank" href="https://gtmetrix.com/contact.html?type=optimization-request">contact us</a> for optimization help and we'll put you in the right direction towards a faster website.</p>
         <?php
     }
 
