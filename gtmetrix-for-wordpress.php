@@ -251,7 +251,7 @@ HERE;
                 <tr>
                     <td>
                         <hr style="border:0; border-top:1px solid #d7d7d7; height: 0;" />
-                        <p style="font-size:11px; color:#8a8a8a; line-height:100%;">This email was sent to you by the GTmetrix for WordPress plugin. You can opt out of further notifications by modifying the plugin's <a href="$settings">settings</a> on your WordPress installation.</p>
+                        <p style="font-size:11px; color:#8a8a8a; line-height:100%;">This email was sent to you by the GTmetrix for WordPress plugin. You can opt out of further alerts by modifying the plugin's <a href="$settings">settings</a> on your WordPress installation.</p>
                     </td>
                 </tr>
                 <tr>
@@ -323,7 +323,7 @@ HERE;
             add_settings_field( 'toolbar_link', 'Show GTmetrix on Toolbar', array( &$this, 'set_toolbar_link' ), 'gfw_settings', 'options_section' );
             add_settings_field( 'default_adblock', 'Default Adblock status', array( &$this, 'set_default_adblock' ), 'gfw_settings', 'options_section' );
             add_settings_field( 'default_location', 'Default location', array( &$this, 'set_default_location' ), 'gfw_settings', 'options_section' );
-            add_settings_field( 'notifications_email', 'Notifications Email', array( &$this, 'set_notifications_email' ), 'gfw_settings', 'options_section' );
+            add_settings_field( 'notifications_email', 'Alerts Email', array( &$this, 'set_notifications_email' ), 'gfw_settings', 'options_section' );
             add_settings_field( 'front_url', 'Front page URL', array( &$this, 'set_front_url' ), 'gfw_settings', 'options_section' );
             add_settings_section( 'widget_section', '', array( &$this, 'section_text' ), 'gfw_settings' );
             add_settings_field( 'widget_pagespeed', 'Show PageSpeed grade', array( &$this, 'set_widget_pagespeed' ), 'gfw_settings', 'widget_section' );
@@ -1286,9 +1286,9 @@ HERE;
                 }
                 ?>
                 <tr valign="top">
-                    <th scope="row"><label for="gfw-notifications">Enable notifications</label></th>
+                    <th scope="row"><label for="gfw-notifications">Enable alerts</label></th>
                     <td><input type="checkbox" id="gfw-notifications" value="1" <?php checked( $notifications_count > 0 ); ?> /><br />
-                        <span class="description">If you'd like to be notified by email when poor test results are returned, click Enable notifications above</span></td>
+                        <span class="description">If you'd like to be notified by email when poor test results are returned, click Enable alerts above</span></td>
                 </tr>
 
                 <?php
@@ -1468,7 +1468,7 @@ HERE;
                         <tr style="display: <?php echo $no_posts ? 'none' : 'table-row' ?>">
                             <th>Label/URL</th>
                             <th>Frequency</th>
-                            <th>Notifications status</th>
+                            <th>Alerts</th>
                             <th>Last Report</th>
                             <th>Next Report</th>
                             <th></th>
