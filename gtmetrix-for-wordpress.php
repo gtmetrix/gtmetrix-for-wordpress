@@ -3,7 +3,7 @@
   Plugin Name: GTmetrix for WordPress
   Plugin URI: https://gtmetrix.com/gtmetrix-for-wordpress-plugin.html
   Description: GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
-  Version: 0.4.2
+  Version: 0.4.3
   Author: GTmetrix
   Author URI: https://gtmetrix.com/
 
