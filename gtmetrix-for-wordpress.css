@@ -373,7 +373,7 @@ Dialogs
 }
 
 #gfw-screenshot {
-    background: url('images/loading-screenshot.png') no-repeat center center transparent;
+    background: url('images/loading.gif') no-repeat center center transparent;
     border: 2px solid #E4E4E4;
     border-radius: 8px 8px 8px 8px;
     height: 225px;

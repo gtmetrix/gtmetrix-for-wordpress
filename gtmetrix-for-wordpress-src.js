@@ -61,7 +61,7 @@ jQuery(function ($) {
 
     $('#gfw-parameters').submit(function(event) {
         event.preventDefault();
-        $('#gfw-screenshot').css('background-image','url(../wp-content/plugins/gtmetrix-for-wordpress/images/loading-screenshot.png)');
+        $('#gfw-screenshot').css('background-image','url(../wp-content/plugins/gtmetrix-for-wordpress/images/loading.gif)');
         $('#gfw-screenshot .gfw-message').text('').hide();
         $('#gfw-scanner').show();
         $( '#gfw-scan' ).dialog( 'open' );
