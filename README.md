@@ -24,7 +24,7 @@ Requirements
 
 **Requires:** 3.3.1 or higher
 
-**Compatible up to:** 4.9.8
+**Compatible up to:** 5.0
 
 Version
 --------------------------
