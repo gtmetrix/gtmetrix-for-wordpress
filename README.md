@@ -24,15 +24,18 @@ Requirements
 
 **Requires:** 3.3.1 or higher
 
-**Compatible up to:** 5.0
+**Compatible up to:** 5.2
 
 Version
 --------------------------
 
-0.4.3
+0.4.4
 
 Changelog
 --------------------------
+
+##### 0.4.4
+* Fixed compatibility issues with other plugins using the Services_WTF_Test class
 
 ##### 0.4.3
 * Updated icons and letter grade images

@@ -715,7 +715,9 @@ HERE;
             }
         } else {
 
-            require_once('lib/Services_WTF_Test.php');
+            if ( !class_exists( 'Services_WTF_Test' ) ) {
+                require_once('lib/Services_WTF_Test.php');
+            }
             $test = new Services_WTF_Test();
             $test->api_username( $valid['api_username'] );
             $test->api_password( $valid['api_key'] );
@@ -1051,7 +1053,10 @@ HERE;
 
     protected function api() {
         $options = get_option( 'gfw_options' );
-        require_once('lib/Services_WTF_Test.php');
+
+        if ( !class_exists( 'Services_WTF_Test' ) ) {
+            require_once('lib/Services_WTF_Test.php');
+        }
         $api = new Services_WTF_Test();
         $api->api_username( $options['api_username'] );
         $api->api_password( $options['api_key'] );

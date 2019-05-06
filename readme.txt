@@ -2,8 +2,8 @@
 Contributors: GTmetrix
 Tags: analytics, gtmetrix, monitoring, optimization, page speed, performance, speed, statistics, yslow
 Requires at least: 3.3.1
-Tested up to: 5.0
-Stable tag: 0.4.3
+Tested up to: 5.2
+Stable tag: 0.4.4
 
 GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
 
@@ -41,6 +41,9 @@ GTmetrix for WordPress creates a new capability called access_gtmetrix. Using a 
 4. Video Analysis
 
 == Changelog ==
+
+= 0.4.4 =
+* Fixed compatibility issues with other plugins using the Services_WTF_Test class
 
 = 0.4.3 =
 * Updated icons and letter grade images
