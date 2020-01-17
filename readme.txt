@@ -33,6 +33,12 @@ You can purchase more API credits under the [GTmetrix PRO](https://gtmetrix.com/
 
 GTmetrix for WordPress creates a new capability called access_gtmetrix. Using a plugin such as [Members](http://wordpress.org/extend/plugins/members/) or [User Role Editor](http://wordpress.org/extend/plugins/user-role-editor/), you can assign this capability to any role.
 
+= Async JavaScript Problems? =
+
+The Async JavaScript plugin is not written by or affiliated with GTmetrix. It does use our API to generate GTmetrix reports however.
+
+If you're running into issues with this plugin, please reach out for support on their forum: https://wordpress.org/support/plugin/async-javascript/
+
 == Screenshots ==
 
 1. Dashboard Widget
