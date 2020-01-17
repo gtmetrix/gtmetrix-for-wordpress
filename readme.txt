@@ -37,7 +37,7 @@ GTmetrix for WordPress creates a new capability called access_gtmetrix. Using a 
 
 The Async JavaScript plugin is not written by or affiliated with GTmetrix. It does use our API to generate GTmetrix reports however.
 
-If you're running into issues with this plugin, please reach out for support on their forum: https://wordpress.org/support/plugin/async-javascript/
+If you're running into issues with this plugin, please reach out for support on their [forum](https://wordpress.org/support/plugin/async-javascript/).
 
 == Screenshots ==
 
