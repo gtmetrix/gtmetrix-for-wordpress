@@ -315,22 +315,16 @@ HERE;
     public function register_settings() {
         register_setting( 'gfw_options_group', 'gfw_options', array( &$this, 'sanitize_settings' ) );
         add_settings_section( 'authentication_section', '', array( &$this, 'section_text' ), 'gfw_settings' );
-        add_settings_field( 'api_username', 'GTmetrix Account Email', array( &$this, 'set_api_username' ), 'gfw_settings', 'authentication_section' );
+        add_settings_field( 'api_username', 'GTmetrix Account E-mail', array( &$this, 'set_api_username' ), 'gfw_settings', 'authentication_section' );
         add_settings_field( 'api_key', 'API Key', array( &$this, 'set_api_key' ), 'gfw_settings', 'authentication_section' );
         if ( GFW_AUTHORIZED ) {
             add_settings_section( 'options_section', '', array( &$this, 'section_text' ), 'gfw_settings' );
-            add_settings_field( 'dashboard_widget', 'Show dashboard widget', array( &$this, 'set_dashboard_widget' ), 'gfw_settings', 'options_section' );
-            add_settings_field( 'toolbar_link', 'Show GTmetrix on Toolbar', array( &$this, 'set_toolbar_link' ), 'gfw_settings', 'options_section' );
+            add_settings_field( 'dashboard_widget', 'Show Dashboard widget', array( &$this, 'set_dashboard_widget' ), 'gfw_settings', 'options_section' );
+            add_settings_field( 'toolbar_link', 'Show "GTmetrix" on Admin Toolbar', array( &$this, 'set_toolbar_link' ), 'gfw_settings', 'options_section' );
             add_settings_field( 'default_adblock', 'Default Adblock status', array( &$this, 'set_default_adblock' ), 'gfw_settings', 'options_section' );
             add_settings_field( 'default_location', 'Default location', array( &$this, 'set_default_location' ), 'gfw_settings', 'options_section' );
-            add_settings_field( 'notifications_email', 'Alerts Email', array( &$this, 'set_notifications_email' ), 'gfw_settings', 'options_section' );
+            add_settings_field( 'notifications_email', 'E-mail to send Alerts to', array( &$this, 'set_notifications_email' ), 'gfw_settings', 'options_section' );
             add_settings_field( 'front_url', 'Front page URL', array( &$this, 'set_front_url' ), 'gfw_settings', 'options_section' );
-            add_settings_section( 'widget_section', '', array( &$this, 'section_text' ), 'gfw_settings' );
-            add_settings_field( 'widget_pagespeed', 'Show PageSpeed grade', array( &$this, 'set_widget_pagespeed' ), 'gfw_settings', 'widget_section' );
-            add_settings_field( 'widget_yslow', 'Show YSlow grade', array( &$this, 'set_widget_yslow' ), 'gfw_settings', 'widget_section' );
-            add_settings_field( 'widget_scores', 'Show scores (percentages)', array( &$this, 'set_widget_scores' ), 'gfw_settings', 'widget_section' );
-            add_settings_field( 'widget_link', 'Show link to GTmetrix', array( &$this, 'set_widget_link' ), 'gfw_settings', 'widget_section' );
-            add_settings_field( 'widget_css', 'Use GTmetrix CSS', array( &$this, 'set_widget_css' ), 'gfw_settings', 'widget_section' );
             add_settings_section( 'reset_section', '', array( &$this, 'section_text' ), 'gfw_settings' );
             add_settings_field( 'reset', 'Reset', array( &$this, 'set_reset' ), 'gfw_settings', 'reset_section' );
         }
@@ -375,6 +369,7 @@ HERE;
         $options['toolbar_link'] = isset( $options['toolbar_link'] ) ? $options['toolbar_link'] : 0;
         echo '<input type="hidden" name="gfw_options[toolbar_link]" value="0" />';
         echo '<input type="checkbox" name="gfw_options[toolbar_link]" id="toolbar_link" value="1" ' . checked( $options['toolbar_link'], 1, false ) . ' />';
+        echo '</select><br /><span class="description">Test pages when logged in as admin from your WordPress Admin Toolbar</p>';
     }
 
     public function set_default_adblock() {
@@ -393,38 +388,8 @@ HERE;
     }
 
     public function set_reset() {
-        echo '<p class="description">This will flush all GTmetrix records from the WordPress database!</p>';
+        echo '<p class="description">This will flush all GTmetrix records from the WordPress database and cannot be undone</p>';
         echo '<input type="button" value="Reset" class="button-primary" id="gfw-reset" />';
-    }
-
-    public function set_widget_pagespeed() {
-        $options = get_option( 'gfw_options' );
-        echo '<input type="hidden" name="gfw_options[widget_pagespeed]" value="0" />';
-        echo '<input type="checkbox" name="gfw_options[widget_pagespeed]" id="widget_pagespeed" value="1" ' . checked( $options['widget_pagespeed'], 1, false ) . ' />';
-    }
-
-    public function set_widget_yslow() {
-        $options = get_option( 'gfw_options' );
-        echo '<input type="hidden" name="gfw_options[widget_yslow]" value="0" />';
-        echo '<input type="checkbox" name="gfw_options[widget_yslow]" id="widget_yslow" value="1" ' . checked( $options['widget_yslow'], 1, false ) . ' />';
-    }
-
-    public function set_widget_scores() {
-        $options = get_option( 'gfw_options' );
-        echo '<input type="hidden" name="gfw_options[widget_scores]" value="0" />';
-        echo '<input type="checkbox" name="gfw_options[widget_scores]" id="widget_scores" value="1" ' . checked( $options['widget_scores'], 1, false ) . ' />';
-    }
-
-    public function set_widget_link() {
-        $options = get_option( 'gfw_options' );
-        echo '<input type="hidden" name="gfw_options[widget_link]" value="0" />';
-        echo '<input type="checkbox" name="gfw_options[widget_link]" id="widget_link" value="1" ' . checked( $options['widget_link'], 1, false ) . ' />';
-    }
-
-    public function set_widget_css() {
-        $options = get_option( 'gfw_options' );
-        echo '<input type="hidden" name="gfw_options[widget_css]" value="0" />';
-        echo '<input type="checkbox" name="gfw_options[widget_css]" id="widget_css" value="1" ' . checked( $options['widget_css'], 1, false ) . ' />';
     }
 
     public function section_text() {
@@ -673,7 +638,6 @@ HERE;
         add_meta_box( 'authenticate-meta-box', 'Authentication', array( &$this, 'authenticate_meta_box' ), $this->settings_page_hook, 'normal', 'core' );
         if ( GFW_AUTHORIZED ) {
             add_meta_box( 'options-meta-box', 'Options', array( &$this, 'options_meta_box' ), $this->settings_page_hook, 'normal', 'core' );
-            add_meta_box( 'widget-meta-box', 'Widget', array( &$this, 'widget_meta_box' ), $this->settings_page_hook, 'normal', 'core' );
             add_meta_box( 'reset-meta-box', 'Reset', array( &$this, 'reset_meta_box' ), $this->settings_page_hook, 'normal', 'core' );
         }
         ?>
@@ -1315,7 +1279,7 @@ HERE;
                     }
                     ?>
                     <tr valign="top" class="gfw-conditions gfw-conditions-<?php echo $i; ?>"<?php echo $condition_status; ?>>
-                        <th scope="row"><?php echo $i ? 'or' : 'Email admin when'; ?></th>
+                        <th scope="row"><?php echo $i ? 'or' : 'Alert admin when'; ?></th>
                         <td><select name="gfw_condition[<?php echo $i; ?>]" class="gfw-condition"<?php echo $disabled; ?>>
                                 <?php
                                 $conditions = array(
