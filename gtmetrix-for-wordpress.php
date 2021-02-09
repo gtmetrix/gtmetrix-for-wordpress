@@ -3,7 +3,7 @@
   Plugin Name: GTmetrix for WordPress
   Plugin URI: https://gtmetrix.com/gtmetrix-for-wordpress-plugin.html
   Description: GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
-  Version: 0.4.4
+  Version: 0.4.5
   Author: GTmetrix
   Author URI: https://gtmetrix.com/
 
@@ -278,7 +278,7 @@ HERE;
     public function add_dashboard_widget() {
         $options = get_option( 'gfw_options' );
         if ( isset( $options['dashboard_widget'] ) && $options['dashboard_widget'] && GFW_AUTHORIZED && current_user_can( 'access_gtmetrix' ) ) {
-            wp_add_dashboard_widget( 'gfw_dashboard_widget', 'GTmetrix for WordPress Latest Front Page Score', array( &$this, 'dashboard_widget' ) );
+            wp_add_dashboard_widget( 'gfw_dashboard_widget', 'Latest Front Page GTmetrix Results', array( &$this, 'dashboard_widget' ) );
         }
     }
 
@@ -290,7 +290,7 @@ HERE;
         if ( GFW_AUTHORIZED ) {
             add_menu_page( 'GTmetrix', 'GTmetrix', 'access_gtmetrix', 'gfw_tests', array( $this, 'tests_page' ), 'none' );
             $this->tests_page_hook = add_submenu_page( 'gfw_tests', 'Tests', 'Tests', 'access_gtmetrix', 'gfw_tests', array( $this, 'tests_page' ) );
-            $this->schedule_page_hook = add_submenu_page( 'gfw_tests', 'Schedule', 'Schedule', 'access_gtmetrix', 'gfw_schedule', array( $this, 'schedule_page' ) );
+            $this->schedule_page_hook = add_submenu_page( 'gfw_tests', 'Monitor', 'Monitor', 'access_gtmetrix', 'gfw_schedule', array( $this, 'schedule_page' ) );
             $this->settings_page_hook = add_submenu_page( 'gfw_tests', 'Settings', 'Settings', 'access_gtmetrix', 'gfw_settings', array( $this, 'settings_page' ) );
             add_action( 'load-' . $this->tests_page_hook, array( &$this, 'page_loading' ) );
             add_action( 'load-' . $this->schedule_page_hook, array( &$this, 'page_loading' ) );
@@ -315,22 +315,16 @@ HERE;
     public function register_settings() {
         register_setting( 'gfw_options_group', 'gfw_options', array( &$this, 'sanitize_settings' ) );
         add_settings_section( 'authentication_section', '', array( &$this, 'section_text' ), 'gfw_settings' );
-        add_settings_field( 'api_username', 'GTmetrix Account Email', array( &$this, 'set_api_username' ), 'gfw_settings', 'authentication_section' );
+        add_settings_field( 'api_username', 'GTmetrix Account E-mail', array( &$this, 'set_api_username' ), 'gfw_settings', 'authentication_section' );
         add_settings_field( 'api_key', 'API Key', array( &$this, 'set_api_key' ), 'gfw_settings', 'authentication_section' );
         if ( GFW_AUTHORIZED ) {
             add_settings_section( 'options_section', '', array( &$this, 'section_text' ), 'gfw_settings' );
-            add_settings_field( 'dashboard_widget', 'Show dashboard widget', array( &$this, 'set_dashboard_widget' ), 'gfw_settings', 'options_section' );
-            add_settings_field( 'toolbar_link', 'Show GTmetrix on Toolbar', array( &$this, 'set_toolbar_link' ), 'gfw_settings', 'options_section' );
+            add_settings_field( 'dashboard_widget', 'Show Dashboard widget', array( &$this, 'set_dashboard_widget' ), 'gfw_settings', 'options_section' );
+            add_settings_field( 'toolbar_link', 'Show "GTmetrix" on Admin Toolbar', array( &$this, 'set_toolbar_link' ), 'gfw_settings', 'options_section' );
             add_settings_field( 'default_adblock', 'Default Adblock status', array( &$this, 'set_default_adblock' ), 'gfw_settings', 'options_section' );
             add_settings_field( 'default_location', 'Default location', array( &$this, 'set_default_location' ), 'gfw_settings', 'options_section' );
-            add_settings_field( 'notifications_email', 'Alerts Email', array( &$this, 'set_notifications_email' ), 'gfw_settings', 'options_section' );
+            add_settings_field( 'notifications_email', 'E-mail to send Alerts to', array( &$this, 'set_notifications_email' ), 'gfw_settings', 'options_section' );
             add_settings_field( 'front_url', 'Front page URL', array( &$this, 'set_front_url' ), 'gfw_settings', 'options_section' );
-            add_settings_section( 'widget_section', '', array( &$this, 'section_text' ), 'gfw_settings' );
-            add_settings_field( 'widget_pagespeed', 'Show PageSpeed grade', array( &$this, 'set_widget_pagespeed' ), 'gfw_settings', 'widget_section' );
-            add_settings_field( 'widget_yslow', 'Show YSlow grade', array( &$this, 'set_widget_yslow' ), 'gfw_settings', 'widget_section' );
-            add_settings_field( 'widget_scores', 'Show scores (percentages)', array( &$this, 'set_widget_scores' ), 'gfw_settings', 'widget_section' );
-            add_settings_field( 'widget_link', 'Show link to GTmetrix', array( &$this, 'set_widget_link' ), 'gfw_settings', 'widget_section' );
-            add_settings_field( 'widget_css', 'Use GTmetrix CSS', array( &$this, 'set_widget_css' ), 'gfw_settings', 'widget_section' );
             add_settings_section( 'reset_section', '', array( &$this, 'section_text' ), 'gfw_settings' );
             add_settings_field( 'reset', 'Reset', array( &$this, 'set_reset' ), 'gfw_settings', 'reset_section' );
         }
@@ -375,6 +369,7 @@ HERE;
         $options['toolbar_link'] = isset( $options['toolbar_link'] ) ? $options['toolbar_link'] : 0;
         echo '<input type="hidden" name="gfw_options[toolbar_link]" value="0" />';
         echo '<input type="checkbox" name="gfw_options[toolbar_link]" id="toolbar_link" value="1" ' . checked( $options['toolbar_link'], 1, false ) . ' />';
+        echo '</select><br /><span class="description">Test pages when logged in as admin from your WordPress Admin Toolbar</p>';
     }
 
     public function set_default_adblock() {
@@ -393,38 +388,8 @@ HERE;
     }
 
     public function set_reset() {
-        echo '<p class="description">This will flush all GTmetrix records from the WordPress database!</p>';
+        echo '<p class="description">This will flush all GTmetrix records from the WordPress database and cannot be undone</p>';
         echo '<input type="button" value="Reset" class="button-primary" id="gfw-reset" />';
-    }
-
-    public function set_widget_pagespeed() {
-        $options = get_option( 'gfw_options' );
-        echo '<input type="hidden" name="gfw_options[widget_pagespeed]" value="0" />';
-        echo '<input type="checkbox" name="gfw_options[widget_pagespeed]" id="widget_pagespeed" value="1" ' . checked( $options['widget_pagespeed'], 1, false ) . ' />';
-    }
-
-    public function set_widget_yslow() {
-        $options = get_option( 'gfw_options' );
-        echo '<input type="hidden" name="gfw_options[widget_yslow]" value="0" />';
-        echo '<input type="checkbox" name="gfw_options[widget_yslow]" id="widget_yslow" value="1" ' . checked( $options['widget_yslow'], 1, false ) . ' />';
-    }
-
-    public function set_widget_scores() {
-        $options = get_option( 'gfw_options' );
-        echo '<input type="hidden" name="gfw_options[widget_scores]" value="0" />';
-        echo '<input type="checkbox" name="gfw_options[widget_scores]" id="widget_scores" value="1" ' . checked( $options['widget_scores'], 1, false ) . ' />';
-    }
-
-    public function set_widget_link() {
-        $options = get_option( 'gfw_options' );
-        echo '<input type="hidden" name="gfw_options[widget_link]" value="0" />';
-        echo '<input type="checkbox" name="gfw_options[widget_link]" id="widget_link" value="1" ' . checked( $options['widget_link'], 1, false ) . ' />';
-    }
-
-    public function set_widget_css() {
-        $options = get_option( 'gfw_options' );
-        echo '<input type="hidden" name="gfw_options[widget_css]" value="0" />';
-        echo '<input type="checkbox" name="gfw_options[widget_css]" id="widget_css" value="1" ' . checked( $options['widget_css'], 1, false ) . ' />';
     }
 
     public function section_text() {
@@ -443,6 +408,7 @@ HERE;
         if ( GFW_AUTHORIZED ) {
             add_meta_box( 'gfw-credits-meta-box', 'API Credits', array( &$this, 'credits_meta_box' ), $this->tests_page_hook, 'side', 'core' );
             add_meta_box( 'gfw-credits-meta-box', 'API Credits', array( &$this, 'credits_meta_box' ), $this->schedule_page_hook, 'side', 'core' );
+            add_meta_box( 'gfw-api-meta-box', 'New API', array( &$this, 'api_meta_box' ), $this->tests_page_hook, 'side', 'high' );
             add_meta_box( 'gfw-optimization-meta-box', 'Need optimization help?', array( &$this, 'optimization_meta_box' ), $this->tests_page_hook, 'side', 'core' );
             add_meta_box( 'gfw-optimization-meta-box', 'Need optimization help?', array( &$this, 'optimization_meta_box' ), $this->schedule_page_hook, 'side', 'core' );
             add_meta_box( 'gfw-news-meta-box', 'Latest News', array( &$this, 'news_meta_box' ), $this->tests_page_hook, 'side', 'core' );
@@ -568,7 +534,7 @@ HERE;
         }
 
         if ( ($event_id || $report_id) && !isset( $data ) ) {
-            add_meta_box( 'schedule-meta-box', 'Schedule a Test', array( &$this, 'schedule_meta_box' ), $this->schedule_page_hook, 'normal', 'core' );
+            add_meta_box( 'schedule-meta-box', 'Monitor a URL', array( &$this, 'schedule_meta_box' ), $this->schedule_page_hook, 'normal', 'core' );
         }
 
         if ( $delete ) {
@@ -607,7 +573,7 @@ HERE;
 
         <div class="wrap gfw">
             <div id="gfw-icon" class="icon32"></div>
-            <h2>GTmetrix for WordPress &raquo; Schedule</h2>
+            <h2>GTmetrix for WordPress &raquo; Monitor</h2>
             <?php wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false ); ?>
             <?php wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false ); ?>
             <div id="poststuff" class="metabox-holder has-right-sidebar">
@@ -639,7 +605,7 @@ HERE;
         wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false );
         wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false );
         add_meta_box( 'gfw-score-meta-box', 'Latest Front Page Score', array( &$this, 'score_meta_box' ), $this->tests_page_hook, 'normal', 'core' );
-        add_meta_box( 'gfw-test-meta-box', 'Test Performance of:', array( &$this, 'test_meta_box' ), $this->tests_page_hook, 'normal', 'core' );
+        add_meta_box( 'gfw-test-meta-box', 'Analyze Performance of:', array( &$this, 'test_meta_box' ), $this->tests_page_hook, 'normal', 'core' );
         add_meta_box( 'gfw-reports-meta-box', 'Reports', array( &$this, 'reports_list' ), $this->tests_page_hook, 'normal', 'core' );
         ?>
         <div class="wrap gfw">
@@ -673,7 +639,6 @@ HERE;
         add_meta_box( 'authenticate-meta-box', 'Authentication', array( &$this, 'authenticate_meta_box' ), $this->settings_page_hook, 'normal', 'core' );
         if ( GFW_AUTHORIZED ) {
             add_meta_box( 'options-meta-box', 'Options', array( &$this, 'options_meta_box' ), $this->settings_page_hook, 'normal', 'core' );
-            add_meta_box( 'widget-meta-box', 'Widget', array( &$this, 'widget_meta_box' ), $this->settings_page_hook, 'normal', 'core' );
             add_meta_box( 'reset-meta-box', 'Reset', array( &$this, 'reset_meta_box' ), $this->settings_page_hook, 'normal', 'core' );
         }
         ?>
@@ -957,11 +922,11 @@ HERE;
             }
             echo '<div class="actions">';
             if ( 'gfw_report' == $post->post_type ) {
-                echo '<div><a href="' . GFW_SCHEDULE . '&report_id=' . $report->ID . '" class="gfw-schedule-icon-large">Schedule tests</a></div>';
+                echo '<div><a href="' . GFW_SCHEDULE . '&report_id=' . $report->ID . '" class="gfw-schedule-icon-large">Monitor this page</a></div>';
             }
             if ( !$expired ) {
                 echo '<div><a href="' . $custom_fields['report_url'][0] . '" target="_blank" class="gfw-report-icon">Detailed report</a></div>';
-                echo '<div><a href="' . $custom_fields['report_url'][0] . '/pdf?full=1' . '" class="gfw-pdf-icon">Download PDF</a></div>';
+                echo '<div><a href="' . $custom_fields['report_url'][0] . '/pdf' . '" class="gfw-pdf-icon">Download PDF</a></div>';
                 if ( isset( $custom_fields['gfw_video'][0] ) && $custom_fields['gfw_video'][0] ) {
                     echo '<div><a href="' . $custom_fields['report_url'][0] . '/video' . '" class="gfw-video-icon">Video</a></div>';
                 }
@@ -1067,12 +1032,11 @@ HERE;
     public function credits_meta_box() {
         $api = $this->api();
         $status = get_transient( 'credit_status' );
-
         if ( false === $status ) {
             $status = $api->status();
             set_transient( 'credit_status', $status, 60 * 2 );
         }
-
+        
         if ( $api->error() ) {
             $response['error'] = $test->error();
             return $response;
@@ -1080,8 +1044,9 @@ HERE;
         ?>
         <p style="font-weight:bold">API Credits Remaining: <?php echo $status['api_credits']; ?></p>
         <p style="font-style:italic">Next top-up: <?php echo $this->wp_date( $status['api_refill'], true ); ?></p>
-        <p>Every test costs 1 API credit, except tests that use video, which cost 5 credits. You are topped up to 20 credits per day. If you need more, you can purchase them from GTmetrix.com.</p>
-        <a href="https://gtmetrix.com/pro/<?php echo GFW_GA_CAMPAIGN ?>" target="_blank" class="button-secondary">Get More API Credits</a>
+        <p>Every test costs 1 API credit, except tests that use video, which cost 5 credits.</p>
+        <p>You can view your API credit limits and usage in <a href="https://gtmetrix.com/dashboard/account" target="_blank">your Account page</a> on GTmetrix.com</p>
+        <p>If you need more API credits, you can <a href="https://gtmetrix.com/pricing.html" target="_blank">upgrade your plan here</a>.</p>
         <?php
     }
 
@@ -1089,6 +1054,16 @@ HERE;
         ?>
         <p>Have a look at our WordPress Optimization Guide <a target="_blank" href="https://gtmetrix.com/wordpress-optimization-guide.html">WordPress Optimization Guide</a>.</p>
         <p>You can also <a target="_blank" href="https://gtmetrix.com/contact.html?type=optimization-request">contact us</a> for optimization help and we'll put you in the right direction towards a faster website.</p>
+        <?php
+    }
+
+    public function api_meta_box() {
+        ?>
+        <p>
+            <strong>This plugin is using v0.1 of our API</strong> GTmetrix API v0.1 only provides Legacy Report data (PageSpeed/YSlow scores).
+        </p><p>
+            We are currently working on v2.0 which will allow for Lighthouse metrics (Web Vitals) to be retrieved. Our plugin will be updated soon to reflect our new Lighthouse testing methodology.
+        </p>
         <?php
     }
 
@@ -1111,7 +1086,8 @@ HERE;
             }
         }
         echo $latest_news;
-        echo '<a href="https://twitter.com/gtmetrix" target="_blank" class="button-secondary">Follow us on Twitter</a>';
+        echo '<p><a href="https://twitter.com/gtmetrix" target="_blank" class="button-secondary">Follow us on Twitter</a></p>';
+        echo '<p><a href="https://facebook.com/gtmetrix/" target="_blank" class="button-secondary">Follow us on Facebook</a></p>';
     }
 
     protected function front_score( $dashboard = false ) {
@@ -1186,7 +1162,7 @@ HERE;
                             echo '<a href="' . $custom_fields['report_url'][0] . '" target="_blank" class="gfw-report-icon">Detailed report</a> &nbsp;&nbsp; ';
                         }
                         ?>
-                        <a href="<?php echo GFW_SCHEDULE; ?>&report_id=<?php echo $query->post->ID; ?>" class="gfw-schedule-icon-large">Schedule tests</a></p>
+                        <a href="<?php echo GFW_SCHEDULE; ?>&report_id=<?php echo $query->post->ID; ?>" class="gfw-schedule-icon-large">Monitor this page</a></p>
                     <p><a href="<?php echo GFW_TESTS; ?>" class="button-primary" id="gfw-test-front">Re-test your Front Page</a></p>
                 </div>
                 <?php
@@ -1244,7 +1220,7 @@ HERE;
             </table>
 
 
-            <?php submit_button( 'Test URL now!', 'primary', 'submit', false ); ?>
+            <?php submit_button( 'Test URL', 'primary', 'submit', false ); ?>
         </form>
         <?php
     }
@@ -1267,7 +1243,7 @@ HERE;
             <input type="hidden" name="report_id" value="<?php echo $report_id; ?>" />
             <?php wp_nonce_field( plugin_basename( __FILE__ ), 'gfwschedulenonce' ); ?>
 
-            <p><b>URL/label:</b> <?php echo ($custom_fields['gfw_label'][0] ? $custom_fields['gfw_label'][0] . ' (' . $custom_fields['gfw_url'][0] . ')' : $custom_fields['gfw_url'][0]); ?></p>
+            <p><b>URL/Label:</b> <?php echo ($custom_fields['gfw_label'][0] ? $custom_fields['gfw_label'][0] . ' (' . $custom_fields['gfw_url'][0] . ')' : $custom_fields['gfw_url'][0]); ?></p>
             <p><b>Adblock:</b> <?php echo $custom_fields['gfw_adblock'][0] ? 'On' : 'Off'; ?></p>
             <p><b>Location:</b> Vancouver, Canada <i>(scheduled tests always use the Vancouver, Canada test server region)</i></p>
 
@@ -1295,9 +1271,9 @@ HERE;
                 }
                 ?>
                 <tr valign="top">
-                    <th scope="row"><label for="gfw-notifications">Enable alerts</label></th>
+                    <th scope="row"><label for="gfw-notifications">Enable Alerts</label></th>
                     <td><input type="checkbox" id="gfw-notifications" value="1" <?php checked( $notifications_count > 0 ); ?> /><br />
-                        <span class="description">If you'd like to be notified by email when poor test results are returned, click Enable alerts above</span></td>
+                        <span class="description">Get notified by e-mail if a test result underperforms based on conditions you set</span></td>
                 </tr>
 
                 <?php
@@ -1315,7 +1291,7 @@ HERE;
                     }
                     ?>
                     <tr valign="top" class="gfw-conditions gfw-conditions-<?php echo $i; ?>"<?php echo $condition_status; ?>>
-                        <th scope="row"><?php echo $i ? 'or' : 'Email admin when'; ?></th>
+                        <th scope="row"><?php echo $i ? 'or' : 'Alert admin when'; ?></th>
                         <td><select name="gfw_condition[<?php echo $i; ?>]" class="gfw-condition"<?php echo $disabled; ?>>
                                 <?php
                                 $conditions = array(
