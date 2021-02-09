@@ -24,15 +24,22 @@ Requirements
 
 **Requires:** 3.3.1 or higher
 
-**Compatible up to:** 5.2
+**Compatible up to:** 5.6.1
 
 Version
 --------------------------
 
-0.4.4
+0.4.5
 
 Changelog
 --------------------------
+
+##### 0.4.5
+* Various label fixes
+* Removed Widget meta box on Settings page
+* Added sidebar meta box to Tests page
+* "Download PDF" links to summary version of the report
+* Added link to FB page on Tests page
 
 ##### 0.4.4
 * Fixed compatibility issues with other plugins using the Services_WTF_Test class

@@ -55,7 +55,6 @@ If you're running into issues with this plugin, please reach out for support on 
 * "Download PDF" links to summary version of the report
 * Added link to FB page on Tests page
 
-
 = 0.4.4 =
 * Fixed compatibility issues with other plugins using the Services_WTF_Test class
 
