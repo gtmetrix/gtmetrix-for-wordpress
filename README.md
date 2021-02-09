@@ -1,4 +1,4 @@
-GTMetrix WordPress Plugin
+GTmetrix WordPress Plugin
 ========================
 
 GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
@@ -119,9 +119,9 @@ Changelog
 License
 --------------------------
 
-GTMetrix for WordPress
+GTmetrix for WordPress
 
-Copyright (C) 2018 Gossamer Threads, Inc.
+Copyright (C) 2021 Carbon 60 Operating Co. Ltd.
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
