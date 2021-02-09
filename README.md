@@ -121,7 +121,7 @@ License
 
 GTmetrix for WordPress
 
-Copyright (C) 2021 Carbon 60 Operating Co. Ltd.
+Copyright (C) 2021 Carbon60 Operating Co. Ltd.
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
