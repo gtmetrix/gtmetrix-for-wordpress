@@ -346,7 +346,7 @@ HERE;
         foreach ( $options['locations'] as $location ) {
             echo '<option value="' . $location['id'] . '" ' . selected( $options['default_location'], $location['id'], false ) . '>' . $location['name'] . '</option>';
         }
-        echo '</select><br /><span class="description">Test Server Region (scheduled tests will override this setting)</span></p>';
+        echo '</select><br /><span class="description">Test Server Region (monitored pages will override this setting)</span></p>';
     }
 
     public function set_notifications_email() {
@@ -369,7 +369,7 @@ HERE;
         $options['toolbar_link'] = isset( $options['toolbar_link'] ) ? $options['toolbar_link'] : 0;
         echo '<input type="hidden" name="gfw_options[toolbar_link]" value="0" />';
         echo '<input type="checkbox" name="gfw_options[toolbar_link]" id="toolbar_link" value="1" ' . checked( $options['toolbar_link'], 1, false ) . ' />';
-        echo '</select><br /><span class="description">Test pages when logged in as admin from your WordPress Admin Toolbar</p>';
+        echo '<span class="description">Test pages when logged in as admin from your WordPress Admin Toolbar</p>';
     }
 
     public function set_default_adblock() {
@@ -419,17 +419,17 @@ HERE;
 
         if ( method_exists( $screen, 'add_help_tab' ) ) {
             $settings_help = '<p>You will need an account at <a href="https://gtmetrix.com/' . GFW_GA_CAMPAIGN . '" target="_blank">Gtmetrix.com</a> to use GTmetrix for WordPress. Registration is free. Once registered, go to the <a href="https://gtmetrix.com/api/' . GFW_GA_CAMPAIGN . '" target="_blank">API page</a> and generate an API key. Enter this key, along with your registered email address, in the authentication fields below, and you\'re ready to go!</p>';
-            $options_help = '<p>You would usually set your <i>default location</i> to the city nearest to your target audience. When you run a test on a URL, the report returned will reflect the experience of a user connecting from this location.</p>';
+            $options_help = '<p>You would usually set your <i>default location</i> to the city nearest to your target audience. When you run a test on a page, the report returned will reflect the experience of a user connecting from this location.</p>';
 
-            $test_help = '<p>To analyze the performance of a page or post on your blog, simply enter it\'s URL. You can even just start to type the title into the box, and an autocomplete facility will try and help you out.</p>';
+            $test_help = '<p>To analyze the performance of a page or post on your blog, simply enter its URL. You can even just start to type the title into the box, and an autocomplete facility will try and help you out.</p>';
             $test_help .= '<p>The optional <i>Label</i> is simply used to help you identify a given report in the system.</p>';
 
             $reports_help = '<p>The Reports section shows summaries of your reports. For even more detailed information, click on the Report\'s URL/label, and the full GTmetrix.com report will open. You can also delete a report.</p>';
             $reports_help .= '<p><b>Note:</b> deleting a report here only removes it from GTmetrix for WordPress - not from your GTmetrix account.<br /><b>Note:</b> if the URL/label is not a link, this means the report is no longer available on GTmetrix.com.</p>';
 
-            $schedule_help = '<p>You can set up your reports to be generated even when you\'re away. Simply run the report as normal (in Reports), then expand the report\'s listing, and click <i>Schedule tests</i>. You will be redirected to this page, where you can choose how often you want this report to run.</p>';
+            $schedule_help = '<p>You can set up your reports to be generated even when you\'re away. Simply run the report as normal (in Reports), then expand the report\'s listing, and click <i>Monitor page</i>. You will be redirected to this page, where you can choose how often you want this report to run.</p>';
             $schedule_help .= '<p>You can also choose to be sent an email when certain conditions apply. This email can go to either your admin email address or your GTmetrix email address, as defined in settings.</p>';
-            $schedule_help .= '<p><b>Note:</b> every test will use up 1 of your API credits on GTmetrix.com<br /><b>Note:</b> scheduled tests use the WP-Cron functionality that is built into WordPress. This means that events are only triggered when your site is visited.</p>';
+            $schedule_help .= '<p><b>Note:</b> every test will use up 1 of your API credits on GTmetrix.com<br /><b>Note:</b> monitored pages use the WP-Cron functionality that is built into WordPress. This means that events are only triggered when your site is visited.</p>';
 
             switch ( $screen->id ) {
 
@@ -475,7 +475,7 @@ HERE;
                     wp_enqueue_script( 'flot.resize', GFW_URL . 'lib/flot/jquery.flot.resize.min.js', 'flot' );
                     $screen->add_help_tab(
                             array(
-                                'title' => 'Schedule a Test',
+                                'title' => 'Monitor a page',
                                 'id' => 'schedule_help_tab',
                                 'content' => $schedule_help
                             )
@@ -530,11 +530,11 @@ HERE;
             } else {
                 delete_post_meta( $event_id, 'gfw_notifications' );
             }
-            echo '<div id="message" class="updated"><p><strong>Schedule updated.</strong></p></div>';
+            echo '<div id="message" class="updated"><p><strong>Monitoring updated.</strong></p></div>';
         }
 
         if ( ($event_id || $report_id) && !isset( $data ) ) {
-            add_meta_box( 'schedule-meta-box', 'Monitor a URL', array( &$this, 'schedule_meta_box' ), $this->schedule_page_hook, 'normal', 'core' );
+            add_meta_box( 'schedule-meta-box', 'Monitor a page', array( &$this, 'schedule_meta_box' ), $this->schedule_page_hook, 'normal', 'core' );
         }
 
         if ( $delete ) {
@@ -568,7 +568,7 @@ HERE;
             }
         }
 
-        add_meta_box( 'events-meta-box', 'Scheduled Tests', array( &$this, 'events_list' ), $this->schedule_page_hook, 'normal', 'core' );
+        add_meta_box( 'events-meta-box', 'Monitored Pages', array( &$this, 'events_list' ), $this->schedule_page_hook, 'normal', 'core' );
         ?>
 
         <div class="wrap gfw">
@@ -1220,7 +1220,7 @@ HERE;
             </table>
 
 
-            <?php submit_button( 'Test URL', 'primary', 'submit', false ); ?>
+            <?php submit_button( 'Test Page', 'primary', 'submit', false ); ?>
         </form>
         <?php
     }
@@ -1245,7 +1245,7 @@ HERE;
 
             <p><b>URL/Label:</b> <?php echo ($custom_fields['gfw_label'][0] ? $custom_fields['gfw_label'][0] . ' (' . $custom_fields['gfw_url'][0] . ')' : $custom_fields['gfw_url'][0]); ?></p>
             <p><b>Adblock:</b> <?php echo $custom_fields['gfw_adblock'][0] ? 'On' : 'Off'; ?></p>
-            <p><b>Location:</b> Vancouver, Canada <i>(scheduled tests always use the Vancouver, Canada test server region)</i></p>
+            <p><b>Location:</b> Vancouver, Canada <i>(Monitored pages always use the Vancouver, Canada test server region)</i></p>
 
 
             <table class="form-table">
@@ -1272,7 +1272,7 @@ HERE;
                 ?>
                 <tr valign="top">
                     <th scope="row"><label for="gfw-notifications">Enable Alerts</label></th>
-                    <td><input type="checkbox" id="gfw-notifications" value="1" <?php checked( $notifications_count > 0 ); ?> /><br />
+                    <td><input type="checkbox" id="gfw-notifications" value="1" <?php checked( $notifications_count > 0 ); ?> />
                         <span class="description">Get notified by e-mail if a test result underperforms based on conditions you set</span></td>
                 </tr>
 
@@ -1373,7 +1373,7 @@ HERE;
             $query = new WP_Query( $args );
             $no_posts = !$query->post_count;
             ?>
-            <p>Click a report to see more detail, or to schedule future tests.</p>
+            <p>Click a report to see more detail, or to monitor the page.</p>
             <div class="gfw-table-wrapper">
                 <table class="gfw-table">
                     <thead>
@@ -1416,7 +1416,7 @@ HERE;
                                 echo '<td data-th="YSlow" class="gfw-toggle gfw-reports-yslow"><div class="gfw-grade-meter gfw-grade-meter-' . $yslow_grade['grade'] . '"><span class="gfw-grade-meter-text">' . $yslow_grade['grade'] . ' (' . $yslow_score . ')</span><span class="gfw-grade-meter-bar" style="width: ' . $yslow_score . '%"></span></div></td>';
                                 echo '<td data-th="Date" class="gfw-toggle" title="' . $report_date . '">' . $report_date . '</td>';
                             }
-                            echo '<td class="gfw-action-icons"><a href="' . GFW_SCHEDULE . '&report_id=' . $query->post->ID . '" class="gfw-schedule-icon-small tooltip" title="Schedule tests">Schedule test</a> <a href="' . GFW_TESTS . '&delete=' . $query->post->ID . '" rel="#gfw-confirm-delete" class="gfw-delete-icon delete-report tooltip" title="Delete Report">Delete Report</a></td>';
+                            echo '<td class="gfw-action-icons"><a href="' . GFW_SCHEDULE . '&report_id=' . $query->post->ID . '" class="gfw-schedule-icon-small tooltip" title="Monitor page">Monitor page</a> <a href="' . GFW_TESTS . '&delete=' . $query->post->ID . '" rel="#gfw-confirm-delete" class="gfw-delete-icon delete-report tooltip" title="Delete Report">Delete Report</a></td>';
                             echo '</tr>';
                         }
                         ?>
@@ -1501,7 +1501,7 @@ HERE;
 
                 <?php
                 if ( $no_posts ) {
-                    echo '<p class="gfw-no-posts">You have no Scheduled Tests. Go to <a href="' . GFW_TESTS . '">Tests</a> to create one.</p>';
+                    echo '<p class="gfw-no-posts">You have no Monitored pages. Go to <a href="' . GFW_TESTS . '">Tests</a> to create one.</p>';
                 }
                 ?>
 
