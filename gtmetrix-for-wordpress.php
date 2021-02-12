@@ -368,8 +368,7 @@ HERE;
         $options = get_option( 'gfw_options' );
         $options['toolbar_link'] = isset( $options['toolbar_link'] ) ? $options['toolbar_link'] : 0;
         echo '<input type="hidden" name="gfw_options[toolbar_link]" value="0" />';
-        echo '<input type="checkbox" name="gfw_options[toolbar_link]" id="toolbar_link" value="1" ' . checked( $options['toolbar_link'], 1, false ) . ' />';
-        echo '<span class="description">Test pages when logged in as admin from your WordPress Admin Toolbar</p>';
+        echo '<input type="checkbox" name="gfw_options[toolbar_link]" id="toolbar_link" value="1" ' . checked( $options['toolbar_link'], 1, false ) . ' /> <span class="description">Test pages when logged in as admin from your WordPress Admin Toolbar</p>';
     }
 
     public function set_default_adblock() {
