@@ -29,10 +29,15 @@ Requirements
 Version
 --------------------------
 
-0.4.5
+0.4.6
 
 Changelog
 --------------------------
+
+##### 0.4.6
+* When uninstalling plugin, delete all reports and scheduled events (post types 'gfw_report', 'gfw_event')
+* fixed issue with widget never showing up
+* fixed various issues with widget logic
 
 ##### 0.4.5
 * Various label fixes

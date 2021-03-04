@@ -3,7 +3,7 @@
   Plugin Name: GTmetrix for WordPress
   Plugin URI: https://gtmetrix.com/gtmetrix-for-wordpress-plugin.html
   Description: GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
-  Version: 0.4.5
+  Version: 0.4.6
   Author: GTmetrix
   Author URI: https://gtmetrix.com/
 
@@ -105,6 +105,7 @@ class GTmetrix_For_WordPress {
         wp_clear_scheduled_hook( 'gfw_daily_event', array( 'daily' ) );
         wp_clear_scheduled_hook( 'gfw_weekly_event', array( 'weekly' ) );
         wp_clear_scheduled_hook( 'gfw_monthly_event', array( 'monthly' ) );
+        
     }
 
     public function system_check() {
@@ -584,7 +585,7 @@ HERE;
                         <?php do_meta_boxes( $this->schedule_page_hook, 'normal', false ); ?>
                     </div>
                 </div>
-            </div>	
+            </div>  
         </div>
         <?php
     }
@@ -619,7 +620,7 @@ HERE;
                         <?php do_meta_boxes( $this->tests_page_hook, 'normal', 0 ); ?>
                     </div>
                 </div>
-            </div>	
+            </div>  
         </form>
         <div id="gfw-confirm-delete" class="gfw-dialog" title="Delete this report?">
             <p>Are you sure you want to delete this report?</p>
@@ -661,7 +662,7 @@ HERE;
                         </form>
                     </div>
                 </div>
-            </div>	
+            </div>  
         </div>
         <?php
     }
@@ -1549,7 +1550,7 @@ HERE;
             echo '</table>';
         }
 
-        protected function score_to_grade( $score ) {
+        public function score_to_grade( $score ) {
             $grade = array( );
             if ($score == 100) {
                 $grade['grade'] = 'A';
@@ -1561,7 +1562,7 @@ HERE;
             return $grade;
         }
 
-        protected function gtmetrix_file_exists( $url ) {
+        public function gtmetrix_file_exists( $url ) {
             $options = get_option( 'gfw_options' );
             $ch = curl_init();
             curl_setopt( $ch, CURLOPT_URL, $url );
