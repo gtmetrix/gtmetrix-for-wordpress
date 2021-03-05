@@ -97,6 +97,8 @@ class GTmetrix_For_WordPress {
         $options['widget_link'] = isset( $options['widget_link'] ) ? $options['widget_link'] : 1;
         $options['widget_css'] = isset( $options['widget_css'] ) ? $options['widget_css'] : 1;
         $options['front_url'] = isset( $options['front_url'] ) ? $options['front_url'] : 'wp';
+        $options['clear_settings'] = isset( $options['clear_settings'] ) ? $options['clear_settings'] : 0;
+        $options['clear_records'] = isset( $options['clear_records'] ) ? $options['clear_records'] : 0;
         update_option( 'gfw_options', $options );
     }
 
@@ -326,6 +328,8 @@ HERE;
             add_settings_field( 'default_location', 'Default location', array( &$this, 'set_default_location' ), 'gfw_settings', 'options_section' );
             add_settings_field( 'notifications_email', 'E-mail to send Alerts to', array( &$this, 'set_notifications_email' ), 'gfw_settings', 'options_section' );
             add_settings_field( 'front_url', 'Front page URL', array( &$this, 'set_front_url' ), 'gfw_settings', 'options_section' );
+            add_settings_field( 'clear_settings', 'Clear settings on uninstall', array( &$this, 'set_clear_settings' ), 'gfw_settings', 'options_section' );
+            add_settings_field( 'clear_records', 'Clear records on uninstall', array( &$this, 'set_clear_records' ), 'gfw_settings', 'options_section' );
             add_settings_section( 'reset_section', '', array( &$this, 'section_text' ), 'gfw_settings' );
             add_settings_field( 'reset', 'Reset', array( &$this, 'set_reset' ), 'gfw_settings', 'reset_section' );
         }
@@ -385,6 +389,18 @@ HERE;
             echo '<option value="' . $key . '" ' . selected( $options['front_url'], $key, false ) . '>' . $value . '</option>';
         }
         echo '</select></p>';
+    }
+
+    public function set_clear_settings() {
+        $options = get_option( 'gfw_options' );
+        echo '<input type="hidden" name="gfw_options[clear_settings]" value="0" />';
+        echo '<input type="checkbox" name="gfw_options[clear_settings]" id="clear_settings" value="1" ' . checked( $options['clear_settings'], 1, false ) . ' />';
+    }
+
+    public function set_clear_records() {
+        $options = get_option( 'gfw_options' );
+        echo '<input type="hidden" name="gfw_options[clear_records]" value="0" />';
+        echo '<input type="checkbox" name="gfw_options[clear_records]" id="clear_records" value="1" ' . checked( $options['clear_records'], 1, false ) . ' />';
     }
 
     public function set_reset() {

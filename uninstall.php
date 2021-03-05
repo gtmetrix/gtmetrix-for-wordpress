@@ -4,20 +4,28 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
     exit();
 }
 
-delete_option('gfw_options');
+/*
+ * conditionally delete settings and records
+ */
+$options = get_option( 'gfw_options' );
 
-// Delete reports and events
-$args = array(
-    'post_type' => array( 'gfw_report', 'gfw_event' ),
-    'post_status' => 'any',
-    'posts_per_page' => -1
-);
+if( $option['clear_settings'] ) {
+	delete_option('gfw_options');
+}
 
-$query = new WP_Query( $args );
+if( $option['clear_records'] ) {
+	$args = array(
+	    'post_type' => array( 'gfw_report', 'gfw_event' ),
+	    'post_status' => 'any',
+	    'posts_per_page' => -1
+	);
 
-while ( $query->have_posts() ) {
-    $query->next_post();
-    wp_delete_post( $query->post->ID );
+	$query = new WP_Query( $args );
+
+	while ( $query->have_posts() ) {
+	    $query->next_post();
+	    wp_delete_post( $query->post->ID );
+	}
 }
 
 ?>
