@@ -9,11 +9,11 @@ if (!defined('WP_UNINSTALL_PLUGIN')) {
  */
 $options = get_option( 'gfw_options' );
 
-if( $option['clear_settings'] ) {
+if( $options['clear_settings'] ) {
 	delete_option('gfw_options');
 }
 
-if( $option['clear_records'] ) {
+if( $options['clear_records'] ) {
 	$args = array(
 	    'post_type' => array( 'gfw_report', 'gfw_event' ),
 	    'post_status' => 'any',
