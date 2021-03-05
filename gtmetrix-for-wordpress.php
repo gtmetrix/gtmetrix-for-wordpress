@@ -732,6 +732,8 @@ HERE;
         $valid['widget_link'] = isset( $input['widget_link'] ) ? $input['widget_link'] : $options['widget_link'];
         $valid['widget_css'] = isset( $input['widget_css'] ) ? $input['widget_css'] : $options['widget_css'];
         $valid['front_url'] = isset( $input['front_url'] ) ? $input['front_url'] : $options['front_url'];
+        $valid['clear_settings'] = isset( $input['clear_settings'] ) ? $input['clear_settings'] : $options['clear_settings'];
+        $valid['clear_records'] = isset( $input['clear_records'] ) ? $input['clear_records'] : $options['clear_records'];
         return $valid;
     }
 
