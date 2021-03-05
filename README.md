@@ -35,7 +35,7 @@ Changelog
 --------------------------
 
 ##### 0.4.6
-* When uninstalling plugin, delete all reports and scheduled events (post types 'gfw_report', 'gfw_event')
+* When uninstalling plugin, conditionally delete settings and all reports and scheduled events (post types 'gfw_report', 'gfw_event'). Add two flags to settings page
 * fixed issue with widget never showing up
 * fixed various issues with widget logic
 
