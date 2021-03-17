@@ -53,7 +53,7 @@ If you're running into issues with this plugin, please reach out for support on 
 * fixed issue with widget never showing up
 * fixed various issues with widget logic
 * moved install logic to admin_init hooks to work around Composer not running the install logic
-* removed 'hourly' and 'weekly' schedules from cron_schedules filter; those are 
+* removed 'hourly' and 'weekly' schedules from cron_schedules filter; those are already WordPress defaults
 
 
 = 0.4.5 =
