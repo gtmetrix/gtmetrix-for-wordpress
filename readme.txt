@@ -52,6 +52,9 @@ If you're running into issues with this plugin, please reach out for support on 
 * When uninstalling plugin, conditionally delete settings and all reports and scheduled events (post types 'gfw_report', 'gfw_event'). Add two flags to settings page
 * fixed issue with widget never showing up
 * fixed various issues with widget logic
+* moved install logic to admin_init hooks to work around Composer not running the install logic
+* removed 'hourly' and 'weekly' schedules from cron_schedules filter; those are 
+
 
 = 0.4.5 =
 * Various label fixes

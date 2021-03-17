@@ -31,6 +31,7 @@ class GTmetrix_For_WordPress {
         register_deactivation_hook( __FILE__, array( &$this, 'deactivate' ) );
         add_action( 'init', array( &$this, 'register_post_types' ) );
         add_action( 'admin_init', array( &$this, 'register_settings' ) );
+        add_action( 'admin_init', array( &$this, 'set_schedules_and_perms' ) );
         add_action( 'admin_init', array( &$this, 'system_check' ), 0 );
         add_action( 'admin_menu', array( &$this, 'add_menu_items' ) );
         add_action( 'admin_print_styles', array( &$this, 'admin_styles' ) );
@@ -81,25 +82,10 @@ class GTmetrix_For_WordPress {
         }
     }
 
+    /*
+     * Removed logic from this function. It's all called from the admin_init hook now to work around Composer not running the install logic.
+     */
     public function activate() {
-        wp_schedule_event( mktime( date( 'H' ) + 1, 0, 0 ), 'hourly', 'gfw_hourly_event', array( 'hourly' ) );
-        wp_schedule_event( mktime( date( 'H' ) + 1, 0, 0 ), 'daily', 'gfw_daily_event', array( 'daily' ) );
-        wp_schedule_event( mktime( date( 'H' ) + 1, 0, 0 ), 'weekly', 'gfw_weekly_event', array( 'weekly' ) );
-        wp_schedule_event( mktime( date( 'H' ) + 1, 0, 0 ), 'monthly', 'gfw_monthly_event', array( 'monthly' ) );
-
-        $role = get_role( 'administrator' );
-        $role->add_cap( 'access_gtmetrix' );
-
-        $options = get_option( 'gfw_options' );
-        $options['widget_pagespeed'] = isset( $options['widget_pagespeed'] ) ? $options['widget_pagespeed'] : 1;
-        $options['widget_yslow'] = isset( $options['widget_yslow'] ) ? $options['widget_yslow'] : 1;
-        $options['widget_scores'] = isset( $options['widget_scores'] ) ? $options['widget_scores'] : 1;
-        $options['widget_link'] = isset( $options['widget_link'] ) ? $options['widget_link'] : 1;
-        $options['widget_css'] = isset( $options['widget_css'] ) ? $options['widget_css'] : 1;
-        $options['front_url'] = isset( $options['front_url'] ) ? $options['front_url'] : 'wp';
-        $options['clear_settings'] = isset( $options['clear_settings'] ) ? $options['clear_settings'] : 0;
-        $options['clear_records'] = isset( $options['clear_records'] ) ? $options['clear_records'] : 0;
-        update_option( 'gfw_options', $options );
     }
 
     public function deactivate() {
@@ -134,8 +120,6 @@ class GTmetrix_For_WordPress {
     }
 
     public function add_intervals( $schedules ) {
-        $schedules['hourly'] = array( 'interval' => 3600, 'display' => 'Hourly' );
-        $schedules['weekly'] = array( 'interval' => 604800, 'display' => 'Weekly' );
         $schedules['monthly'] = array( 'interval' => 2635200, 'display' => 'Monthly' );
         return $schedules;
     }
@@ -316,6 +300,20 @@ HERE;
     }
 
     public function register_settings() {
+        /*
+         * Moved from plugin activation hook
+         */
+        $options = get_option( 'gfw_options' );
+        $options['widget_pagespeed'] = isset( $options['widget_pagespeed'] ) ? $options['widget_pagespeed'] : 1;
+        $options['widget_yslow'] = isset( $options['widget_yslow'] ) ? $options['widget_yslow'] : 1;
+        $options['widget_scores'] = isset( $options['widget_scores'] ) ? $options['widget_scores'] : 1;
+        $options['widget_link'] = isset( $options['widget_link'] ) ? $options['widget_link'] : 1;
+        $options['widget_css'] = isset( $options['widget_css'] ) ? $options['widget_css'] : 1;
+        $options['front_url'] = isset( $options['front_url'] ) ? $options['front_url'] : 'wp';
+        $options['clear_settings'] = isset( $options['clear_settings'] ) ? $options['clear_settings'] : 0;
+        $options['clear_records'] = isset( $options['clear_records'] ) ? $options['clear_records'] : 0;
+        update_option( 'gfw_options', $options );
+
         register_setting( 'gfw_options_group', 'gfw_options', array( &$this, 'sanitize_settings' ) );
         add_settings_section( 'authentication_section', '', array( &$this, 'section_text' ), 'gfw_settings' );
         add_settings_field( 'api_username', 'GTmetrix Account E-mail', array( &$this, 'set_api_username' ), 'gfw_settings', 'authentication_section' );
@@ -332,6 +330,29 @@ HERE;
             add_settings_field( 'clear_records', 'Clear records on uninstall', array( &$this, 'set_clear_records' ), 'gfw_settings', 'options_section' );
             add_settings_section( 'reset_section', '', array( &$this, 'section_text' ), 'gfw_settings' );
             add_settings_field( 'reset', 'Reset', array( &$this, 'set_reset' ), 'gfw_settings', 'reset_section' );
+        }
+    }
+
+    public function set_schedules_and_perms() {
+        error_log( print_r( wp_get_schedules(), TRUE ) );
+        //create events if necessary
+        $args = array( FALSE );
+        if ( ! wp_next_scheduled( 'gfw_hourly_event', $args ) ) {
+            wp_schedule_event( mktime( date( 'H' ) + 1, 0, 0 ), 'hourly', 'gfw_hourly_event', array( 'hourly' ) );
+        }
+        if ( ! wp_next_scheduled( 'gfw_daily_event', $args ) ) {
+            wp_schedule_event( mktime( date( 'H' ) + 1, 0, 0 ), 'daily', 'gfw_daily_event', array( 'daily' ) );
+        }
+        if ( ! wp_next_scheduled( 'gfw_weekly_event', $args ) ) {
+            wp_schedule_event( mktime( date( 'H' ) + 1, 0, 0 ), 'weekly', 'gfw_weekly_event', array( 'weekly' ) );
+        }
+        if ( ! wp_next_scheduled( 'gfw_monthly_event', $args ) ) {
+            wp_schedule_event( mktime( date( 'H' ) + 1, 0, 0 ), 'monthly', 'gfw_monthly_event', array( 'monthly' ) );
+        }
+
+        $role = get_role( 'administrator' );
+        if( !$role->has_cap( 'access_gtmetrix' ) ) {
+            $role->add_cap( 'access_gtmetrix' );
         }
     }
 
