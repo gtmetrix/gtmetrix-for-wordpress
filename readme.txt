@@ -2,8 +2,8 @@
 Contributors: GTmetrix
 Tags: analytics, gtmetrix, monitoring, optimization, page speed, performance, speed, statistics, yslow
 Requires at least: 3.3.1
-Tested up to: 5.6.1
-Stable tag: 0.4.5
+Tested up to: 5.7
+Stable tag: 0.4.6
 
 GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
 
@@ -47,6 +47,14 @@ If you're running into issues with this plugin, please reach out for support on 
 4. Video Analysis
 
 == Changelog ==
+
+= 0.4.6 =
+* When uninstalling plugin, conditionally delete settings and all reports and scheduled events (post types 'gfw_report', 'gfw_event'). Add two flags to settings page
+* fixed issue with widget never showing up
+* fixed various issues with widget logic
+* moved install logic to admin_init hooks to work around Composer not running the install logic
+* removed 'hourly' and 'weekly' schedules from cron_schedules filter; those are already WordPress defaults
+
 
 = 0.4.5 =
 * Various label fixes
