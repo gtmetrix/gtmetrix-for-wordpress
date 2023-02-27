@@ -33,7 +33,7 @@ Sprites
 .gfw-paused-icon,
 .gfw-toggle-icon,
 .gfw-help-icon,
-.gfw-schedule-icon-small {
+.gfw-option-icon-small {
     background: url(images/sprite.png) no-repeat transparent;
     display: block;
     height: 13px;
@@ -46,6 +46,215 @@ Sprites
     -webkit-transition: none;
     -moz-transition: none;
     transition: none;
+}
+
+.gfw-browser-icon-small {
+    background: url(images/gtm-wp-sprite.png) no-repeat transparent;
+    display: block;
+    height: 22px;
+    width: 22px;
+    outline: 0 none;
+    overflow: hidden;
+    text-indent: -9999px;
+    float: left;
+    margin-left: 0;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
+}
+
+.gfw-location-icon-small {
+    background: url(images/gtm-wp-sprite.png) no-repeat transparent;
+    display: block;
+    height: 16px;
+    width: 22px;
+    outline: 0 none;
+    overflow: hidden;
+    text-indent: -9999px;
+    float: left;
+    margin-left: 5px;
+    margin-top:3px;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
+    background-position: 0 -112px;
+}
+
+.gfw-video-icon-small {
+    background: url(images/gtm-wp-sprite.png) no-repeat transparent;
+    display: block;
+    height: 16px;
+    width: 22px;
+    outline: 0 none;
+    overflow: hidden;
+    text-indent: -9999px;
+    float: left;
+    margin-left: 5px;
+    margin-top:3px;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
+    background-position: -47px -85px;
+}
+
+.gfw-schedule-icon-small {
+    background: url(images/gtm-wp-sprite.png) no-repeat transparent;
+    display: block;
+    height: 22px;
+    width: 22px;
+    outline: 0 none;
+    overflow: hidden;
+    text-indent: -9999px;
+    float: left;
+    margin-left: 5px;
+    -webkit-transition: none;
+    -moz-transition: none;
+    transition: none;
+    background-position: -114px -20px;
+}
+
+.gfw-browser-icon-small:first-child {
+    margin:0;
+}
+
+/*
+ * Firefox (Desktop)
+ */
+.gfw-browser-icon-1 {
+    background-position: 0 -112px;
+}
+
+/*
+ * Chrome (Android, Galaxy Nexus)
+ */
+.gfw-browser-icon-2 {
+    background-position: -50px -112px;
+}
+
+/*
+ * Chrome (Desktop)
+ */
+.gfw-browser-icon-3 {
+    background-position: -28px -112px;
+}
+
+/*
+ * Canada
+ */
+.gfw-location-icon-1, .gfw-location-icon-8 {
+    background-position: -202px 0;
+}
+
+/*
+ * Brazil
+ */
+ .gfw-location-icon-6 {
+    background-position: -340px 0;
+}
+
+/*
+ * UK
+ */
+ .gfw-location-icon-2 {
+    background-position: -230px 0;
+}
+
+/*
+ * Netherlands
+ */
+.gfw-location-icon-13 {
+    background-position: -230px -42px;
+}
+
+/*
+ * France
+ */
+ .gfw-location-icon-14 {
+    background-position: -286px -21px;
+}
+
+/*
+ * Germany
+ */
+ .gfw-location-icon-15 {
+    background-position: -312px -21px;
+}
+
+/*
+ * Australia
+ */
+ .gfw-location-icon-3 {
+    background-position: -258px 0;
+}
+
+/*
+ * Sweden
+ */
+ .gfw-location-icon-16 {
+    background-position: -230px -21px;
+}
+
+/*
+ * Hong Kpng
+ */
+ .gfw-location-icon-7 {
+    background-position: -202px -21px;
+}
+
+/*
+ * US
+ */
+ .gfw-location-icon-4, .gfw-location-icon-9, .gfw-location-icon-10, .gfw-location-icon-11, .gfw-location-icon-12 {
+    background-position: -286px 0;
+}
+
+/*
+ * South Africa
+ */
+ .gfw-location-icon-21 {
+    background-position: -258px -42px;
+}
+
+/*
+ * UAE
+ */
+ .gfw-location-icon-22 {
+    background-position: -258px -21px;
+}
+
+/*
+ * India
+ */
+ .gfw-location-icon-5, .gfw-location-icon-20 {
+    background-position: -312px 0;
+}
+
+/*
+ * South Korea
+ */
+ .gfw-location-icon-19 {
+    background-position: -286px -42px;
+}
+
+/*
+ * Japan
+ */
+ .gfw-location-icon-18 {
+    background-position: -340px -21px;
+}
+
+/*
+ * Singapore
+ */
+ .gfw-location-icon-17 {
+    background-position: -202px -42px;
+}
+
+/*
+ * China
+ */
+ .gfw-location-icon-7 {
+    background-position: -60px -19px;
 }
 
 .gfw-delete-icon {
@@ -85,13 +294,11 @@ Sprites
     background-position: -40px -17px;
 }
 
-.gfw-schedule-icon-small {
-    background-position: -102px -35px;
-}
-
+/*
 .gfw-schedule-icon-small:hover {
     background-position: -102px -19px;
 }
+*/
 
 .gfw-report-icon, .gfw-schedule-icon-large, .gfw-pdf-icon, .gfw-video-icon {
     line-height: 20px;
@@ -216,9 +423,9 @@ Report scores, grades and meters
     background-image: url(images/letter-grades.png);
     background-repeat: no-repeat;
     background-color: transparent;
-    display: inline;
-    float: right;
-    margin: 0 15px 0 0;
+    display: block;
+    
+    margin: 0;
     text-indent: -9999em;
     width: 68px;
     height: 69px;
@@ -253,32 +460,32 @@ Report scores, grades and meters
 }
 
 .gfw-report-grade-A .gfw-report-score {
-    color: #43C156;
+    color: #23ab11;
 }
 
 .gfw-report-grade-B .gfw-report-score {
-    color: #A1CA82;
+    color: #71bb30;
 }
 
 .gfw-report-grade-C .gfw-report-score {
-    color: #D2B338;
+    color: #cbb708;
 }
 
 .gfw-report-grade-D .gfw-report-score {
-    color: #D6903F;
+    color: #e29b20;
 }
 
 .gfw-report-grade-E .gfw-report-score {
-    color: #BB4A12;
+    color: #bb4a12;
 }
 
 .gfw-report-grade-F .gfw-report-score {
-    color: #D02D2D;
+    color: #eb393b;
 }
 
 .gfw-report-score {
-    float: left;
     font-size: 26px;
+    display:block;
 }
 
 /*------------------------------------------------------------------------------
@@ -362,6 +569,116 @@ See http://www.alistapart.com/articles/holygrail
 Dialogs
 ------------------------------------------------------------------------------*/
 
+.input-toggle {
+    position: relative;
+    display: inline-block;
+    border: 2px solid #e0e0e0;
+    vertical-align: middle;
+    font-size: 0;
+    background: #fff; 
+    box-sizing: border-box;
+}
+
+.input-toggle input {
+      display: inline-block;
+      width: 52px;
+      height: 25px;
+      outline: none; 
+}
+
+.input-toggle input[type=checkbox] {
+    border:none;
+    border-color:transparent;
+    background:transparent;
+    box-shadow:none;
+    border-image-width: 0;
+    margin:0;
+}
+
+.input-toggle label {
+    display: inline-block !important;
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    margin: 0 !important;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    width: 56px;
+    height: 29px;
+}
+
+.input-toggle label:before, .input-toggle label:after {
+    display: block;
+    position: absolute;
+}
+
+.input-toggle label:before {
+    top: 2px;
+    left: 4px;
+    bottom: 2px;
+    right: 4px;
+    padding-top: 5px;
+    padding-left: 3px;
+    background-color: #fff;
+    color: #646464;
+    content: "ON  OFF";
+    font: 11px "Maven Pro", Arial, sans-serif;
+    letter-spacing: -0.0625em;
+    white-space: pre;
+    letter-spacing: 0;
+    overflow: hidden;
+}
+
+.input-toggle label:after {
+    top: 4px;
+    left: 4px;
+    bottom: 4px;
+    width: 23px;
+    background-color: #b9b9b9;
+    transition: margin 0.3s, background 0.3s;
+    content: "";
+}
+
+.input-toggle label:hover:after {
+    background-color: #a09f9f;
+}
+
+.input-toggle input:checked + label:before {
+    color: #3c9adc;
+}
+
+.input-toggle input:checked + label:after {
+    margin-left: 25px;
+    background-color: #3c9adc;
+}
+
+.input-toggle input:checked + label:hover:after {
+    background-color: #2e7db4;
+}
+
+.input-toggle input:disabled + label {
+    background-color: #a6a6a6;
+    cursor: initial;
+}
+
+.input-toggle input:disabled + label:before {
+    background-color: #a6a6a6;
+    color: #fff;
+    content: "Disabled";
+    padding-left: 5px;
+}
+
+.input-toggle input:disabled + label:after {
+    visibility: hidden;
+}
+
+.input-toggle input:focus + label {
+    outline: 2px solid #225d87;
+}
+
 #gfw-flot-placeholder {
     width: 800px;
     height: 400px;
@@ -370,6 +687,24 @@ Dialogs
 
 .gfw-dialog {
     display: none;
+}
+
+.gfw-confirm-report-delete-modal .ui-widget-header, .gfw-confirm-report-scan-modal .ui-widget-header {
+    border-width:0 0 1px 0;
+    background:transparent;
+}
+
+.gfw-confirm-report-delete-modal .ui-dialog-titlebar-close, .gfw-confirm-report-scan-modal .ui-dialog-titlebar-close {
+    border:none;
+    background:transparent;
+}
+
+.gfw-confirm-report-delete-modal button, .gfw-confirm-report-scan-modal button {
+    padding:10px 15px;
+    color:white;
+    background-color:grey;
+    border:none;
+    border-radius:0;
 }
 
 #gfw-screenshot {
@@ -398,14 +733,46 @@ Dialogs
 Latest Report
 ------------------------------------------------------------------------------*/
 
-.gfw-latest-report-wrapper {
-    display: inline-block;
+#gfw-score-meta-box .gfw-latest-report-wrapper {
     vertical-align: top;
     width: 100%;
+    display:flex;
+    gap: 15px;
+    justify-content: space-between;
+
 }
 
 #gfw-score-meta-box .gfw-latest-report-wrapper {
     width: auto;
+}
+
+#gfw-score-meta-box .gfw-latest-report-screenshot {
+    border:2px solid silver;
+}
+
+#gfw-score-meta-box .gfw-latest-report-wrapper .gfw-latest-report-scores {
+    display:flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+#gfw-score-meta-box .gfw-latest-report-wrapper .gfw-latest-report-scores .gfw-latest-report-grades, #gfw-score-meta-box .gfw-latest-report-wrapper .gfw-latest-report-scores .gfw-latest-report-numbers {
+    border:2px solid silver;
+}
+
+.gfw-latest-report-numbers, .gfw-latest-report-grades {
+    display:flex;
+    background:#f8f8f8;
+}
+
+.gfw-latest-report-number, .gfw-latest-report-grade {
+    border-right:1px solid silver;
+    width:33%;
+    padding:1rem;
+}
+
+.gfw-latest-report-number:last-child, .gfw-latest-report-grade:last-child {
+    border:none;
 }
 
 .gfw- {
@@ -420,10 +787,20 @@ Latest Report
 }
 
 .gfw-latest-report {
-    padding: 10px 15px;
     color: #858585;
     font: 12px/1.231 Arial,Tahoma,Verdana,sans-serif;
     overflow: auto;
+}
+
+.gfw-no-latest-report {
+    border:2px solid silver;
+    padding:10px 15px;
+    background-color:#EEE;
+}
+
+.gfw-no-latest-report h4 {
+    font-style: italic;
+    margin-top:0;
 }
 
 .gfw-latest-report .gfw-report-title {
@@ -462,8 +839,13 @@ Latest Report
 Forms
 ------------------------------------------------------------------------------*/
 
+.gtmetrix_page_gfw_settings .button-primary, .toplevel_page_gfw_tests .button-primary {
+    background: #3c9adc;
+    border-color: #3c9adc;
+    border-radius:0;
+}
+
 .gfw-conditions select.gfw-units {
-    display: none;
     width: 100px;
 }
 
@@ -484,6 +866,25 @@ Forms
 .gfw #api_key,
 .gfw #default_location {
     width: 320px;
+}
+
+.gfw-conditions select.gfw-comparator {
+    width:auto;
+    display:inline;
+}
+
+div.gfw-condition-wrapper {
+    display: none;
+}
+
+tr.gfw_default_analysis_options {
+    border-bottom:1px solid lightgrey;
+    color:#aaa;
+}
+
+.form-table tr.gfw_default_analysis_options th {
+    padding-bottom:10px;
+    color:#aaa;
 }
 
 /*------------------------------------------------------------------------------
