@@ -1681,8 +1681,8 @@ HERE;
             'meta_query' => array(
                 array(
                     'key' => 'gfw_url',
-                    //'value' => array( trailingslashit( GFW_FRONT ), untrailingslashit( GFW_FRONT ) ),
-                    'value' => 'https://google.ca',
+                    'value' => array( trailingslashit( GFW_FRONT ), untrailingslashit( GFW_FRONT ) ),
+                    //'value' => 'https://google.ca',
                     'compare' => 'IN'
                 ),
                 array(
@@ -1851,8 +1851,8 @@ HERE;
                 'meta_query' => array(
                     array(
                         'key' => 'gfw_url',
-                        //'value' => array( trailingslashit( GFW_FRONT ), untrailingslashit( GFW_FRONT ) ),
-                        'value' => 'https://google.ca',
+                        'value' => array( trailingslashit( GFW_FRONT ), untrailingslashit( GFW_FRONT ) ),
+                        //'value' => 'https://google.ca',
                         'compare' => 'IN'
                     ),
                     array(
