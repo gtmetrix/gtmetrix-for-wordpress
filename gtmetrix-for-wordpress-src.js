@@ -8,7 +8,10 @@ jQuery(function ($) {
     if($.fn.tooltip) {
         $( '.tooltip' ).tooltip({
             show: false,
-            hide: false
+            hide: false,
+            classes: {
+                "ui-tooltip": "highlight"
+              }
         });
     }
 
@@ -52,14 +55,56 @@ jQuery(function ($) {
         width: 350,
         draggable: true,
         modal: true,
+        closeText: "",
+        dialogClass: "gfw-confirm-report-scan-modal",
         buttons: {
             'Close': function() {
                 $( this ).dialog( 'close' );
             }
+        },
+        classes: {
+            "ui-dialog-titlebar":"gfw-ui-widget-header"
         }
     });
 
     $('#gfw-parameters').submit(function(event) {
+        event.preventDefault();
+        $('#gfw-screenshot').css('background-image','url(../wp-content/plugins/gtmetrix-for-wordpress/images/loading.gif)');
+        $('#gfw-screenshot .gfw-message').text('').hide();
+        $('#gfw-scanner').show();
+        $( '#gfw-scan' ).dialog( 'open' );
+        q(0);
+
+        $.ajax({
+            url: ajaxurl,
+            dataType: 'json',
+            type: 'POST',
+            data: {
+                action: 'save_report',
+                fields: $(this).serialize(),
+                security : gfwObject.gfwnonce
+            },
+            cache: false,
+            success: function(data) {
+                if (data.error) {
+                    $('#gfw-scanner').hide();
+                    $('#gfw-screenshot').css('background-image','url(../wp-content/plugins/gtmetrix-for-wordpress/images/exclamation.png)');
+                    $('#gfw-screenshot .gfw-message').html( data.error ).show();
+                } else {
+                    $('#gfw-screenshot').css('background-image','url(' + data.screenshot + ')');
+                    window.setTimeout(
+                        function() {
+                            $('#gfw-scan').dialog('close');
+                            location.reload();
+                        },
+                        1000
+                    );
+                }
+            }
+        });
+    });
+
+    $('#gfw-retest').submit(function(event) {
         event.preventDefault();
         $('#gfw-screenshot').css('background-image','url(../wp-content/plugins/gtmetrix-for-wordpress/images/loading.gif)');
         $('#gfw-screenshot .gfw-message').text('').hide();
@@ -212,6 +257,8 @@ jQuery(function ($) {
         autoOpen: false,
         resizable: false,
         modal: true,
+        closeText: "",
+        dialogClass: "gfw-confirm-report-delete-modal",
         buttons: {
             'Yes': function() {
                 window.location.href = $(this).data('url');
@@ -219,6 +266,9 @@ jQuery(function ($) {
             'No': function() {
                 $( this ).dialog( 'close' );
             }
+        },
+        classes: {
+            "ui-dialog-titlebar":"gfw-ui-widget-header"
         }
     });
 
@@ -262,18 +312,31 @@ jQuery(function ($) {
             }
         }
     });
-
+    /*
     $('.gfw-conditions').on('change', 'select[name^="gfw_condition"]', function() {
-        $(this).siblings('select:not(.' + $(this).val() + ')').hide();
-        $(this).siblings('select.' + $(this).val()).show();
+        $(this).siblings('div:not(.' + $(this).val() + ')').hide();
+        $(this).siblings('div.' + $(this).val()).show();
     });
-
+    */
+    $('.gfw-conditions').on('change', 'select[name^="gfw_condition"]', function() {
+        $(this).siblings('div:not(.' + $(this).val() + ')').hide();
+        $(this).siblings('div.' + $(this).val()).css('display', 'inline');;
+    });
+    
+    /*
     $('#gfw-add-condition a').bind('click', function() {
         $('.gfw-conditions:hidden:first').show().find('.gfw-condition').removeAttr('disabled').trigger('change');
         if ($('.gfw-conditions:visible').length == 4)
             $(this).parents('tr').hide();
     });
-
+    */
+    
+    $('#gfw-add-condition a').bind('click', function() {
+        $('.gfw-conditions:hidden:first').show().find('.gfw-condition').removeAttr('disabled').trigger('change');
+        if ($('.gfw-conditions:visible').length == 4)
+            $(this).parents('tr').hide();
+    });
+ 
     $(document).on('click', '.gfw-remove-condition', function() {
         $(this).parents('tr').hide().find('.gfw-condition').attr('disabled', 'disabled');
         $('#gfw-add-condition').show();
@@ -281,10 +344,12 @@ jQuery(function ($) {
 
     if (! $('#gfw-notifications').attr('checked'))
         $('.gfw-conditions select:visible').attr('disabled', 'disabled');
-
-    $('input#gfw-notifications').bind('change', function() {
+        $('.gfw-conditions input:visible').attr('disabled', 'disabled');
+ 
+        $('input#gfw-notifications').bind('change', function() {
         if ($(this).is(':checked')) {
             $('.gfw-conditions select:visible').removeAttr('disabled');
+            $('.gfw-conditions input:visible').removeAttr('disabled');
             if ($('.gfw-conditions:visible').length < 4) {
                 $('#gfw-add-condition').show();
             }
@@ -294,7 +359,6 @@ jQuery(function ($) {
         }
         return false;
     });
-
     $('#gfw-test-front').bind('click', function() {
         $('#gfw_url').val($('#gfw-front-url').val());
         $('#gfw-parameters').submit();
@@ -311,6 +375,20 @@ jQuery(function ($) {
             },
             success: function() {
                 $('#gfw-reset').val('Done').attr('disabled', 'disabled');
+            }
+        });
+    });
+
+    $('#gfw-sync').bind('click', function() {
+        $.ajax({
+            url: ajaxurl,
+            cache: false,
+            data: {
+                action: 'sync',
+                security : gfwObject.gfwnonce
+            },
+            success: function() {
+                $('#gfw-sync').val('Done').attr('disabled', 'disabled');
             }
         });
     });

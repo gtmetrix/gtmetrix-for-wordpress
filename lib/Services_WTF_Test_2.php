@@ -3,7 +3,7 @@
 /*
  * Service_WTF_Test
  *
- * Version 0.4
+ * Version 2.0
  * 
  * A PHP REST client for the Web Testing Framework (WTF) Testing Service API
  * Currently only supports GTmetrix. See:
@@ -21,31 +21,14 @@
  *
  * Changelog:
  *
- *     0.4
- *         - fixed download_resources bug
- *         - added $append parameter to download_resources
- *         - some refactoring for consistency
- * 
- *     0.3
- *         - added download_resources method
- *  
- *     June 27, 2012
- *         - polling frequency in get_results() made less frantic
- *         - version changed to 0.2
- * 
- *     June 5, 2012
- *         - status method added
- *         - user_agent property updated
- * 
- *     January 23, 2012
- *         - Initial release
+ *  2.0
  */
 
-class Services_WTF_Test {
-    const api_url = 'https://gtmetrix.com/api/0.1';
+class Services_WTF_Test_v2 {
+    const api_url = 'https://gtmetrix.com/api/2.0';
     private $username = '';
     private $password = '';
-    private $user_agent = 'Services_WTF_Test_php/0.4 (+http://gtmetrix.com/api/)';
+    private $user_agent = 'Services_WTF_Test_php/2.0 (+https://gtmetrix.com/api/docs/2.0/)';
     protected $test_id = '';
     protected $result = array( );
     protected $error = '';
@@ -92,6 +75,7 @@ class Services_WTF_Test {
      * returns raw http data (JSON object in most API cases) on success, false otherwise
      */
     protected function query( $command, $req = 'GET', $params = '' ) {
+        //error_log('COMMAND ' . $command );
         $ch = curl_init();
 
         if ( substr( $command, 0, strlen( self::api_url ) - 1 ) == self::api_url ) {
@@ -99,23 +83,33 @@ class Services_WTF_Test {
         } else {
             $URL = self::api_url . '/' . $command;
         }
-
+        //error_log('URL ' . $URL );
+        
         curl_setopt( $ch, CURLOPT_URL, $URL );
         curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
         curl_setopt( $ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC );
         curl_setopt( $ch, CURLOPT_USERAGENT, $this->user_agent );
-        curl_setopt( $ch, CURLOPT_USERPWD, $this->username . ":" . $this->password );
+        curl_setopt( $ch, CURLOPT_USERPWD, $this->password . ":");
         curl_setopt( $ch, CURLOPT_CUSTOMREQUEST, $req );
         // CURLOPT_SSL_VERIFYPEER turned off to avoid failure when cURL has no CA cert bundle: see http://curl.haxx.se/docs/sslcerts.html
         curl_setopt( $ch, CURLOPT_SSL_VERIFYPEER, FALSE );
-
-        if ( $req == 'POST' )
+        curl_setopt($ch, CURLOPT_VERBOSE, true);
+        if ( $req == 'POST' ) {
+            $params = json_encode( $params );
+            //error_log('PARAMS ' . print_r($params, TRUE));
+            curl_setopt( $ch, CURLOPT_POST, true );
             curl_setopt( $ch, CURLOPT_POSTFIELDS, $params );
-
+            curl_setopt( $ch, CURLOPT_HTTPHEADER, ['Content-Type:application/vnd.api+json'] );
+        }
+        $streamVerboseHandle = fopen('php://temp', 'w+');
+        curl_setopt( $ch, CURLINFO_HEADER_OUT, true);
+        curl_setopt($ch, CURLOPT_STDERR, $streamVerboseHandle);
         $results = curl_exec( $ch );
-        if ( $results === false )
+        if ( $results === false ) {
             $this->error = curl_error( $ch );
-
+        } else {
+            error_log(curl_getinfo( $ch, CURLINFO_HEADER_OUT));
+        }
         curl_close( $ch );
 
         return $results;
@@ -149,6 +143,7 @@ class Services_WTF_Test {
      * returns the test_id on success, false otherwise;
      */
     public function test( $data ) {
+        //error_log('V2.0 test: ' . print_r($data, TRUE ) );
         if ( empty( $data ) ) {
             $this->error = 'Parameters need to be set to start a new test!';
             return false;
@@ -167,18 +162,29 @@ class Services_WTF_Test {
 
         if ( !empty( $this->result ) )
             $this->result = array( );
-
-        $data = http_build_query( $data );
-        error_log($data);
-        $result = $this->query( 'test', 'POST', $data );
-
+        if( isset( $data['cookies'] ) && $data['cookies'] ) {
+            $cookies = explode(PHP_EOL, $data['cookies'] );
+            $data['cookies'] = $cookies;
+        }
+        $post_data = array(
+            'data' => array(
+                'type' => 'test',
+                'attributes' => $data
+            )
+        );
+        //$post_data = http_build_query( $post_data );
+        //error_log('V2.0 test string data: ' . $post_data );
+        //$headers = array(
+        //    'Content-Type' => 'application/vnd.api+json'
+        //);
+        $result = $this->query( 'tests', 'POST', $post_data );
         if ( $result != false ) {
             $result = json_decode( $result, true );
-            error_log(print_r($result, TRUE));
+            //error_log( "RESULT " . print_r( $result, TRUE ) );
             if ( empty( $result['error'] ) ) {
-                $this->test_id = $result['test_id'];
+                $this->test_id = $result['data']['id'];
 
-                if ( isset( $result['state'] ) AND !empty( $result['state'] ) ) 
+                if ( isset( $result['data']['attributes']['state'] ) AND !empty( $result['data']['attributes']['state'] ) )
                     $this->result = $result;
 
                 return $this->test_id;
@@ -257,25 +263,39 @@ class Services_WTF_Test {
             return false;
 
         if ( !empty( $this->result ) ) {
-            if ( $this->result['state'] == "completed" )
+            if ( $this->result['data']['attributes']['state'] == "completed" )
                 return true;
         }
 
-        $command = "test/" . $this->test_id;
-
+        $command = "tests/" . $this->test_id;
+        //error_log( $command );
         $result = $this->query( $command );
         if ( $result != false ) {
             $result = json_decode( $result, true );
-
-            if ( !empty( $result['error'] ) AND !isset( $result['state'] ) ) {
+            //error_log('poll_state RESULT ' . print_r($result, TRUE ) );
+            if ( !empty( $result['error'] ) AND !isset( $result['data']['attributes']['state'] ) ) {
                 $this->error = $result['error'];
                 return false;
             }
-
-            $this->result = $result;
-            if ( $result['state'] == 'error' )
-                $this->error = $result['error'];
-
+            // Docs say there should be a redirect to the "report" call, but that doesn't seem to be the case: even if completed, the response is type "test"
+            if( $result['data']['attributes']['state'] == "completed" && isset( $result['data']['attributes']['report'] ) ) {
+                $command = "reports/" . $result['data']['attributes']['report'];
+                $report_result = $this->query( $command );
+                if ( $report_result != false ) {
+                    $report_result = json_decode( $report_result, true );
+                    if ( !empty( $result['error'] ) ) {
+                        $this->error = $report_result['error'];
+                        return false;
+                    } else {
+                        $report_result['data']['attributes']['state'] = "completed";
+                        $this->result = $report_result;
+                    }
+                }
+            } else {
+                $this->result = $result;
+                if ( $result['data']['attributes']['state'] == 'error' )
+                    $this->error = $result['error'];
+            }
             return true;
         }
 
@@ -298,7 +318,7 @@ class Services_WTF_Test {
         if ( empty( $this->result ) )
             return false;
 
-        return $this->result['state'];
+        return $this->result['data']['attributes']['state'];
     }
 
     /**
@@ -321,6 +341,7 @@ class Services_WTF_Test {
     public function get_results() {
         sleep( 6 );
         $i = 1;
+        $this->poll_state();
         while ( $this->poll_state() ) {
             if ( $this->state() == 'completed' OR $this->state() == 'error' )
                 break;
@@ -352,6 +373,29 @@ class Services_WTF_Test {
     }
 
     /**
+     * browsers()
+     *
+     * Returns a list of GTMetrix browsers accompanied by their  IDs
+     * that can be used in newTest() to select a different server location for testing
+     *
+     * returns the browser list in array format, the error message if an error occured,
+     * or false if a query error occured.
+     */
+    public function browsers() {
+        $result = $this->query( 'browsers' );
+        if ( $result != false ) {
+            $result = json_decode( $result, true );
+            if ( empty( $result['error'] ) ) {
+                return $result;
+            } else {
+                $this->error = $result['error'];
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * results()
      *
      * Get test results
@@ -361,8 +405,10 @@ class Services_WTF_Test {
     public function results() {
         if ( !$this->completed() )
             return false;
-
-        return $this->result['results'];
+        $results = $this->result['data']['attributes'];
+        $results['report_url'] = $this->result['data']['links']['report_url'];
+        $results['report_id'] = $this->result['data']['id'];
+        return $results;
     }
 
     /**

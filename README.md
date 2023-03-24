@@ -24,7 +24,7 @@ Requirements
 
 **Requires:** 3.3.1 or higher
 
-**Compatible up to:** 5.7
+**Compatible up to:** 5.6.1
 
 Version
 --------------------------
@@ -38,8 +38,6 @@ Changelog
 * When uninstalling plugin, conditionally delete settings and all reports and scheduled events (post types 'gfw_report', 'gfw_event'). Add two flags to settings page
 * fixed issue with widget never showing up
 * fixed various issues with widget logic
-* moved install logic to admin_init hooks to work around Composer not running the install logic
-* removed 'hourly' and 'weekly' schedules from cron_schedules filter; those are already WordPress defaults
 
 ##### 0.4.5
 * Various label fixes
