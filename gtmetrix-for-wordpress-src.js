@@ -175,11 +175,11 @@ jQuery(function ($) {
     });
     $(document).on('click','#analysis-options-header',function(event) {
         var innerText = $(this).text();
-        if(innerText == "Show Analysis Options") {
-            $(this).text("Hide Analysis Options");
+        if(innerText == "⌄ Show Analysis Options") {
+            $(this).text("^ Hide Analysis Options");
             $('#analysis-options').show();
         } else {
-            $(this).text("Show Analysis Options");
+            $(this).text("⌄ Show Analysis Options");
             $('#analysis-options').hide();
         }
     });
