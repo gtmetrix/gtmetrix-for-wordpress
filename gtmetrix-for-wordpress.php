@@ -1582,6 +1582,11 @@ HERE;
     public function gtmetrix_account_meta_box() {
         $gfw_status = get_option( 'gfw_status', array() );
         $gfw_options = get_option( 'gfw_options' );
+        $test_cost = 1;
+        if( $gfw_options['report_type'] != 'lighthouse' ) {
+            $test_cost = 0.7;
+        }
+        
         ?>
         <p>
             <strong>Account Type:</strong> <?php echo $gfw_status['account_type']; ?>
@@ -1605,10 +1610,10 @@ HERE;
             Every test costs <?php echo $gfw_options['report_type'] == 'lighthouse' ? "<strong>1</strong> API credit" : "<strong>0.7</strong> API credits"; ?>
         </p>
         <p>
-            Tests that add video playback cost an additional <strong>X</strong> API credits
+            Tests that add video playback cost an additional <strong>0.9</strong> API credits
         </p>
         <p>
-            Tests with PDF Summary download enabled cost <strong>X</strong> API credits (X API credits for Full Reports)
+            Tests with PDF Summary download enabled cost <strong><?php echo ( $test_cost + 0.2 ); ?></strong> API credits (<strong><?php echo ( $test_cost + 0.3 ); ?></strong> API credits for Full Reports)
         </p>
         <p>
             You can view your API credit limit and usage in your <a href="https://gtmetrix.com/dashboard/account" target="_blank">your Account page</a> on GTmetrix.com
