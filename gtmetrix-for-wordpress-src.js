@@ -173,7 +173,16 @@ jQuery(function ($) {
         }
         return false;
     });
-
+    $(document).on('click','#analysis-options-header',function(event) {
+        var innerText = $(this).text();
+        if(innerText == "Show Analysis Options") {
+            $(this).text("Hide Analysis Options");
+            $('#analysis-options').show();
+        } else {
+            $(this).text("Show Analysis Options");
+            $('#analysis-options').hide();
+        }
+    });
     $(document).on('click', '.gfw-open-graph', function(event) {
         event.preventDefault();
         var eventId = $(this).attr('href');

@@ -1253,7 +1253,7 @@ HERE;
         $api = $this->api();
         $response = array( );
         delete_transient( 'credit_status' );
-        //error_log( 'run_test parameters ' . print_r( $parameters, TRUE ) );
+        error_log( 'run_test parameters ' . print_r( $parameters, TRUE ) );
         $test_id = $api->test( array(
             'url' => $this->append_http( $parameters['gfw_url'] ),
             'browser' => $parameters['gfw_browser'],
@@ -1262,12 +1262,12 @@ HERE;
             'connection' => $parameters['gfw_connection'],
             'retention' => $parameters['gfw_retention'],
             'cookies' => $parameters['gfw_cookies'],
-            'httpauth_username' => $parameters['gfw_httpauth_username'],
-            'httpauth_password' => $parameters['gfw_httpauth_password'],
+            'httpauth_username' => isset( $parameters['gfw_httpauth_username'] ) ? $parameters['gfw_httpauth_username'] : '',
+            'httpauth_password' => isset( $parameters['gfw_httpauth_password'] ) ? $parameters['gfw_httpauth_password'] : '',
             'adblock' => isset( $parameters['gfw_adblock'] ) ? $parameters['gfw_adblock'] : 0,
             'video' => isset( $parameters['gfw_enable_video'] ) ? $parameters['gfw_enable_video'] : 0,
             )
-            );
+        );
 
         if ( $api->error() ) {
             error_log($api->error());
@@ -1284,7 +1284,7 @@ HERE;
 
         if ( $api->completed() ) {
             $response['test_id'] = $test_id;
-            //error_log( "API RESULTS " . print_r( $api->results(), TRUE ) );
+            error_log( "API RESULTS " . print_r( $api->results(), TRUE ) );
             return array_merge( $response, $api->results() );
         }
     }
@@ -1739,7 +1739,13 @@ HERE;
                     ?>
                     <div class="gfw-latest-report-wrapper">
                         <div class="gfw-box gfw-latest-report-screenshot">
-                            <img src="<?php echo $custom_fields['report_url'][0]; ?>/screenshot.jpg" style="display: inline-block; margin-right: 10px; border-radius: 8px 8px 8px 8px;" />
+                            <img src="<?php 
+                            if( isset( $custom_fields['report_url'][0] ) ) {
+                                echo $custom_fields['report_url'][0] . "/screenshot.jpg";
+                            } else {
+                                echo plugin_dir_url( __FILE__ ) . "/images/no-report-splash.png";
+                            }
+                            ?>" style="display: inline-block; margin-right: 10px; border-radius: 8px 8px 8px 8px;" />
                         </div>
                         <div class="gfw-box gfw-latest-report-<?php echo $options['report_type']; ?>">
                             <div class="gfw-latest-report-scores">
@@ -1774,7 +1780,7 @@ HERE;
                             </div>
                             <div class="gfw-report-links">
                                 <p><a href="<?php echo GFW_SCHEDULE; ?>&report_id=<?php echo $query->post->ID; ?>" class="gfw-schedule-icon-large">Monitor this page</a>
-                                <?php $this->display_retest_form( 'Re-test your Front Page', $options['report_type'], untrailingslashit( GFW_FRONT ), $options['default_browser'], $options['default_location'], $options['default_connection'] ); ?>
+                                <?php $this->display_retest_form( 'Re-test your Front Page', $options['report_type'], untrailingslashit( GFW_FRONT ), $options['default_browser'], $options['default_location'], $options['default_connection'], $options['default_retention'] ); ?>
                                 <p><a href="<?php echo $custom_fields['report_url'][0]; ?>" target="_blank" class="gfw-report-icon">Detailed report</a> &nbsp;&nbsp; </p>
                             </div>
                         </div>
@@ -1837,9 +1843,7 @@ HERE;
         } else {
             ?>
             <div class="gfw-latest-report-wrapper">
-                <div class="gfw-box gfw-latest-report-screenshot">
-                
-                </div>
+                <div class="gfw-box gfw-latest-report-screenshot"><img src="<?php echo plugin_dir_url( __FILE__ ) . "/images/no-report-splash.png"; ?>" /></div>
             <?php
             //If we found no report of the right type, look for reports of the WRONG type. That will influence what's shown here.
             $args = array(
@@ -1884,7 +1888,7 @@ HERE;
             if( $no_reports) {
                 echo '<h4>Your Front Page (' . GFW_FRONT . ') has not been analyzed yet</h4><p>Your front page is set in the <a href="' . get_admin_url() . 'options-general.php">Settings</a> of your WordPress install.</p>';
                 //echo '</div>';
-                $this->display_retest_form( 'Test your Front Page now', $options['report_type'], untrailingslashit( GFW_FRONT ), $options['default_browser'], $options['default_location'], $options['default_connection'] );
+                $this->display_retest_form( 'Test your Front Page now', $options['report_type'], untrailingslashit( GFW_FRONT ), $options['default_browser'], $options['default_location'], $options['default_connection'], $options['default_retention'] );
             } else {
                 if( $options['report_type'] == 'lighthouse' ) {
                     echo '<h4>No Lighthouse Report data for this page</h4><p>You have not tested the front page as a Lighthouse report yet.</p>';
@@ -1901,9 +1905,9 @@ HERE;
         }
     }
 
-    public function display_retest_form( $label, $report_type, $url, $browser, $location, $connection ) {
+    public function display_retest_form( $label, $report_type, $url, $browser, $location, $connection, $retention ) {
         ?>
-        <form method="post" id="gfw-retest"><input type="hidden" name="post_type" value="gfw_report" /><input type="hidden" name="gfw_url" value="<?php echo $url; ?>" /><input type="hidden" name="gfw_location" value="<?php echo $location; ?>" /><input type="hidden" name="gfw_report" value="<?php echo $report_type;?>" /><input type="hidden" name="gfw_browser" value="<?php echo $browser; ?>" /><input type="hidden" name="gfw_connection" value="<?php echo $connection; ?>" /><?php
+        <form method="post" id="gfw-retest"><input type="hidden" name="post_type" value="gfw_report" /><input type="hidden" name="gfw_url" value="<?php echo $url; ?>" /><input type="hidden" name="gfw_location" value="<?php echo $location; ?>" /><input type="hidden" name="gfw_report" value="<?php echo $report_type;?>" /><input type="hidden" name="gfw_browser" value="<?php echo $browser; ?>" /><input type="hidden" name="gfw_connection" value="<?php echo $connection; ?>" /><input type="hidden" name="gfw_retention" value="<?php echo $retention; ?>" /><?php
             wp_nonce_field( plugin_basename( __FILE__ ), 'gfwtestnonce' );?><?php submit_button( $label, 'primary', 'submit', false ); ?></form>
         <?php
     }
@@ -1914,6 +1918,7 @@ HERE;
 
     public function test_meta_box() {
         $passed_url = isset( $_GET['url'] ) ? GFW_FRONT . $_GET['url'] : '';
+        $passed_url = htmlspecialchars( $passed_url );
         ?>
         <form method="post" id="gfw-parameters">
             <input type="hidden" name="post_type" value="gfw_report" />
@@ -1978,7 +1983,7 @@ HERE;
                 </tr>
             </table>
             <div id="analysis-options-wrapper">
-                <h3 id="analysis-options-header">Show Analysis Options</h3>
+                <h3 id="analysis-options-header">&#8964; Show Analysis Options</h3>
                 <div id="analysis-options">
                     <table class="form-table">
                         <tr valign="top">

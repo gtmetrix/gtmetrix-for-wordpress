@@ -75,7 +75,7 @@ class Services_WTF_Test_v2 {
      * returns raw http data (JSON object in most API cases) on success, false otherwise
      */
     protected function query( $command, $req = 'GET', $params = '' ) {
-        //error_log('COMMAND ' . $command );
+        error_log('COMMAND ' . $command );
         $ch = curl_init();
 
         if ( substr( $command, 0, strlen( self::api_url ) - 1 ) == self::api_url ) {
@@ -116,7 +116,9 @@ class Services_WTF_Test_v2 {
     }
 
     protected function checkid() {
+        error_log( 'checkid' );
         if ( empty( $this->test_id ) ) {
+            error_log( 'current error message: ' . $this->error );
             $this->error = 'No test_id! Please start a new test or load an existing test first.';
             return false;
         }
@@ -143,7 +145,7 @@ class Services_WTF_Test_v2 {
      * returns the test_id on success, false otherwise;
      */
     public function test( $data ) {
-        //error_log('V2.0 test: ' . print_r($data, TRUE ) );
+        error_log('V2.0 test: ' . print_r($data, TRUE ) );
         if ( empty( $data ) ) {
             $this->error = 'Parameters need to be set to start a new test!';
             return false;
@@ -180,8 +182,8 @@ class Services_WTF_Test_v2 {
         $result = $this->query( 'tests', 'POST', $post_data );
         if ( $result != false ) {
             $result = json_decode( $result, true );
-            //error_log( "RESULT " . print_r( $result, TRUE ) );
-            if ( empty( $result['error'] ) ) {
+            error_log( "RESULT " . print_r( $result, TRUE ) );
+            if ( empty( $result['errors'] ) ) {
                 $this->test_id = $result['data']['id'];
 
                 if ( isset( $result['data']['attributes']['state'] ) AND !empty( $result['data']['attributes']['state'] ) )
@@ -189,7 +191,11 @@ class Services_WTF_Test_v2 {
 
                 return $this->test_id;
             } else {
-                $this->error = $result['error'];
+                //there could conceivably be more than one error message
+                foreach( $result['errors'] as $i => $error_data ) {
+                    $this->error .= $result['errors'][$i]['detail'];
+                }
+                //$this->error = $result['errors'][0]['detail'];
             }
         }
 
