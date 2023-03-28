@@ -193,7 +193,7 @@ class Services_WTF_Test_v2 {
             } else {
                 //there could conceivably be more than one error message
                 foreach( $result['errors'] as $i => $error_data ) {
-                    $this->error .= $result['errors'][$i]['detail'];
+                    $this->error .= $result['errors'][$i]['detail'] . "\n";
                 }
                 //$this->error = $result['errors'][0]['detail'];
             }
