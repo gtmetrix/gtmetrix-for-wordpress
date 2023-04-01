@@ -3,7 +3,7 @@
   Plugin Name: GTmetrix for WordPress
   Plugin URI: https://gtmetrix.com/gtmetrix-for-wordpress-plugin.html
   Description: GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
-  Version: 0.4.7
+  Version: 0.4.8
   Author: GTmetrix
   Author URI: https://gtmetrix.com/
 
@@ -49,12 +49,13 @@ class GTmetrix_For_WordPress {
         add_action( 'wp_ajax_reset', array( &$this, 'reset_callback' ) );
         add_action( 'wp_ajax_sync', array( &$this, 'sync_callback' ) );
         add_action( 'widgets_init', array( &$this, 'gfw_widget_init' ) );
+        add_action( 'plugins_loaded', array( &$this, 'gwf_plugins_loaded' ) );
         add_filter( 'cron_schedules', array( &$this, 'add_intervals' ) );
         add_filter( 'plugin_row_meta', array( &$this, 'plugin_links' ), 10, 2 );
 
         $options = get_option( 'gfw_options' );
         define( 'GFW_WP_VERSION', '3.3.1' );
-        define( 'GFW_VERSION', '0.4.6' );
+        define( 'GFW_VERSION', '0.4.8' );
         define( 'GFW_USER_AGENT', 'GTmetrix_WordPress/' . GFW_VERSION . ' (+https://gtmetrix.com/gtmetrix-for-wordpress-plugin.html)' );
         define( 'GFW_TIMEZONE', get_option( 'timezone_string' ) ? get_option( 'timezone_string' ) : date_default_timezone_get() );
         define( 'GFW_AUTHORIZED', isset( $options['authorized'] ) && $options['authorized'] ? true : false );
@@ -410,7 +411,9 @@ HERE;
         update_option( 'gfw_options', $options );
         $options = get_option( 'gfw_account' );
         $options['account_type'] = 'Basic';
-        
+        /*
+         * 
+         */
         register_setting( 'gfw_options_group', 'gfw_options', array( &$this, 'sanitize_settings' ) );
         add_settings_section( 'authentication_section', '', array( &$this, 'section_text' ), 'gfw_settings' );
         add_settings_field( 'api_username', 'GTmetrix Account E-mail', array( &$this, 'set_api_username' ), 'gfw_settings', 'authentication_section' );
@@ -2740,6 +2743,171 @@ HERE;
             if ( GFW_AUTHORIZED ) {
                 register_widget( 'GFW_Widget' );
             }
+        }
+        
+        /*
+         * Check if the report_types options are set. If we installed this plugin version fresh, they must be set as soon as the user account is authorised. 
+         * 
+         * If we updated the plugin, the account would be 
+         * 
+         */
+        public function gwf_plugins_loaded() {
+            $options = get_option( 'gfw_options' );
+            if( isset( $options['report_types'] ) && GFW_AUTHORIZED ) {
+                return;
+            }
+            if ( !class_exists( 'Services_WTF_Test_v2' ) ) {
+                require_once('lib/Services_WTF_Test_2.php');
+            }
+            $options['report_types'] = array(
+                array(
+                    'id' => 'lighthouse',
+                    'attributes' => array(
+                        'name' => 'Lighthouse (API 2.0) - 1 credit per test'
+                    )
+                ),
+                array(
+                    'id' => 'legacy',
+                    'attributes' => array(
+                        'name' => 'Pagespeed/YSlow (API 0.1) - 0.7 credits per test'
+                    )
+                )
+            );
+            $options['retentions'] = array(
+                array(
+                    'id' => '1',
+                    'attributes' => array(
+                        'name' => '1 month'
+                    )
+                ),
+                array(
+                    'id' => '6',
+                    'attributes' => array(
+                        'name' => '6 months (+0.4 API credits)'
+                    )
+                ),
+                array(
+                    'id' => '12',
+                    'attributes' => array(
+                        'name' => '12 months (+0.9 API credits)'
+                    )
+                ),
+                array(
+                    'id' => '24',
+                    'attributes' => array(
+                        'name' => '24 months (+01.4 API credits)'
+                    )
+                )
+            );
+            $options['connections'] = array(
+                array(
+                    'id' => "",
+                    'attributes' => array(
+                        'name' => 'Unthrottled Connection'
+                    )
+                ),
+                array(
+                    'id' => '20000/5000/25',
+                    'attributes' => array(
+                        'name' => 'Broadband Fast (20/5 Mbps, 25ms)'
+                    )
+                ),
+                array(
+                    'id' => '5000/1000/30',
+                    'attributes' => array(
+                        'name' => 'Broadband (5/1 Mbps, 30ms)'
+                    )
+                ),
+                array(
+                    'id' => '1500/384/50',
+                    'attributes' => array(
+                        'name' => 'Broadband Slow (1.5 Mbps/384 Kbps, 50ms)'
+                    )
+                ),
+                array(
+                    'id' => '15000/10000/100',
+                    'attributes' => array(
+                        'name' => 'LTE (15/10 Mbps, 100ms)'
+                    )
+                ),
+                array(
+                    'id' => '5000/1000/150',
+                    'attributes' => array(
+                        'name' => '4G Slow (5/1 Mbps, 150ms)'
+                    )
+                ),
+                array(
+                    'id' => '1600/768/200',
+                    'attributes' => array(
+                        'name' => '3G (1.6 Mbps/768 Kbps, 200ms)'
+                    )
+                ),
+                array(
+                    'id' => '750/500/250',
+                    'attributes' => array(
+                        'name' => '3G Slow (750/500 Kbps, 250ms)'
+                    )
+                )
+            );
+            $test_v2 = new Services_WTF_Test_v2();
+            $test_v2->api_username( $options['api_username'] );
+            $test_v2->api_password( $options['api_key'] );
+            $status_v2 = $test_v2->status();
+            /*
+             * We need to re-retrieve the status, which contains 
+             */
+            if( isset( $status_v2['data'] ) ) {
+                $valid['authorized'] = 1;
+                $status_options = $status_v2['data']['attributes'];
+                update_option( 'gfw_status', $status_options );
+            } else {
+                error_log($test_v2->error() );
+            } 
+            /*
+             * Retrieve locations
+             */
+            $locations = $test_v2->locations();
+            if ( $test_v2->error() ) {
+                error_log($test_v2->error() );
+            } else {
+                if( isset( $locations['data'] ) ) {
+                    $options['locations'] = [];
+                    $options['locations'] = array(
+                        "Available Locations" => array(),
+                        "North America" => array(),
+                        "Latin America" => array(),
+                        "Europe" => array(),
+                        "Asia Pacific" => array(),
+                        "Africa" => array(),
+                        "Middle East" => array()
+                    );
+                    foreach ( $locations['data'] as $location ) {
+                        $location_region = $location['attributes']['region'];
+                        if( $status_options['account_pro_locations_access'] ) {
+                            //we've got access to all locations. Group them by region
+                            $options['locations'][$location_region][$location['id']] = $location;
+                        } else {
+                            if( $location['attributes']['account_has_access'] ) {
+                                $options['locations']["Available Locations"][$location['id']] = $location;
+                            } else {
+                                $options['locations'][$location_region][$location['id']] = $location;
+                            }
+                        }
+                    }
+                }
+            }
+            $browsers = $test_v2->browsers();
+            if ( $test_v2->error() ) {
+                error_log($test_v2->error() );
+            } else {
+                if( isset( $browsers['data'] ) ) {
+                    $options['browsers'] = [];
+                    foreach ( $browsers['data'] as $browser ) {
+                        $options['browsers'][$browser['id']] = $browser;
+                    }
+                }
+            }
+            update_option( 'gfw_options', $options );
         }
 
     }

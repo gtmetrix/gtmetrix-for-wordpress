@@ -790,6 +790,7 @@ Latest Report
     color: #858585;
     font: 12px/1.231 Arial,Tahoma,Verdana,sans-serif;
     overflow: auto;
+    width:75%;
 }
 
 .gfw-no-latest-report {
@@ -885,6 +886,16 @@ tr.gfw_default_analysis_options {
 .form-table tr.gfw_default_analysis_options th {
     padding-bottom:10px;
     color:#aaa;
+}
+
+h3#analysis-options-header {
+    text-align: center;
+    background-color: silver;
+    padding: 0.25rem;
+}
+
+#analysis-options {
+    display:none;
 }
 
 /*------------------------------------------------------------------------------

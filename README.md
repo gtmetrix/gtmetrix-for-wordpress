@@ -29,10 +29,16 @@ Requirements
 Version
 --------------------------
 
-0.4.6
+0.4.8
 
 Changelog
 --------------------------
+
+##### 0.4.8
+* Fix issues with updating plugin from a pre-0.4.7 version
+
+##### 0.4.7
+* Update to use v2.0 of the API
 
 ##### 0.4.6
 * When uninstalling plugin, conditionally delete settings and all reports and scheduled events (post types 'gfw_report', 'gfw_event'). Add two flags to settings page
