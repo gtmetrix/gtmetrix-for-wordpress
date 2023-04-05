@@ -3,7 +3,7 @@
   Plugin Name: GTmetrix for WordPress
   Plugin URI: https://gtmetrix.com/gtmetrix-for-wordpress-plugin.html
   Description: GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
-  Version: 0.4.8
+  Version: 0.4.9
   Author: GTmetrix
   Author URI: https://gtmetrix.com/
 
@@ -55,7 +55,7 @@ class GTmetrix_For_WordPress {
 
         $options = get_option( 'gfw_options' );
         define( 'GFW_WP_VERSION', '3.3.1' );
-        define( 'GFW_VERSION', '0.4.8' );
+        define( 'GFW_VERSION', '0.4.9' );
         define( 'GFW_USER_AGENT', 'GTmetrix_WordPress/' . GFW_VERSION . ' (+https://gtmetrix.com/gtmetrix-for-wordpress-plugin.html)' );
         define( 'GFW_TIMEZONE', get_option( 'timezone_string' ) ? get_option( 'timezone_string' ) : date_default_timezone_get() );
         define( 'GFW_AUTHORIZED', isset( $options['authorized'] ) && $options['authorized'] ? true : false );
@@ -1831,7 +1831,7 @@ HERE;
                             </div>
                             <div class="gfw-report-links">
                                 <p><a href="<?php echo GFW_SCHEDULE; ?>&report_id=<?php echo $query->post->ID; ?>" class="gfw-schedule-icon-large">Monitor this page</a>
-                                <?php $this->display_retest_form( 'Re-test your Front Page', $options['report_type'], untrailingslashit( GFW_FRONT ), $options['default_browser'], $options['default_location'], $options['default_connection'] ); ?>
+                                <?php $this->display_retest_form( 'Re-test your Front Page', $options['report_type'], untrailingslashit( GFW_FRONT ), $options['default_browser'], $options['default_location'], $options['default_connection'], $options['default_retention'] ); ?>
                                 <p><a href="<?php echo $custom_fields['report_url'][0]; ?>" target="_blank" class="gfw-report-icon">Detailed report</a> &nbsp;&nbsp; </p>
                             </div>
                         </div>
@@ -1905,7 +1905,7 @@ HERE;
                     echo '<h4>No Legacy Report data for this page</h4><p>You have not tested the front page as a Legacy report yet.</p>';
                     //echo '</div>';    
                 }
-                $this->display_retest_form( 'Re-test your Front Page', $options['report_type'], untrailingslashit( GFW_FRONT ), $options['default_browser'], $options['default_location'], $options['default_connection'] );
+                $this->display_retest_form( 'Re-test your Front Page', $options['report_type'], untrailingslashit( GFW_FRONT ), $options['default_browser'], $options['default_location'], $options['default_connection'], $options['default_retention'] );
             }
             echo '</div>';
             echo '</div>';
