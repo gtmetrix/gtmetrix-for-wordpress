@@ -3,7 +3,7 @@
   Plugin Name: GTmetrix for WordPress
   Plugin URI: https://gtmetrix.com/gtmetrix-for-wordpress-plugin.html
   Description: GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
-  Version: 0.4.9
+  Version: 0.4.10
   Author: GTmetrix
   Author URI: https://gtmetrix.com/
 
@@ -1807,7 +1807,7 @@ HERE;
                             <div class="gfw-latest-report-scores">
                                 <div class="gfw-latest-report-grades">
                                     <div class="gfw-latest-report-grade gfw-latest-report-gtmetrixgrade gfw-report-grade-<?php echo $custom_fields['gtmetrix_grade'][0]; ?>">
-                                        <span class="gfw-report-grade"><?php echo custom_fields['gtmetrix_grade'][0]; ?></span>
+                                        <span class="gfw-report-grade"><?php echo $custom_fields['gtmetrix_grade'][0]; ?></span>
                                     </div>
                                     <div class="gfw-latest-report-grade gfw-latest-report-performance gfw-report-grade-<?php echo $performance_grade['grade']; ?>">
                                         <span class="gfw-report-title">Performance</span><br>
@@ -2463,6 +2463,7 @@ HERE;
                                     $yslow_grade = $this->score_to_grade( $yslow_score );
                                 }
                             }
+                            $page_load_time = $custom_fields['fully_loaded_time'][0];
                             $report_date = $this->wp_date( $query->post->post_date, true );
                             $title = $this->append_http( $gfw_url );
 
