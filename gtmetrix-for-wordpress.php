@@ -3,7 +3,7 @@
   Plugin Name: GTmetrix for WordPress
   Plugin URI: https://gtmetrix.com/gtmetrix-for-wordpress-plugin.html
   Description: GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
-  Version: 0.4.10
+  Version: 0.4.9.1
   Author: GTmetrix
   Author URI: https://gtmetrix.com/
 
@@ -504,7 +504,7 @@ HERE;
                 echo '</optgroup>';
             }
         }
-        echo '</select><br /><span class="description">Test Server Region (monitored pages will override this setting)</span></p>';
+        echo '</select><br /><span class="description">Test Server Region (Scheduled pages will override this setting)</span></p>';
     }
 
     public function set_default_browser() {
@@ -522,7 +522,7 @@ HERE;
         foreach ( $options['connections'] as $connection ) {
             echo '<option value="' . $connection['id'] . '" ' . selected( $options['default_connection'], $connection['id'], false ) . '>' . $connection['attributes']['name'] . '</option>';
         }
-        echo '</select><br /><span class="description">Which connection speed to test from by default (Individual monitored pages will override this)</span></p>';
+        echo '</select><br /><span class="description">Which connection speed to test from by default (Individual scheduled pages will override this)</span></p>';
     }
 
     public function set_default_retention () {
@@ -531,7 +531,7 @@ HERE;
         foreach ( $options['retentions'] as $retention ) {
             echo '<option value="' . $retention['id'] . '" ' . selected( $options['default_retention'], $retention['id'], false ) . '>' . $retention['attributes']['name'] . '</option>';
         }
-        echo '</select><br /><span class="description">Which connection speed to test from by default (Individual monitored pages will override this)</span></p>';
+        echo '</select><br /><span class="description">Which connection speed to test from by default (Individual scheduled pages will override this)</span></p>';
     }
 
     public function set_notifications_email() {
@@ -647,7 +647,7 @@ HERE;
 
             $schedule_help = '<p>You can set up your reports to be generated even when you\'re away. Simply run the report as normal (in Reports), then expand the report\'s listing, and click <i>Monitor page</i>. You will be redirected to this page, where you can choose how often you want this report to run.</p>';
             $schedule_help .= '<p>You can also choose to be sent an email when certain conditions apply. This email can go to either your admin email address or your GTmetrix email address, as defined in settings.</p>';
-            $schedule_help .= '<p><b>Note:</b> every test will use up 1 of your API credits on GTmetrix.com<br /><b>Note:</b> monitored pages use the WP-Cron functionality that is built into WordPress. This means that events are only triggered when your site is visited.</p>';
+            $schedule_help .= '<p><b>Note:</b> every test will use up 1 of your API credits on GTmetrix.com<br /><b>Note:</b> scheduled pages use the WP-Cron functionality that is built into WordPress. This means that events are only triggered when your site is visited.</p>';
 
             switch ( $screen->id ) {
 
@@ -794,12 +794,12 @@ HERE;
             }
         }
 
-        add_meta_box( 'events-meta-box', 'Monitored Pages', array( &$this, 'events_list' ), $this->schedule_page_hook, 'normal', 'core' );
+        add_meta_box( 'events-meta-box', 'Scheduled Pages', array( &$this, 'events_list' ), $this->schedule_page_hook, 'normal', 'core' );
         ?>
 
         <div class="wrap gfw">
-            <div id="gfw-icon" class="icon32"></div>
-            <h2>GTmetrix for WordPress &raquo; Monitor</h2>
+            <div id="sprite gfw-icon" class="icon32"></div>
+            <h2>GTmetrix for WordPress &raquo; Schedule</h2>
             <?php wp_nonce_field( 'closedpostboxes', 'closedpostboxesnonce', false ); ?>
             <?php wp_nonce_field( 'meta-box-order', 'meta-box-order-nonce', false ); ?>
             <div id="poststuff" class="metabox-holder has-right-sidebar">
@@ -835,7 +835,7 @@ HERE;
         add_meta_box( 'gfw-reports-meta-box', 'Reports', array( &$this, 'reports_list' ), $this->tests_page_hook, 'normal', 'core' );
         ?>
         <div class="wrap gfw">
-            <div id="gfw-icon" class="icon32"></div>
+            <div id="sprite gfw-icon" class="icon32"></div>
             <h2>GTmetrix for WordPress &raquo; Tests</h2>
             <div id="poststuff" class="metabox-holder has-right-sidebar">
                 <div id="side-info-column" class="inner-sidebar">
@@ -850,9 +850,10 @@ HERE;
         </form>
         <div id="gfw-confirm-delete" class="gfw-dialog" title="Delete this report?">
             <p>Are you sure you want to delete this report?</p>
+			<p>Deleted reports are not recoverable.</p>
         </div>
         <div id="gfw-video" class="gfw-dialog">
-            <p class="description">To view the page load video at different speeds, use Chrome, Safari or IE9+.</p>
+            <p class="description">To download or embed the video, visit the <a href="#fixme">Video tab on the Detailed Report page.</a></p>
         </div>
         </div>
         <?php
@@ -869,8 +870,8 @@ HERE;
         }
         ?>
         <div class="wrap gfw">
-            <div id="gfw-icon" class="icon32"></div>
-            <h2>GTmetrix for WordPress  &raquo; Settings</h2>
+            <div id="sprite gfw-icon" class="icon32"></div>
+            <h2>GTmetrix for WordPress &raquo; Settings</h2>
             <?php settings_errors( 'gfw_options', false ); ?>
             <div id="poststuff" class="metabox-holder has-right-sidebar">
                 <div id="side-info-column" class="inner-sidebar">
@@ -1368,7 +1369,7 @@ HERE;
             $expired = ($this->gtmetrix_file_exists( $custom_fields['report_url'][0] . '/screenshot.jpg' ) ? false : true);
             ?>
             <div class="gfw-meta">
-                <div><b>Performance summary for:</b> <?php echo date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $report->post_date ) ); ?></div>
+                <div><b>Performance Summary for:</b> <?php echo date( get_option( 'date_format' ) . ' ' . get_option( 'time_format' ), strtotime( $report->post_date ) ); ?></div>
             </div>
             <div>
                 <?php if( $report_type == "legacy" ) { ?>
@@ -1379,7 +1380,7 @@ HERE;
                         <th>YSlow score</th>
                         <td><?php echo $custom_fields['yslow_score'][0]; ?></td>
                         <th><?php echo $loaded_time_text; ?></th>
-                       <td><?php echo number_format( $loaded_time / 1000, 2 ); ?> seconds</td>
+                       <td><?php echo number_format( $loaded_time / 1000, 2 ); ?> s</td>
                     </tr>
                     <tr>
                         <th>Requests</th>
@@ -1396,21 +1397,21 @@ HERE;
                         <th>GTmetrix grade</th>
                         <td><?php echo $custom_fields['gtmetrix_grade'][0]; ?></td>
                         <th>Performance score</th>
-                        <td><?php echo $custom_fields['performance_score'][0]; ?></td>
+                        <td><?php echo $custom_fields['performance_score'][0]; ?>%</td>
                         <th>Structure score</th>
-                       <td><?php echo $custom_fields['structure_score'][0]; ?></td>
+                       <td><?php echo $custom_fields['structure_score'][0]; ?>%</td>
                     </tr>
-                    <tr>
+                    <tr class="odd">
                         <th>LCP</th>
-                        <td><?php echo $custom_fields['largest_contentful_paint'][0]; ?></td>
+                        <td><?php echo $custom_fields['largest_contentful_paint'][0]; ?> ms</td>
                         <th>TBT</th>
-                        <td><?php echo $custom_fields['total_blocking_time'][0]; ?></td>
+                        <td><?php echo $custom_fields['total_blocking_time'][0]; ?> ms</td>
                         <th>CLS</th>
                        <td><?php echo $custom_fields['cumulative_layout_shift'][0]; ?></td>
                     </tr>
                     <tr>
                         <th>Fully loaded time</th>
-                        <td><?php echo number_format( $loaded_time / 1000, 2 ); ?> seconds</td>
+                        <td><?php echo number_format( $loaded_time / 1000, 2 ); ?> s</td>
                         <th>Requests</th>
                         <td><?php echo $custom_fields['page_requests'][0]; ?></td>
                         <th>Page size</th>
@@ -1420,22 +1421,16 @@ HERE;
                 <?php } ?>
             </div>
             <?php
-            if ( 'gfw_event' == $post->post_type ) {
-                echo '<div class="graphs">';
-                echo '<div><a href="' . $_POST['id'] . '" class="gfw-open-graph gfw-scores-graph" id="gfw-scores-graph">PageSpeed and YSlow scores graph</a></div>';
-                echo '<div><a href="' . $_POST['id'] . '" class="gfw-open-graph gfw-times-graph" id="gfw-times-graph">Page load times graph</a></div>';
-                echo '<div><a href="' . $_POST['id'] . '" class="gfw-open-graph gfw-sizes-graph" id="gfw-sizes-graph">Page sizes graph</a></div>';
-                echo '</div>';
-            }
             echo '<div class="actions">';
             if ( 'gfw_report' == $post->post_type ) {
-                echo '<div><a href="' . GFW_SCHEDULE . '&report_id=' . $report->ID . '" class="gfw-schedule-icon-large">Monitor this page</a></div>';
+                echo '<div><a class="button button-primary" href="' . GFW_SCHEDULE . '&report_id=' . $report->ID . '"><i class="sprite gfw-schedule-icon-large"></i>Schedule this page</a></div>';
             }
             if ( !$expired ) {
-                echo '<div><a href="' . $custom_fields['report_url'][0] . '" target="_blank" class="gfw-report-icon">Detailed report</a></div>';
-                echo '<div><a href="' . $custom_fields['report_url'][0] . '/pdf' . '" class="gfw-pdf-icon">Download PDF</a></div>';
-                if ( isset( $custom_fields['gfw_video'][0] ) && $custom_fields['gfw_video'][0] ) {
-                    echo '<div><a href="' . $custom_fields['report_url'][0] . '/video' . '" class="gfw-video-icon">Video</a></div>';
+                echo '<div><a class="button button-secondary" href="' . $custom_fields['report_url'][0] . '" target="_blank"><i class="sprite gfw-report-icon"></i>Detailed report</a></div>';
+                echo '<div><a class="button button-secondary" href="' . $custom_fields['report_url'][0] . '#history"' . ' target="_blank"><i class="sprite gfw-report-icon"></i>View History</a></div>';
+                echo '<div><a class="button button-secondary" href="' . $custom_fields['report_url'][0] . 'pdf' . '"><i class="sprite gfw-pdf-icon"></i>Download PDF</a></div>';
+				if ( isset( $custom_fields['gfw_video'][0] ) && $custom_fields['gfw_video'][0] ) {
+                    echo '<div><a class="button button-secondary video-button" href="' . $custom_fields['report_url'][0] . 'video' . '"><i class="sprite gfw-video-icon"></i>View Video</a></div>';
                 }
             }
             echo '</div>';
@@ -1591,15 +1586,14 @@ HERE;
         }
         
         ?>
-        <p>
-            <strong>Account Type:</strong> <?php echo $gfw_status['account_type']; ?>
+        <p class="account-type">
+            Account Type: <span class="type-<?php echo $gfw_status['account_type']; ?>"><?php echo $gfw_status['account_type']; ?></span>
         </p>
         <p style="margin-bottom:0;">
-            <strong>API Credit usage</strong><br />            
+            <strong>API Credit Usage</strong><br />            
 
-            <div style="border:1px solid grey;border-radius:3px;text-align:right;position:relative;">
-
-                <div style="position:absolute;width:50%;background-color:#3c9adc;height:100%;width:<?php echo ( ( $gfw_status['api_refill_amount'] - $gfw_status['api_credits']) / $gfw_status['api_refill_amount'] ) * 100; ?>%"></div>
+            <div class="api-usage-bar">
+                <div class="api-actual-usage" style="width:<?php echo ( ( $gfw_status['api_refill_amount'] - $gfw_status['api_credits']) / $gfw_status['api_refill_amount'] ) * 100; ?>%"></div>
                 <span style="padding:2px;"><?php echo ($gfw_status['api_refill_amount'] - $gfw_status['api_credits'] ) . ' of ' . $gfw_status['api_refill_amount']; ?></span>
             </div>
             <span class="next-api-refill">Next refill: <?php 
@@ -1753,7 +1747,7 @@ HERE;
                             } else {
                                 echo plugin_dir_url( __FILE__ ) . "/images/no-report-splash.png";
                             }
-                            ?>" style="display: inline-block; margin-right: 10px; border-radius: 8px 8px 8px 8px;" />
+                            ?>" style="display: inline-block; margin-right: 10px;" />
                         </div>
                         <div class="gfw-box gfw-latest-report-<?php echo $options['report_type']; ?>">
                             <div class="gfw-latest-report-scores">
@@ -1776,7 +1770,7 @@ HERE;
                                     } ?></span></div>
                                     <div class="gfw-latest-report-number"><strong>Total page size</strong> <span class="gfw-report-score" style="color:#858585"><?php 
                                     if( $custom_fields['page_bytes'][0] < 1024 ) {
-                                        echo $custom_fields['page_bytes'][0] . "B";
+                                        echo $custom_fields['page_bytes'][0] ."B";
                                     } else if ( $custom_fields['page_bytes'][0] < 1048576 ) {
                                         echo number_format( $custom_fields['page_bytes'][0] / 1024, 1) . "KB";
                                     } else {
@@ -1787,9 +1781,9 @@ HERE;
                                 </div>
                             </div>
                             <div class="gfw-report-links">
-                                <p><a href="<?php echo GFW_SCHEDULE; ?>&report_id=<?php echo $query->post->ID; ?>" class="gfw-schedule-icon-large">Monitor this page</a>
-                                <?php $this->display_retest_form( 'Re-test your Front Page', $options['report_type'], untrailingslashit( GFW_FRONT ), $options['default_browser'], $options['default_location'], $options['default_connection'], $options['default_retention'] ); ?>
-                                <p><a href="<?php echo $custom_fields['report_url'][0]; ?>" target="_blank" class="gfw-report-icon">Detailed report</a> &nbsp;&nbsp; </p>
+                                <p><a href="<?php echo GFW_SCHEDULE; ?>&report_id=<?php echo $query->post->ID; ?>" class="sprite gfw-schedule-icon-large">Monitor this page</a>
+                                <?php $this->display_retest_form( '<i class="sprite gfw-schedule-icon-large"></i> Re-test your Front Page', $options['report_type'], untrailingslashit( GFW_FRONT ), $options['default_browser'], $options['default_location'], $options['default_connection'], $options['default_retention'] ); ?>
+                                <p><a href="<?php echo $custom_fields['report_url'][0]; ?>" target="_blank" class="sprite gfw-report-icon">Detailed report</a> &nbsp;&nbsp; </p>
                             </div>
                         </div>
                     </div>
@@ -1801,7 +1795,7 @@ HERE;
                     ?>
                     <div class="gfw-latest-report-wrapper">
                         <div class="gfw-box gfw-latest-report-screenshot">
-                            <img src="<?php echo $custom_fields['report_url'][0]; ?>/screenshot.jpg" style="display: inline-block; margin-right: 10px; border-radius: 8px 8px 8px 8px;" />
+                            <img src="<?php echo $custom_fields['report_url'][0]; ?>/screenshot.jpg" style="display: inline-block;" />
                         </div>
                         <div class="gfw-box gfw-latest-report gfw-latest-report-<?php echo $options['report_type']; ?>">
                             <div class="gfw-latest-report-scores">
@@ -1821,18 +1815,20 @@ HERE;
                                 <div class="gfw-latest-report-numbers gfw-latest-report-numbers-lighthouse">
                                     <div class="gfw-latest-report-number"><strong>Largest Contentful Paint</strong> <span class="gfw-report-score" style="color:<?php echo $this->lcp_to_color( $custom_fields['largest_contentful_paint'][0] ); ?>"><?php 
                                     if( $custom_fields['largest_contentful_paint'][0] < 1000 ) {
-                                        echo $custom_fields['largest_contentful_paint'][0] . "ms";
+                                        echo $custom_fields['largest_contentful_paint'][0]."ms";
                                     } else {
                                         echo number_format( $custom_fields['largest_contentful_paint'][0] / 1000, 1 ) . "s";
                                     } ?></span></div>
-                                    <div class="gfw-latest-report-number"><strong>Total blocking time</strong><span class="gfw-report-score" style="color:<?php echo $this->tbt_to_color( $custom_fields['total_blocking_time'][0] ); ?>"><?php echo $custom_fields['total_blocking_time'][0]; ?> ms</span></div>
-                                    <div class="gfw-latest-report-number"><strong>Cumulative Layout Shift</strong> <span class="gfw-report-score" style="color:<?php echo $this->cls_to_color( $custom_fields['cumulative_layout_shift'][0] ); ?>"><?php echo $custom_fields['cumulative_layout_shift'][0]; ?></span></div>
+                                    <div class="gfw-latest-report-number"><strong>Total Blocking Time</strong><span class="gfw-report-score" style="color:<?php echo $this->tbt_to_color( $custom_fields['total_blocking_time'][0] ); ?>"><?php echo $custom_fields['total_blocking_time'][0]; ?>ms</span></div>
+                                    <div class="gfw-latest-report-number"><strong>Cumulative Layout Shift</strong> <span class="gfw-report-score" style="color:<?php echo $this->cls_to_color( $custom_fields['cumulative_layout_shift'][0] ); ?>"><?php //echo $custom_fields['cumulative_layout_shift'][0]; ?>0.51</span></div>
                                 </div>
                             </div>
                             <div class="gfw-report-links">
-                                <p><a href="<?php echo GFW_SCHEDULE; ?>&report_id=<?php echo $query->post->ID; ?>" class="gfw-schedule-icon-large">Monitor this page</a>
-                                <?php $this->display_retest_form( 'Re-test your Front Page', $options['report_type'], untrailingslashit( GFW_FRONT ), $options['default_browser'], $options['default_location'], $options['default_connection'], $options['default_retention'] ); ?>
-                                <p><a href="<?php echo $custom_fields['report_url'][0]; ?>" target="_blank" class="gfw-report-icon">Detailed report</a> &nbsp;&nbsp; </p>
+							  <ul>
+								<li><?php $this->display_retest_form( 'Re-Test your Front Page', $options['report_type'], untrailingslashit( GFW_FRONT ), $options['default_browser'], $options['default_location'], $options['default_connection'], $options['default_retention'] ); ?></li>
+								<li><a href="<?php echo GFW_SCHEDULE; ?>&report_id=<?php echo $query->post->ID; ?>" class="button button-primary"><i class="sprite gfw-schedule-icon-large"></i>Schedule Front Page Tests</a></li>
+                                <li><a href="<?php echo $custom_fields['report_url'][0]; ?>" target="_blank" class="button button-secondary"><i class="sprite gfw-report-icon"></i>View Detailed Report</a> &nbsp;&nbsp; </li>
+						     </ul>
                             </div>
                         </div>
                     </div>
@@ -1843,7 +1839,7 @@ HERE;
                 ?>
                         <?php
                         if ( !$expired ) {
-                            //echo '<a href="' . $custom_fields['report_url'][0] . '" target="_blank" class="gfw-report-icon">Detailed report</a> &nbsp;&nbsp; ';
+                            //echo '<a href="' . $custom_fields['report_url'][0] . '" target="_blank" class="sprite gfw-report-icon">Detailed report</a> &nbsp;&nbsp; ';
                         }
                         ?>
                 <?php
@@ -1915,8 +1911,18 @@ HERE;
 
     public function display_retest_form( $label, $report_type, $url, $browser, $location, $connection, $retention ) {
         ?>
-        <form method="post" id="gfw-retest"><input type="hidden" name="post_type" value="gfw_report" /><input type="hidden" name="gfw_url" value="<?php echo $url; ?>" /><input type="hidden" name="gfw_location" value="<?php echo $location; ?>" /><input type="hidden" name="gfw_report" value="<?php echo $report_type;?>" /><input type="hidden" name="gfw_browser" value="<?php echo $browser; ?>" /><input type="hidden" name="gfw_connection" value="<?php echo $connection; ?>" /><input type="hidden" name="gfw_retention" value="<?php echo $retention; ?>" /><?php
-            wp_nonce_field( plugin_basename( __FILE__ ), 'gfwtestnonce' );?><?php submit_button( $label, 'primary', 'submit', false ); ?></form>
+        <form method="post" id="gfw-retest">
+			<input type="hidden" name="post_type" value="gfw_report" />
+			<input type="hidden" name="gfw_url" value="<?php echo $url; ?>" />
+			<input type="hidden" name="gfw_location" value="<?php echo $location; ?>" />
+			<input type="hidden" name="gfw_report" value="<?php echo $report_type;?>" />
+			<input type="hidden" name="gfw_browser" value="<?php echo $browser; ?>" />
+			<input type="hidden" name="gfw_connection" value="<?php echo $connection; ?>" />
+			<input type="hidden" name="gfw_retention" value="<?php echo $retention; ?>" />
+			<?php
+            wp_nonce_field( plugin_basename( __FILE__ ), 'gfwtestnonce' );?>
+			<?php submit_button( $label, 'primary', 'submit', false ); ?>
+		</form>
         <?php
     }
 
@@ -1939,12 +1945,17 @@ HERE;
             ?>
             <input type="hidden" name="gfw_report" value="<?php echo $options['report_type'];?>" />
             
-            <p><input type="text" id="gfw_url" name="gfw_url" value="<?php echo $passed_url; ?>" placeholder="You can enter a URL (eg. http://yourdomain.com), or start typing the title of your page/post" /><br />
-                <span class="gfw-placeholder-alternative description">You can enter a URL (eg. http://yourdomain.com), or start typing the title of your page/post</span></p>
-
+            <div class="analyze-wrapper">
+			  <div class="analyze-field">
+				<input type="text" id="gfw_url" name="gfw_url" value="<?php echo $passed_url; ?>" placeholder="You can enter a URL (eg. http://yourdomain.com), or start typing the title of your page/post" />
+			  </div>
+			  <div class="analyze-button">
+                <span class="gfw-placeholder-alternative description">You can enter a URL (eg. http://yourdomain.com), or start typing the title of your page/post</span>  <?php submit_button( 'Analyze', 'primary', 'submit', false ); ?>
+			  </div>
+		    </div>
             <table class="form-table">
                 <tr valign="top">
-                    <th scope="row">Browser<a class="gfw-help-icon tooltip" href="#" title=""></a></th>
+                    <th scope="row">Browser<a class="sprite gfw-help-icon tooltip" href="#" title=""></a></th>
                     <td><select name="gfw_browser" id="gfw_browser">
                             <?php
                             foreach ( $options['browsers'] as $browser ) {
@@ -1954,7 +1965,7 @@ HERE;
                         </select><br />
                         <span class="description">Test Browser</span></td>
                 </tr><tr valign="top">
-                    <th scope="row">Location<a class="gfw-help-icon tooltip" href="#" title="f"></a></th>
+                    <th scope="row">Location<a class="sprite gfw-help-icon tooltip" href="#" title="f"></a></th>
                     <td><select name="gfw_location" id="gfw_location">
                             <?php
                             foreach ( $options['locations'] as $location_region => $region_locations ) {
@@ -1976,10 +1987,9 @@ HERE;
                             //}
                             ?>
                         </select><br />
-                        <span class="description">Test Server Region</span></td>
                 </tr>
                 <tr valign="top">
-                    <th scope="row">Connection<a class="gfw-help-icon tooltip" href="#" title="Analyze the performance of the page from one of our several test regions.  Your PageSpeed and YSlow scores usually stay roughly the same, but Page Load times and Waterfall should be different. Use this to see how latency affects your page load times from different parts of the world."></a></th>
+                    <th scope="row">Connection<a class="sprite gfw-help-icon tooltip" href="#" title="Analyze the performance of the page from one of our several test regions.  Your PageSpeed and YSlow scores usually stay roughly the same, but Page Load times and Waterfall should be different. Use this to see how latency affects your page load times from different parts of the world."></a></th>
                     <td><select name="gfw_connection" id="gfw_connection">
                             <?php
                             foreach ( $options['connections'] as $connection ) {
@@ -1987,38 +1997,44 @@ HERE;
                             }
                             ?>
                         </select><br />
-                        <span class="description">Test Connection</span></td>
                 </tr>
             </table>
             <div id="analysis-options-wrapper">
-                <h3 id="analysis-options-header">&#8964; Show Analysis Options</h3>
+                <h3 id="analysis-options-header"><i class="sprite down-arrow"></i> Show Analysis Options</h3>
                 <div id="analysis-options">
                     <table class="form-table">
                         <tr valign="top">
-                        <th scope="row">Enable Adblock Plus<a class="gfw-help-icon tooltip" href="#" title=""></a></th>
+                        <th scope="row">Enable Adblock Plus<a class="sprite gfw-help-icon tooltip" href="#" title=""></a></th>
                         <td><span class="input-toggle">
                             <input type="checkbox" name="gfw_enable_adblock" id="gfw_enable_adblock" value="1" /><label for="gfw_enable_adblock"></label></span> <span class="description">Block ads from loading on your site</span><br />
                             </td>
                         </tr>
                         <tr valign="top">
-                        <th scope="row">Enable Video<a class="gfw-help-icon tooltip" href="#" title=""></a></th>
+                        <th scope="row">Enable Video<a class="sprite gfw-help-icon tooltip" href="#" title=""></a></th>
                         <td><span class="input-toggle">
                             <input type="checkbox" name="gfw_enable_video" id="gfw_enable_video" value="1" /><label for="gfw_enable_video"></label></span> <span class="description">Generate a video of your page load (+X API credits per test)</span><br />
                             </td>
                         </tr>
                         <tr valign="top">
-                        <th scope="row">Cookies<a class="gfw-help-icon tooltip" href="#" title=""></a></th>
+                        <th scope="row">Cookies<a class="sprite gfw-help-icon tooltip" href="#" title=""></a></th>
                         <td><textarea id="gfw_cookies" name="gfw_cookies"></textarea>
                             </td>
                         </tr>
-                        <tr valign="top">
-                        <th scope="row">HTTP Auth<a class="gfw-help-icon tooltip" href="#" title=""></a></th>
+                        <tr valign="top" id="gfw_httpauth">
+                        <th scope="row">HTTP Auth<a class="sprite gfw-help-icon tooltip" href="#" title=""></a></th>
                             <td>
-                            <input type="text" id="gfw_httpauth_username" name="gfw_httpauth_username" /> <input type="text" id="gfw_httpauth_password" name="gfw_httpauth_password" />
+							<div class="label-input-wrapper">
+								<label for="gfw_httpauth_username">Username</label>
+								<input type="text" id="gfw_httpauth_username" name="gfw_httpauth_username" />
+							</div>
+							<div class="label-input-wrapper">
+								<label for="gfw_httpauth_password">Password</label>
+								<input type="text" id="gfw_httpauth_password" name="gfw_httpauth_password" />
+							</div>
                             </td>
                         </tr>
                         <tr valign="top">
-                            <th scope="row">Data Retention<a class="gfw-help-icon tooltip" href="#" title="Data retention"></a></th>
+                            <th scope="row">Data Retention<a class="sprite gfw-help-icon tooltip" href="#" title="Data retention"></a></th>
                             <td><select name="gfw_retention" id="gfw_retention">
                                     <?php
                                     foreach ( $options['retentions'] as $retention ) {
@@ -2032,7 +2048,7 @@ HERE;
             
             </div>
 
-            <?php submit_button( 'Test Page', 'primary', 'submit', false ); ?>
+           
         </form>
         <?php
     }
@@ -2070,10 +2086,6 @@ HERE;
                             ?>
                         </select><br />
                         <span class="description">Note: every report will use up 1 of your API credits on GTmetrix.com</span></td>
-                </tr>
-                <tr style="display: <?php echo ($notifications_count && $notifications_count < 4 ? 'table-row' : 'none'); ?>" id="gfw-add-condition">
-                    <th scope="row">&nbsp;</th>
-                    <td><a href="javascript:void(0)">+ Add a condition</a></td>
                 </tr>
                 <tr valign="top">
                     <th scope="row"><label for="gfw-location">Browser</label></th>
@@ -2133,7 +2145,6 @@ HERE;
                     <td><span class="input-toggle"><input type="checkbox" id="gfw-notifications" value="1" <?php checked( $notifications_count > 0 ); ?> /><label for="gfw-notifications"></label></span>
                         <span class="description">Get notified by e-mail if a test result underperforms based on conditions you set</span></td>
                 </tr>
-
                 <?php
                 $grades = array(
                     "A" => "A",
@@ -2392,14 +2403,17 @@ HERE;
                             <input type="text" name="dom_content_loaded_duration[<?php echo $i; ?>]" class="dom_content_loaded_duration gfw-units" value="<?php echo $condition_value; ?>" /> s
                             </div>
                             <?php } ?>
-                            <?php echo $i ? '<a href="javascript:void(0)" class="gfw-remove-condition">- Remove</a>' : ''; ?>
+                            <?php echo $i ? '<a href="javascript:void(0)" class="gfw-remove-condition">Remove</a>' : ''; ?>
                         </td>
                         <?php
                         array_shift( $notifications );
                     }
                     ?>
                 </tr>
-
+                <tr style="display: <?php echo ($notifications_count && $notifications_count < 4 ? 'table-row' : 'none'); ?>" id="gfw-add-condition">
+                    <th scope="row">&nbsp;</th>
+                    <td><a href="javascript:void(0)" class="button button-secondary">+ Add a condition</a></td>
+                </tr>
             </table>
             <?php
             submit_button( 'Save', 'primary', 'submit', false );
@@ -2463,7 +2477,6 @@ HERE;
                                     $yslow_grade = $this->score_to_grade( $yslow_score );
                                 }
                             }
-                            $page_load_time = $custom_fields['fully_loaded_time'][0];
                             $report_date = $this->wp_date( $query->post->post_date, true );
                             $title = $this->append_http( $gfw_url );
 
@@ -2475,11 +2488,11 @@ HERE;
                                 echo '<td data-th="Date">' . $report_date . '</td>';
                             } else {
                                 echo '<td data-th="URL" title="Click to expand/collapse" class="gfw-reports-url gfw-toggle tooltip">' . $title . '</td>';
-                                echo '<td data-th="Options" class="gfw-toggle"> <span class="gfw-browser-icon-small gfw-browser-icon-' . $gfw_browser . '"></span> <span class="gfw-location-icon-small gfw-location-icon-' . $gfw_location . '"></span>';
+                                echo '<td data-th="Options" class="gfw-toggle"> <span class="sprite gfw-browser-icon-small gfw-browser-icon-' . $gfw_browser . '"></span> <span class="sprite gfw-location-icon-small gfw-location-icon-' . $gfw_location . '"></span>';
                                 if( $gfw_video ) {
-                                    echo '<span class="gfw-video-icon-small"></span>';
+                                    echo '<span class="sprite gfw-video-icon-small"></span>';
                                 }
-                                echo '<a href="' . GFW_SCHEDULE . '&report_id=' . $query->post->ID . '" class="gfw-schedule-icon-small tooltip" title="Monitor page">Monitor page</a></td>';
+                                echo '<a href="' . GFW_SCHEDULE . '&report_id=' . $query->post->ID . '" class="sprite gfw-schedule-icon-small tooltip" title="Monitor page">Monitor page</a></td>';
                                 if( $options['report_type'] == "lighthouse" ) {
                                     echo '<td data-th="Grade" class="gfw-toggle">';
                                     if( $report_type == "lighthouse" ) {
@@ -2521,9 +2534,9 @@ HERE;
                                     echo '</td>';
                                 }
                                 echo '<td data-th="Page Load" class="gfw-toggle">' . number_format( $page_load_time / 1000, 2 ) . 's</td>';
-                                echo '<td data-th="Date" class="gfw-toggle" title="' . $report_date . '">' . $report_date . '</td>';
+                                echo '<td data-th="Date" class="gfw-toggle gfw-reports-date" title="' . $report_date . '">' . $report_date . '</td>';
                             }
-                            echo '<td class="gfw-action-icons"> <a href="' . GFW_TESTS . '&delete=' . $query->post->ID . '" rel="#gfw-confirm-delete" class="gfw-delete-icon delete-report tooltip" title="Delete Report">Delete Report</a></td>';
+                            echo '<td class="gfw-action-icons"> <a href="' . GFW_TESTS . '&delete=' . $query->post->ID . '" rel="#gfw-confirm-delete" class="sprite gfw-delete-icon delete-report tooltip" title="Delete Report">Delete Report</a></td>';
                             echo '</tr>';
                         }
                         ?>
@@ -2562,7 +2575,7 @@ HERE;
             </div>
 
             <div class="gfw-table-wrapper">
-                <table class="gfw-table events">
+                <table class="gfw-table events scheduled-pages">
                     <thead>
                         <tr style="display: <?php echo $no_posts ? 'none' : 'table-row' ?>">
                             <th>Label/URL</th>
@@ -2604,7 +2617,7 @@ HERE;
                             $row .= '<td class="' . $toggle_class . '"' . $toggle_title . '>' . (isset( $custom_fields['gfw_notifications'][0] ) ? 'Enabled' : 'Disabled') . '</div></td>';
                             $row .= '<td class="' . $toggle_class . '"' . $toggle_title . '>' . $last_report . ($custom_fields['gfw_event_error'][0] ? ' <span class="gfw-failed tooltip" title="' . $gtmetrix_error . '">(failed)</span>' : '') . '</td>';
                             $row .= '<td class="' . $toggle_class . '"' . $toggle_title . '>' . $this->wp_date( $next_report[$custom_fields['gfw_recurrence'][0]], true ) . '</td>';
-                            $row .= '<td><a href="' . GFW_SCHEDULE . '&event_id=' . $query->post->ID . '" rel="" class="gfw-edit-icon tooltip" title="Edit this event">Edit</a> <a href="' . GFW_SCHEDULE . '&delete=' . $query->post->ID . '" rel="#gfw-confirm-delete" title="Delete this event" class="gfw-delete-icon delete-event tooltip">Delete Event</a> <a href="' . GFW_SCHEDULE . '&status=' . $query->post->ID . '" class="tooltip gfw-pause-icon' . (1 == $custom_fields['gfw_status'][0] ? '" title="Pause this event">Pause Event' : ' paused" title="Reactivate this event">Reactivate Event') . '</a></td>';
+                            $row .= '<td class="scheduled-actions"><a href="' . GFW_SCHEDULE . '&event_id=' . $query->post->ID . '" rel="" title="Edit Scheduled Page"><i class="sprite gfw-edit-icon tooltip">Edit</i></a> <a href="' . GFW_SCHEDULE . '&delete=' . $query->post->ID . '" rel="#gfw-confirm-delete" title="Delete Scheduled Page"><i class="sprite gfw-delete-icon delete-event tooltip">Delete Scheduled Page</i></a> <a href="' . GFW_SCHEDULE . '&status=' . $query->post->ID . '" class="sprite tooltip gfw-pause-icon' . (1 == $custom_fields['gfw_status'][0] ? '" title="Pause Scheduled Page">Pause Scheduled Page' : ' paused" title="Reactivate Scheduled Page">Reactivate Scheduled Page') . '</a></td>';
                             $row .= '</tr>';
                             echo $row;
                             $row_no++;
@@ -2615,7 +2628,7 @@ HERE;
 
                 <?php
                 if ( $no_posts ) {
-                    echo '<p class="gfw-no-posts">You have no Monitored pages. Go to <a href="' . GFW_TESTS . '">Tests</a> to create one.</p>';
+                    echo '<p class="gfw-no-posts">You have no Scheduled pages. Go to <a href="' . GFW_TESTS . '">Tests</a> to create one.</p>';
                 }
                 ?>
 
