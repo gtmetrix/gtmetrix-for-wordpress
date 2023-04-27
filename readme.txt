@@ -2,7 +2,7 @@
 Contributors: GTmetrix
 Tags: analytics, gtmetrix, monitoring, optimization, page speed, performance, speed, statistics, yslow
 Requires at least: 3.3.1
-Tested up to: 5.6.1
+Tested up to: 6.0.2
 Stable tag: 0.4.6
 
 GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
@@ -48,17 +48,14 @@ If you're running into issues with this plugin, please reach out for support on 
 
 == Changelog ==
 
+= 0.4.7 =
+* Minor bug fixes
+
 = 0.4.6 =
-* When uninstalling plugin, conditionally delete settings and all reports and scheduled events (post types 'gfw_report', 'gfw_event'). Add two flags to settings page
-* fixed issue with widget never showing up
-* fixed various issues with widget logic
+* Minor bug fixes
 
 = 0.4.5 =
-* Various label fixes
-* Removed Widget meta box on Settings page
-* Added sidebar meta box to Tests page
-* "Download PDF" links to summary version of the report
-* Added link to FB page on Tests page
+* Minor bug fixes
 
 = 0.4.4 =
 * Fixed compatibility issues with other plugins using the Services_WTF_Test class
