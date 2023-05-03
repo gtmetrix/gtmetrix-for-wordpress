@@ -29,28 +29,19 @@ Requirements
 Version
 --------------------------
 
-0.4.8
+0.4.7
 
 Changelog
 --------------------------
 
-##### 0.4.8
-* Fix issues with updating plugin from a pre-0.4.7 version
-
 ##### 0.4.7
-* Update to use v2.0 of the API
+* Minor bug fixes
 
 ##### 0.4.6
-* When uninstalling plugin, conditionally delete settings and all reports and scheduled events (post types 'gfw_report', 'gfw_event'). Add two flags to settings page
-* fixed issue with widget never showing up
-* fixed various issues with widget logic
+* Minor bug fixes
 
 ##### 0.4.5
-* Various label fixes
-* Removed Widget meta box on Settings page
-* Added sidebar meta box to Tests page
-* "Download PDF" links to summary version of the report
-* Added link to FB page on Tests page
+* Minor bug fixes
 
 ##### 0.4.4
 * Fixed compatibility issues with other plugins using the Services_WTF_Test class
