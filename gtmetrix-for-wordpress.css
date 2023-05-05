@@ -1059,6 +1059,19 @@ Tables
     white-space: nowrap;
 }
 
+.gfw-table tr:nth-child(even) {
+    background-color: #FAFAFA;
+}
+
+.gfw-table tr:nth-child(odd) {
+    background-color: #F3F3F3;
+}
+
+.gfw-table thead tr:nth-child(odd) {
+    background-color:transparent;
+}
+
+/*
 .gfw-table .odd {
     background-color: #F3F3F3;
 }
@@ -1066,6 +1079,7 @@ Tables
 .gfw-table .even {
     background-color: #FAFAFA;
 }
+*/
 
 .gfw-table td {
     color: #646464;

@@ -266,6 +266,46 @@ jQuery(function ($) {
         autoOpen: false,
         resizable: false,
         modal: true,
+        dialogClass: "gfw-confirm-report-delete-modal",
+        classes: {
+            "ui-dialog-titlebar":"gfw-ui-widget-header"
+        },
+        buttons: {
+            'Yes': function() {
+                $.ajax({
+                    url: ajaxurl,
+                    dataType: 'json',
+                    type: 'POST',
+                    data: {
+                        action: $( this ).data("action"),
+                        entity_id: $( this ).data("entity-id"),
+                        security : gfwObject.gfwnonce
+                    },
+                    cache: false,
+                    success: function(data) {
+                        if (data.error) {
+                            $( '#gfw-confirm-delete' ).dialog( 'close' );
+                            $( 'tr#post-' +  $( this ).data("entity-id")).remove();
+                            alert( data.error );
+
+                        } else {
+                            $( '#gfw-confirm-delete' ).dialog( 'close' );
+                            $( 'tr#post-' +  $( '#gfw-confirm-delete' ).data("entity-id")).remove();
+                            alert(data.message);
+                        }
+                    }
+                });
+            },
+            'No': function() {
+                $( this ).dialog( 'close' );
+            }
+        }
+    });
+    /*
+    $( '#gfw-confirm-delete' ).dialog({
+        autoOpen: false,
+        resizable: false,
+        modal: true,
         closeText: "",
         dialogClass: "gfw-confirm-report-delete-modal",
         buttons: {
@@ -280,10 +320,12 @@ jQuery(function ($) {
             "ui-dialog-titlebar":"gfw-ui-widget-header"
         }
     });
-
+    */
     $(document).on('click', '.gfw-delete-icon', function(event) {
         event.preventDefault();
         $('#gfw-confirm-delete').data('url', event.target);
+        $('#gfw-confirm-delete').data('entity-id', $( this ).data("entity-id"));
+        $('#gfw-confirm-delete').data('action', $( this ).data("action"));
         $( '#gfw-confirm-delete' ).dialog( 'open' );
     });
 
