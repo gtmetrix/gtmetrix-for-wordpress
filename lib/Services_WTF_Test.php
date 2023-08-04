@@ -1,10 +1,10 @@
 <?php
 
-/*
+/**
  * Service_WTF_Test
  *
  * Version 0.4
- * 
+ *
  * A PHP REST client for the Web Testing Framework (WTF) Testing Service API
  * Currently only supports GTmetrix. See:
  *
@@ -16,7 +16,7 @@
  * Copyright Gossamer Threads Inc. (http://gt.net/)
  * License: http://opensource.org/licenses/GPL-2.0 GPL 2
  *
- * This software is free software distributed under the terms of the GNU 
+ * This software is free software distributed under the terms of the GNU
  * General Public License 2.0.
  *
  * Changelog:
@@ -25,24 +25,23 @@
  *         - fixed download_resources bug
  *         - added $append parameter to download_resources
  *         - some refactoring for consistency
- * 
+ *
  *     0.3
  *         - added download_resources method
- *  
+ *
  *     June 27, 2012
  *         - polling frequency in get_results() made less frantic
  *         - version changed to 0.2
- * 
+ *
  *     June 5, 2012
  *         - status method added
  *         - user_agent property updated
- * 
+ *
  *     January 23, 2012
  *         - Initial release
  */
-
 class Services_WTF_Test {
-    const api_url = 'https://gtmetrix.com/api/0.1';
+    const API_URL = 'https://gtmetrix.com/api/0.1';
     private $username = '';
     private $password = '';
     private $user_agent = 'Services_WTF_Test_php/0.4 (+http://gtmetrix.com/api/)';
@@ -81,7 +80,7 @@ class Services_WTF_Test {
     }
 
     /**
-     * query()
+     * Query()
      *
      * Makes curl connection to API
      *
@@ -94,10 +93,10 @@ class Services_WTF_Test {
     protected function query( $command, $req = 'GET', $params = '' ) {
         $ch = curl_init();
 
-        if ( substr( $command, 0, strlen( self::api_url ) - 1 ) == self::api_url ) {
+        if ( substr( $command, 0, strlen( self::API_URL ) - 1 ) == self::API_URL ) {
             $URL = $command;
         } else {
-            $URL = self::api_url . '/' . $command;
+            $URL = self::API_URL . '/' . $command;
         }
 
         curl_setopt( $ch, CURLOPT_URL, $URL );
@@ -466,5 +465,3 @@ class Services_WTF_Test {
     }
 
 }
-
-?>
