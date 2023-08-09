@@ -3,7 +3,7 @@
     Plugin Name: GTmetrix for WordPress
     Plugin URI: https://gtmetrix.com/gtmetrix-for-wordpress-plugin.html
     Description: GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
-    Version: 0.4.8
+    Version: 0.4.9
     Author: GTmetrix
     Author URI: https://gtmetrix.com/
 
@@ -535,6 +535,7 @@ HERE;
         global $screen_layout_columns;
         $report_id = isset( $_GET['report_id'] ) ? esc_html( wp_unslash( $_GET['report_id'] ) ) : 0;
         $event_id = isset( $_GET['event_id'] ) ? esc_html( wp_unslash( $_GET['event_id'] ) ) : 0;
+        //we need to 
         $status = isset( $_GET['status'] ) ? esc_html( wp_unslash( $_GET['status'] ) ) : 0;
 
 
@@ -580,14 +581,25 @@ HERE;
         }
 
         if ( $status ) {
-            $gfw_status = get_post_meta( $status, 'gfw_status', true );
-            if ( 1 == $gfw_status ) {
-                update_post_meta( $status, 'gfw_status', 2 );
-                echo $this->set_notice( 'Event paused' );
+            if( is_int( $status ) ) {
+                //verify that the $status does correspond to a post
+                $event_to_pause = get_post( $status );
+                if( !$event_to_pause ) {
+                    echo $this->set_notice( 'invalid event ID' );
+                } else {
+                    echo $this->set_notice( print_r( $event_to_pause, TRUE));
+                    $gfw_status = get_post_meta( $status, 'gfw_status', true );
+                    if ( 1 == $gfw_status ) {
+                        update_post_meta( $status, 'gfw_status', 2 );
+                        echo $this->set_notice( 'Event paused' );
+                    } else {
+                        update_post_meta( $status, 'gfw_status', 1 );
+                        update_post_meta( $status, 'gfw_event_error', 0 );
+                        echo $this->set_notice( 'Event reactivated' );
+                    }
+                }
             } else {
-                update_post_meta( $status, 'gfw_status', 1 );
-                update_post_meta( $status, 'gfw_event_error', 0 );
-                echo $this->set_notice( 'Event reactivated' );
+                echo $this->set_notice( 'invalid event ID' );
             }
         }
 
