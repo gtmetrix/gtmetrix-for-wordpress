@@ -3,7 +3,7 @@
     Plugin Name: GTmetrix for WordPress
     Plugin URI: https://gtmetrix.com/gtmetrix-for-wordpress-plugin.html
     Description: GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
-    Version: 0.4.10
+    Version: 0.4.11
     Author: GTmetrix
     Author URI: https://gtmetrix.com/
 
@@ -44,6 +44,7 @@ class GTmetrix_For_WordPress {
         add_action( 'wp_ajax_save_report', array( &$this, 'save_report_callback' ) );
         add_action( 'wp_ajax_delete_report', array( &$this, 'delete_report_callback' ) );
         add_action( 'wp_ajax_delete_event', array( &$this, 'delete_event_callback' ) );
+        add_action( 'wp_ajax_pause_event', array( &$this, 'pause_event_callback' ) );
         add_action( 'wp_ajax_expand_report', array( &$this, 'expand_report_callback' ) );
         add_action( 'wp_ajax_report_graph', array( &$this, 'report_graph_callback' ) );
         add_action( 'wp_ajax_reset', array( &$this, 'reset_callback' ) );
@@ -535,8 +536,7 @@ HERE;
         global $screen_layout_columns;
         $report_id = isset( $_GET['report_id'] ) ? esc_html( wp_unslash( $_GET['report_id'] ) ) : 0;
         $event_id = isset( $_GET['event_id'] ) ? esc_html( wp_unslash( $_GET['event_id'] ) ) : 0;
-        //we need to 
-        $status = isset( $_GET['status'] ) ? esc_html( wp_unslash( $_GET['status'] ) ) : 0;
+        //$status = isset( $_GET['status'] ) ? esc_html( wp_unslash( $_GET['status'] ) ) : 0;
 
 
         if ( 'POST' == $_SERVER['REQUEST_METHOD'] ) {
@@ -904,6 +904,47 @@ HERE;
                 }
                 echo $response;
             }
+        }
+        die();
+    }
+
+    public function pause_event_callback() {
+        if ( check_ajax_referer( 'gfwnonce', 'security' ) ) {
+            $event_id = ! empty( $_POST['entity_id'] ) ? absint( $_POST['entity_id'] ) : 0;
+            if ( $event_id ) {
+                $event_to_pause = get_post( $event_id );
+                if( !$event_to_pause ) {
+                    $response = json_encode( array(
+                        'error' => "Invalid Event"
+                    ) );
+                    echo $response;
+                } else {
+                    $gfw_status = get_post_meta( $event_id, 'gfw_status', true );
+                    if ( 1 == $gfw_status ) {
+                        update_post_meta( $event_id, 'gfw_status', 2 );
+                        $response = json_encode( array(
+                            'message' => "Event paused"
+                        ) );
+                    } else {
+                        update_post_meta( $event_id, 'gfw_status', 1 );
+                        update_post_meta( $event_id, 'gfw_event_error', 0 );
+                        $response = json_encode( array(
+                            'message' => "Event reactivated"
+                        ) );
+                    }
+                }
+                echo $response;
+            } else {
+                $response = json_encode( array(
+                    'error' => "Invalid Event"
+                ) );
+                echo $response;
+            }
+        } else {
+            $response = json_encode( array(
+                'error' => "Invalid Request"
+            ) );
+            echo $response;
         }
         die();
     }
@@ -1563,7 +1604,7 @@ HERE;
                         $row .= '<td class="' . $toggle_class . '"' . $toggle_title . '>' . ( isset( $custom_fields['gfw_notifications'][0] ) ? 'Enabled' : 'Disabled' ) . '</div></td>';
                         $row .= '<td class="' . $toggle_class . '"' . $toggle_title . '>' . esc_html( $last_report ) . ( $custom_fields['gfw_event_error'][0] ? ' <span class="gfw-failed tooltip" title="' . esc_html( $gtmetrix_error ) . '">(failed)</span>' : '' ) . '</td>';
                         $row .= '<td class="' . $toggle_class . '"' . $toggle_title . '>' . esc_html( $this->wp_date( $next_report[$custom_fields['gfw_recurrence'][0]], true ) ) . '</td>';
-                        $row .= '<td><a href="' . esc_html( GFW_SCHEDULE ) . '&event_id=' . $query->post->ID . '" rel="" class="gfw-edit-icon tooltip" title="Edit this event">Edit</a> <a href="#" data-action="delete_event" data-entity-id="' . $query->post->ID . '" rel="#gfw-confirm-delete" title="Delete this event" class="gfw-delete-icon delete-event tooltip">Delete Event</a> <a href="' . esc_html( GFW_SCHEDULE ) . '&status=' . $query->post->ID . '" class="tooltip gfw-pause-icon' . ( 1 == $custom_fields['gfw_status'][0] ? '" title="Pause this event">Pause Event' : ' paused" title="Reactivate this event">Reactivate Event' ) . '</a></td>';
+                        $row .= '<td><a href="' . esc_html( GFW_SCHEDULE ) . '&event_id=' . $query->post->ID . '" rel="" class="gfw-edit-icon tooltip" title="Edit this event">Edit</a> <a href="#" data-action="delete_event" data-entity-id="' . $query->post->ID . '" rel="#gfw-confirm-delete" title="Delete this event" class="gfw-delete-icon delete-event tooltip">Delete Event</a> <a href="#" data-action="pause_event" rel="#gfw-pause" data-entity-id="' . $query->post->ID . '" class="tooltip gfw-pause-icon' . ( 1 == $custom_fields['gfw_status'][0] ? '" title="Pause this event">Pause Event' : ' paused" title="Reactivate this event">Reactivate Event' ) . '</a></td>';
                         $row .= '</tr>';
                         echo $row;
                         $row_no++;
