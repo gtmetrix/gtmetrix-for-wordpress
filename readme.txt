@@ -48,6 +48,9 @@ If you're running into issues with this plugin, please reach out for support on 
 
 == Changelog ==
 
+= 0.4.12 =
+* Minor bug fixes
+
 = 0.4.11 =
 * Minor bug fixes
 

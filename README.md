@@ -29,10 +29,13 @@ Requirements
 Version
 --------------------------
 
-0.4.11
+0.4.12
 
 Changelog
 --------------------------
+
+##### 0.4.12
+* Minor bug fixes
 
 ##### 0.4.11
 * Minor bug fixes

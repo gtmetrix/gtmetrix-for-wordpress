@@ -3,7 +3,7 @@
     Plugin Name: GTmetrix for WordPress
     Plugin URI: https://gtmetrix.com/gtmetrix-for-wordpress-plugin.html
     Description: GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
-    Version: 0.4.11
+    Version: 0.4.12
     Author: GTmetrix
     Author URI: https://gtmetrix.com/
 
@@ -54,7 +54,7 @@ class GTmetrix_For_WordPress {
 
         $options = get_option( 'gfw_options' );
         define( 'GFW_WP_VERSION', '3.3.1' );
-        define( 'GFW_VERSION', '0.4.2' );
+        define( 'GFW_VERSION', '0.4.12' );
         define( 'GFW_USER_AGENT', 'GTmetrix_WordPress/' . GFW_VERSION . ' (+https://gtmetrix.com/gtmetrix-for-wordpress-plugin.html)' );
         define( 'GFW_TIMEZONE', get_option( 'timezone_string' ) ? get_option( 'timezone_string' ) : date_default_timezone_get() );
         define( 'GFW_AUTHORIZED', isset( $options['authorized'] ) && $options['authorized'] ? true : false );
@@ -536,7 +536,6 @@ HERE;
         global $screen_layout_columns;
         $report_id = isset( $_GET['report_id'] ) ? esc_html( wp_unslash( $_GET['report_id'] ) ) : 0;
         $event_id = isset( $_GET['event_id'] ) ? esc_html( wp_unslash( $_GET['event_id'] ) ) : 0;
-        //$status = isset( $_GET['status'] ) ? esc_html( wp_unslash( $_GET['status'] ) ) : 0;
 
 
         if ( 'POST' == $_SERVER['REQUEST_METHOD'] ) {
@@ -578,28 +577,6 @@ HERE;
 
         if ( ( $event_id || $report_id ) && ! isset( $data ) ) {
             add_meta_box( 'schedule-meta-box', 'Schedule a Test', array( &$this, 'schedule_meta_box' ), $this->schedule_page_hook, 'normal', 'core' );
-        }
-
-        if ( $status ) {
-            if( is_numeric( $status ) ) {
-                //verify that the $status does correspond to a post
-                $event_to_pause = get_post( $status );
-                if( !$event_to_pause ) {
-                    echo $this->set_notice( 'Invalid Event' );
-                } else {
-                    $gfw_status = get_post_meta( $status, 'gfw_status', true );
-                    if ( 1 == $gfw_status ) {
-                        update_post_meta( $status, 'gfw_status', 2 );
-                        echo $this->set_notice( 'Event paused' );
-                    } else {
-                        update_post_meta( $status, 'gfw_status', 1 );
-                        update_post_meta( $status, 'gfw_event_error', 0 );
-                        echo $this->set_notice( 'Event reactivated' );
-                    }
-                }
-            } else {
-                echo $this->set_notice( 'Invalid Event' );
-            }
         }
 
         add_meta_box( 'events-meta-box', 'Scheduled Tests', array( &$this, 'events_list' ), $this->schedule_page_hook, 'normal', 'core' );
