@@ -29,25 +29,13 @@ Requirements
 Version
 --------------------------
 
-0.4.12
+0.4.8
 
 Changelog
 --------------------------
 
-##### 0.4.12
-* Minor bug fixes
-
-##### 0.4.11
-* Minor bug fixes
-
-##### 0.4.10
-* Minor bug fixes
-
-##### 0.4.9
-* Minor bug fixes
-
 ##### 0.4.8
-* Minor bug fixes
+* Twitter API Removal and Security Fixes
 
 ##### 0.4.7
 * Minor bug fixes

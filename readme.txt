@@ -3,7 +3,7 @@ Contributors: GTmetrix
 Tags: analytics, gtmetrix, monitoring, optimization, page speed, performance, speed, statistics, yslow
 Requires at least: 3.3.1
 Tested up to: 6.0.2
-Stable tag: 0.4.11
+Stable tag: 0.4.8
 
 GTmetrix can help you develop a faster, more efficient, and all-around improved website experience for your users. Your users will love you for it.
 
@@ -48,20 +48,8 @@ If you're running into issues with this plugin, please reach out for support on 
 
 == Changelog ==
 
-= 0.4.12 =
-* Minor bug fixes
-
-= 0.4.11 =
-* Minor bug fixes
-
-= 0.4.10 =
-* Minor bug fixes
-
-= 0.4.9 =
-* Minor bug fixes
-
 = 0.4.8 =
-* Minor bug fixes
+* Twitter API Removal and Security Fixes
 
 = 0.4.7 =
 * Minor bug fixes
