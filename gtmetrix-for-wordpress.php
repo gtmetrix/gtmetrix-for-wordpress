@@ -1147,7 +1147,7 @@ HERE;
         ?>
         <p style="font-weight:bold">API Credits Remaining: <?php echo esc_html( $status['api_credits'] ); ?></p>
         <p style="font-style:italic">Next top-up: <?php echo $this->wp_date( $status['api_refill'], true ); ?></p>
-        <p>Every test costs 1 API credit, except tests that use video, which cost 5 credits. You are topped up to 20 credits per day. If you need more, you can purchase them from GTmetrix.com.</p>
+        <p>Every test costs 1 API credit, except tests that use video, which cost 5 credits. You are topped up to 5 credits per day. If you need more, you can purchase them from GTmetrix.com.</p>
         <a href="https://gtmetrix.com/pro/<?php echo esc_html( GFW_GA_CAMPAIGN ); ?>" target="_blank" class="button-secondary">Get More API Credits</a>
         <?php
     }
